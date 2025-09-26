@@ -22,7 +22,7 @@ export default function Header() {
             <Link href="/" className="hover:text-accent transition">Home</Link>
             
             <div className="relative">
-              <button 
+              <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center hover:text-accent transition"
               >
@@ -31,7 +31,7 @@ export default function Header() {
               {dropdownOpen && (
                 <div className="absolute top-full mt-2 w-64 bg-white rounded-lg shadow-xl py-2">
                   <Link href="/courses/professional" className="block px-4 py-2 text-text-primary hover:bg-background-secondary">
-                    Professional Development & CEUs
+                    Professional CE Courses
                   </Link>
                   <Link href="/courses/personal" className="block px-4 py-2 text-text-primary hover:bg-background-secondary">
                     Personal Development
@@ -51,8 +51,8 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* Mobile menu button */}
-          <button 
+          {/* Mobile Menu Toggle */}
+          <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden"
           >

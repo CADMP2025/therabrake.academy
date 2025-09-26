@@ -36,7 +36,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contact Info */}
           <div>
             <h4 className="font-semibold mb-4">Contact Us</h4>
             <div className="space-y-2">
@@ -46,7 +46,7 @@ export default function Footer() {
               </p>
               <p className="flex items-center text-gray-300">
                 <Phone className="h-4 w-4 mr-2" />
-                (346) 298-2988
+                1-800-THERAPY
               </p>
               <p className="flex items-center text-gray-300">
                 <MapPin className="h-4 w-4 mr-2" />
