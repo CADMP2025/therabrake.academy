@@ -228,7 +228,7 @@ export default function PersonalCoursesPage() {
                 ✓ Community support
               </span>
               <span className="flex items-center">
-                ✓ 30-day money-back guarantee
+                ✓ Immediate digital access
               </span>
             </div>
           </div>
