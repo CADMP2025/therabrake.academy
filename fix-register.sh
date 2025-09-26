@@ -1,15 +1,14 @@
+#!/bin/bash
+
+# Fix the register page TypeScript error
+cat > app/auth/register/page.tsx << 'EOFILE'
 'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@supabase/supabase-js'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import Link from 'next/link'
-import { User, Mail, Lock, Phone, Badge, MapPin, Loader2, Eye, EyeOff, GraduationCap, BookOpen, Briefcase } from 'lucide-react'
-
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
+import { User, Mail, Lock, Phone, Badge, MapPin, Loader2, Eye, EyeOff, GraduationCap, BookOpen, Briefcase, Heart, Users, UserCheck, Building2 } from 'lucide-react'
 
 // Define the form data interface
 interface RegisterFormData {
@@ -43,6 +42,7 @@ interface FormErrors {
 
 export default function RegisterPage() {
   const router = useRouter()
+  const supabase = createClientComponentClient()
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -206,29 +206,29 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background-secondary flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Create Your Account</h1>
-          <p className="text-gray-600 mt-2">Join TheraBrake Academy and start learning</p>
+          <h1 className="text-3xl font-bold text-text-primary">Create Your Account</h1>
+          <p className="text-text-secondary mt-2">Join TheraBrake Academy and start learning</p>
         </div>
 
         {/* Role Selection */}
         <div className="mb-8">
-          <label className="block text-sm font-medium text-gray-700 mb-3">I am a:</label>
+          <label className="block text-sm font-medium text-text-secondary mb-3">I am a:</label>
           <div className="grid grid-cols-2 gap-4">
             <button
               type="button"
               onClick={() => setFormData(prev => ({ ...prev, role: 'student' }))}
               className={`p-4 border-2 rounded-lg transition-all ${
                 formData.role === 'student'
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-blue-300'
+                  ? 'border-primary bg-primary/5'
+                  : 'border-gray-200 hover:border-primary/50'
               }`}
             >
-              <GraduationCap className="w-8 h-8 mx-auto mb-2 text-blue-500" />
+              <GraduationCap className="w-8 h-8 mx-auto mb-2 text-primary" />
               <h3 className="font-semibold">Student</h3>
-              <p className="text-sm text-gray-600">Access courses & earn CE credits</p>
+              <p className="text-sm text-text-secondary">Access courses & earn CE credits</p>
             </button>
             
             <button
@@ -236,13 +236,13 @@ export default function RegisterPage() {
               onClick={() => setFormData(prev => ({ ...prev, role: 'instructor' }))}
               className={`p-4 border-2 rounded-lg transition-all ${
                 formData.role === 'instructor'
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-blue-300'
+                  ? 'border-primary bg-primary/5'
+                  : 'border-gray-200 hover:border-primary/50'
               }`}
             >
-              <BookOpen className="w-8 h-8 mx-auto mb-2 text-green-500" />
+              <BookOpen className="w-8 h-8 mx-auto mb-2 text-secondary" />
               <h3 className="font-semibold">Instructor</h3>
-              <p className="text-sm text-gray-600">Create & manage courses</p>
+              <p className="text-sm text-text-secondary">Create & manage courses</p>
             </button>
           </div>
         </div>
@@ -257,7 +257,7 @@ export default function RegisterPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Full Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-text-secondary mb-1">
                 <User className="inline w-4 h-4 mr-1" />
                 Full Name
               </label>
@@ -266,7 +266,7 @@ export default function RegisterPage() {
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="John Doe"
                 disabled={isLoading}
               />
@@ -277,7 +277,7 @@ export default function RegisterPage() {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-text-secondary mb-1">
                 <Mail className="inline w-4 h-4 mr-1" />
                 Email Address
               </label>
@@ -286,7 +286,7 @@ export default function RegisterPage() {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="john@example.com"
                 disabled={isLoading}
               />
@@ -297,7 +297,7 @@ export default function RegisterPage() {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-text-secondary mb-1">
                 <Lock className="inline w-4 h-4 mr-1" />
                 Password
               </label>
@@ -307,7 +307,7 @@ export default function RegisterPage() {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
                   placeholder="••••••••"
                   disabled={isLoading}
                 />
@@ -326,7 +326,7 @@ export default function RegisterPage() {
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-text-secondary mb-1">
                 <Lock className="inline w-4 h-4 mr-1" />
                 Confirm Password
               </label>
@@ -336,7 +336,7 @@ export default function RegisterPage() {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
                   placeholder="••••••••"
                   disabled={isLoading}
                 />
@@ -355,7 +355,7 @@ export default function RegisterPage() {
 
             {/* Phone (Optional) */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-text-secondary mb-1">
                 <Phone className="inline w-4 h-4 mr-1" />
                 Phone Number (Optional)
               </label>
@@ -364,7 +364,7 @@ export default function RegisterPage() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="(555) 123-4567"
                 disabled={isLoading}
               />
@@ -376,7 +376,7 @@ export default function RegisterPage() {
             {/* Profession (for students) */}
             {formData.role === 'student' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-text-secondary mb-1">
                   <Briefcase className="inline w-4 h-4 mr-1" />
                   Profession
                 </label>
@@ -384,7 +384,7 @@ export default function RegisterPage() {
                   name="profession"
                   value={formData.profession}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                   disabled={isLoading}
                 >
                   <option value="">Select Profession</option>
@@ -402,7 +402,7 @@ export default function RegisterPage() {
             {formData.role === 'instructor' && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-text-secondary mb-1">
                     <Badge className="inline w-4 h-4 mr-1" />
                     License Number
                   </label>
@@ -411,7 +411,7 @@ export default function RegisterPage() {
                     name="licenseNumber"
                     value={formData.licenseNumber}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="LPC123456"
                     disabled={isLoading}
                   />
@@ -421,7 +421,7 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-text-secondary mb-1">
                     <MapPin className="inline w-4 h-4 mr-1" />
                     License State
                   </label>
@@ -429,7 +429,7 @@ export default function RegisterPage() {
                     name="licenseState"
                     value={formData.licenseState}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     disabled={isLoading}
                   >
                     <option value="">Select State</option>
@@ -458,13 +458,13 @@ export default function RegisterPage() {
                 className="mt-1 mr-2"
                 disabled={isLoading}
               />
-              <label className="text-sm text-gray-600">
+              <label className="text-sm text-text-secondary">
                 I agree to the{' '}
-                <Link href="/terms" className="text-blue-500 hover:text-blue-600 underline">
+                <Link href="/terms" className="text-primary hover:text-primary-hover underline">
                   Terms of Service
                 </Link>{' '}
                 and{' '}
-                <Link href="/privacy" className="text-blue-500 hover:text-blue-600 underline">
+                <Link href="/privacy" className="text-primary hover:text-primary-hover underline">
                   Privacy Policy
                 </Link>
               </label>
@@ -485,7 +485,7 @@ export default function RegisterPage() {
                     className="mt-1 mr-2"
                     disabled={isLoading}
                   />
-                  <label className="text-sm text-gray-600">
+                  <label className="text-sm text-text-secondary">
                     I understand that CE credits require passing quizzes with 70% or higher and completing all course materials
                   </label>
                 </div>
@@ -500,7 +500,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            className="w-full bg-primary text-white py-3 px-4 rounded-lg font-semibold hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           >
             {isLoading ? (
               <>
@@ -513,9 +513,9 @@ export default function RegisterPage() {
           </button>
 
           {/* Sign In Link */}
-          <p className="text-center text-sm text-gray-600">
+          <p className="text-center text-sm text-text-secondary">
             Already have an account?{' '}
-            <Link href="/auth/login" className="text-blue-500 hover:text-blue-600 font-medium">
+            <Link href="/auth/login" className="text-primary hover:text-primary-hover font-medium">
               Sign In
             </Link>
           </p>
@@ -524,3 +524,7 @@ export default function RegisterPage() {
     </div>
   )
 }
+EOFILE
+
+echo "Fixed TypeScript errors in register page"
+npm run build
