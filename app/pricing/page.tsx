@@ -11,7 +11,10 @@ import {
   GraduationCap, 
   Sprout, 
   Lightbulb,
-  ArrowRight
+  ArrowRight,
+  Clock,
+  Award,
+  TrendingUp
 } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -30,6 +33,9 @@ interface PricingCardProps {
   description?: string
   buttonText?: string
   buttonLink?: string
+  whatYouGet?: string[]
+  bestFor?: string
+  value?: string[]
 }
 
 function PricingCard({ 
@@ -41,7 +47,10 @@ function PricingCard({
   bonus, 
   description,
   buttonText = "Get Started",
-  buttonLink = "/register"
+  buttonLink = "/register",
+  whatYouGet,
+  bestFor,
+  value
 }: PricingCardProps) {
   const colorClasses = {
     primary: 'bg-primary',
@@ -60,7 +69,7 @@ function PricingCard({
       <div className={`${colorClasses[color]} p-6 text-white relative`}>
         {popular && (
           <div className="absolute top-2 right-2 bg-white text-action px-3 py-1 rounded-full text-sm font-bold animate-pulse">
-            POPULAR
+            MOST POPULAR
           </div>
         )}
         <h3 className="text-2xl font-bold mb-2">{title}</h3>
@@ -68,25 +77,51 @@ function PricingCard({
         {description && <p className="text-sm mt-2 opacity-90">{description}</p>}
       </div>
       <div className="p-6 flex flex-col h-full">
-        <ul className="space-y-3 mb-6 flex-grow">
-          {features.map((feature, idx) => (
-            <li key={idx} className="flex items-start gap-2">
-              <CheckCircle className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
-              <span className="text-neutral-dark" dangerouslySetInnerHTML={{ __html: feature }} />
-            </li>
-          ))}
-        </ul>
+        {whatYouGet && (
+          <>
+            <h4 className="font-bold text-neutral-dark mb-3">What You Get:</h4>
+            <ul className="space-y-2 mb-4 text-sm">
+              {whatYouGet.map((item, idx) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" />
+                  <span className="text-neutral-dark" dangerouslySetInnerHTML={{ __html: item }} />
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+        
+        {bestFor && (
+          <div className="bg-blue-50 p-3 rounded-lg mb-4">
+            <p className="text-sm">
+              <strong className="text-primary">Best For:</strong> {bestFor}
+            </p>
+          </div>
+        )}
+        
+        {value && value.length > 0 && (
+          <div className="bg-green-50 p-3 rounded-lg mb-4">
+            <p className="text-sm font-semibold text-secondary mb-2">💡 Value:</p>
+            <ul className="space-y-1">
+              {value.map((item, idx) => (
+                <li key={idx} className="text-xs text-neutral-dark">• {item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        
         {bonus && (
-          <div className="bg-secondary/10 p-3 rounded-lg mb-4">
-            <p className="text-sm font-semibold text-secondary flex items-start gap-2">
-              <Lightbulb className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <div className="bg-accent/10 p-3 rounded-lg mb-4">
+            <p className="text-sm font-semibold text-action flex items-start gap-2">
+              <Gift className="w-4 h-4 mt-0.5 flex-shrink-0" />
               <span>{bonus}</span>
             </p>
           </div>
         )}
+        
         <Link 
           href={buttonLink}
-          className={`w-full text-center py-3 px-6 rounded-lg font-semibold text-white transition-colors ${buttonColorClasses[color]}`}
+          className={`w-full text-center py-3 px-6 rounded-lg font-semibold text-white transition-colors ${buttonColorClasses[color]} mt-auto`}
         >
           {buttonText}
         </Link>
@@ -189,7 +224,7 @@ export default function PricingPage() {
             <div className="flex items-center justify-center gap-3 mb-2">
               <GraduationCap className="w-8 h-8 text-primary" />
               <h2 className="text-3xl font-bold font-heading text-neutral-dark">
-                Membership Packages
+                CE Membership Packages
               </h2>
             </div>
             <p className="text-lg text-action font-semibold">(Best Value)</p>
@@ -198,44 +233,69 @@ export default function PricingPage() {
 
           <div className="grid lg:grid-cols-3 gap-8 mb-12">
             <PricingCard
-              title="1-Year CE Membership"
+              title="🎓 1-Year CE Membership"
               price="$199"
               color="primary"
-              features={[
-                'Access to all CEU courses (31+ hours)',
-                'Covers annual license renewal requirements'
+              whatYouGet={[
+                "Full access to <strong>all CEU courses</strong> (currently 31+ credit hours, with more added regularly)",
+                "Complete your <strong>annual CE requirement</strong> with just one purchase",
+                "Self-paced learning: videos, interactive quizzes, and downloadable workbooks",
+                "Earn <strong>instant digital certificates</strong> for completed courses",
+                "Access valid for <strong>12 months</strong> from the day you join"
               ]}
-              bonus="Save over $100 compared to buying courses individually"
-              buttonText="Start Learning"
-              buttonLink="/register?plan=ce-1year"
+              bestFor="Professionals who need to complete annual CE hours and want affordable, flexible access"
+              value={[
+                "Buying 30 CE hours individually costs about $300+",
+                "Membership gives you the same credits for $199",
+                "Save over $100"
+              ]}
+              buttonText="Enroll Now - Save $100"
+              buttonLink="/enrollment?type=ce&plan=ce-1year&price=199"
             />
 
             <PricingCard
-              title="2-Year CE Membership"
+              title="🎓 2-Year CE Membership"
               price="$299"
               color="action"
               popular={true}
-              features={[
-                'Double the access for less than double the cost',
-                '<strong>Bonus:</strong> $100 off <em>So What Mindset</em> & <em>Leap & Launch</em>'
+              whatYouGet={[
+                "All benefits of the 1-Year Membership, extended to <strong>24 months</strong>",
+                "Access to every CEU course released during your membership",
+                "<strong>$100 discount</strong> on <em>The So What Mindset</em> program",
+                "<strong>$100 discount</strong> on <em>Leap & Launch!</em> program",
+                "Unlimited certificates and CE hours—submit anytime"
               ]}
-              bonus="Perfect for biennial renewals"
-              buttonText="Most Popular Choice"
-              buttonLink="/register?plan=ce-2year"
+              bestFor="Clinicians who renew their license every two years and want to lock in training at a low cost"
+              value={[
+                "Two annual memberships ($398 value) for only $299",
+                "Plus bonus discounts worth $200 savings"
+              ]}
+              buttonText="Most Popular - Enroll Now"
+              buttonLink="/enrollment?type=ce&plan=ce-2year&price=299"
             />
 
             <PricingCard
-              title="5-Year CE + Personal"
+              title="🌟 5-Year CE + Personal"
               price="$699"
               color="secondary"
-              features={[
-                'All CEU + all personal development courses',
-                'Access for 60 months',
-                'Bonus discounts on premium programs'
+              whatYouGet={[
+                "<strong>Complete professional access</strong>: every CEU course (200+ hours when fully developed)",
+                "<strong>Complete personal growth access</strong>: all courses for healing, resilience, relationships",
+                "Access valid for <strong>60 months (5 years)</strong>—no renewals, no stress",
+                "Bonus: <em>So What Mindset</em> for $399 (instead of $499)",
+                "Bonus: <em>Leap & Launch!</em> for $199 (instead of $299)",
+                "Certificates for all CE courses and lifetime skills"
+              ]}
+              bestFor="Professionals committed to long-term growth for career advancement and personal healing"
+              value={[
+                "200 CE hours individually = $1,999+",
+                "Personal courses individually = $1,299+",
+                "Total value over $3,000",
+                "You pay just $699 - Save over $2,500!"
               ]}
               bonus="Ultimate value—grow your practice and yourself for less than $12/month"
-              buttonText="Maximum Value"
-              buttonLink="/register?plan=ce-5year"
+              buttonText="Best Value - Enroll Now"
+              buttonLink="/enrollment?type=ce&plan=ce-lifetime&price=699"
             />
           </div>
         </div>
@@ -268,10 +328,10 @@ export default function PricingPage() {
                 </li>
               </ul>
               <Link 
-                href="/register?plan=personal-1year"
+                href="/enrollment?type=personal&plan=personal-1year&price=299"
                 className="block w-full text-center py-2 px-4 bg-secondary text-white rounded-lg font-medium hover:bg-green-600 transition-colors"
               >
-                Get Started
+                Enroll Now
               </Link>
             </div>
 
@@ -288,10 +348,10 @@ export default function PricingPage() {
                 </li>
               </ul>
               <Link 
-                href="/register?plan=personal-2year"
+                href="/enrollment?type=personal&plan=personal-2year&price=399"
                 className="block w-full text-center py-2 px-4 bg-secondary text-white rounded-lg font-medium hover:bg-green-600 transition-colors"
               >
-                Get Started
+                Enroll Now
               </Link>
             </div>
 
@@ -308,10 +368,10 @@ export default function PricingPage() {
                 </li>
               </ul>
               <Link 
-                href="/register?plan=personal-5year"
+                href="/enrollment?type=personal&plan=personal-5year&price=699"
                 className="block w-full text-center py-2 px-4 bg-secondary text-white rounded-lg font-medium hover:bg-green-600 transition-colors"
               >
-                Get Started
+                Enroll Now
               </Link>
             </div>
           </div>
@@ -332,29 +392,29 @@ export default function PricingPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               <BenefitCard
                 icon={<DollarSign className="w-8 h-8 text-primary" />}
-                title="Savings Add Up"
-                description="30 CE hours individually cost ~$300. A 1-Year Membership is just $199."
+                title="Massive Savings"
+                description="Save hundreds or even thousands compared to individual course purchases"
                 color="bg-primary/10"
               />
 
               <BenefitCard
                 icon={<Infinity className="w-8 h-8 text-secondary" />}
-                title="Flexibility"
-                description="Explore multiple tracks without paying per course."
+                title="Unlimited Access"
+                description="Explore all courses without worrying about additional costs"
                 color="bg-secondary/10"
               />
 
               <BenefitCard
                 icon={<Gift className="w-8 h-8 text-accent" />}
                 title="Exclusive Bonuses"
-                description="Discounts on premium programs like So What Mindset and Leap & Launch."
+                description="Get special discounts on premium programs worth hundreds in savings"
                 color="bg-accent/10"
               />
 
               <BenefitCard
                 icon={<Rocket className="w-8 h-8 text-action" />}
-                title="Future-Proof Learning"
-                description="Access new courses released during your membership."
+                title="Future-Proof"
+                description="Access all new courses released during your membership period"
                 color="bg-action/10"
               />
             </div>
@@ -384,11 +444,11 @@ export default function PricingPage() {
               Browse Individual Courses
             </Link>
             <Link 
-              href="/register" 
+              href="/enrollment?type=ce" 
               className="px-8 py-4 bg-action text-white rounded-lg font-bold hover:bg-orange-600 transition-all transform hover:scale-105 inline-flex items-center justify-center gap-2"
             >
               <Rocket className="w-5 h-5" />
-              Get Started with Membership
+              Start Your Membership Today
             </Link>
           </div>
         </div>
