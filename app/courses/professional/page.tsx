@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Clock, Award, DollarSign, Brain, Globe, Scale, CloudLightning, Shield, Monitor, Briefcase, AlertTriangle, Lock, Gavel, Puzzle, Eye, User, Wine, Pill, MessageCircle, Heart, Users, Baby, Headphones, Ambulance, Medal, Dove, UserCheck, Star, TrendingUp, UsersIcon, Leaf, Flower, Activity, Palette, Rainbow, Utensils, PillIcon, Smartphone, Globe2 } from 'lucide-react'
+import { Clock, Award, DollarSign, Brain, Globe, Scale, Zap, Shield, Monitor, Briefcase, AlertTriangle, Lock, Gavel, Puzzle, Eye, User, Wine, Pill, MessageCircle, Heart, Users, Baby, Headphones, Siren, Medal, Bird, UserCheck, Star, TrendingUp, Leaf, Flower, Activity, Palette, Flag, Utensils, Smartphone } from 'lucide-react'
 
 const currentCourses = [
   {
@@ -36,7 +36,7 @@ const currentCourses = [
     price: 59.99,
     description: 'Master the Neuroscience of Emotional Dysregulation',
     fullDescription: 'Reveal neurobiological connections between trauma and anger, implement brain-based interventions.',
-    icon: CloudLightning
+    icon: Zap
   },
   {
     id: 'risk-management',
