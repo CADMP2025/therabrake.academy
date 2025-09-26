@@ -1,31 +1,32 @@
 import Link from 'next/link'
-import { Facebook, Twitter, Linkedin, Youtube, Mail, MapPin, Phone } from 'lucide-react'
+import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube } from 'lucide-react'
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear()
-
   return (
-    <footer className="bg-neutral-dark text-white">
-      {/* Main Footer Content */}
+    <footer className="bg-text-primary text-white">
+      {/* Main Footer */}
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-2xl font-bold mb-4">TheraBrake Academy™</h3>
-            <p className="text-neutral-medium mb-4">
-              Pause, Process, Progress. Your trusted partner in mental health continuing education.
+            <div className="flex items-center space-x-2 mb-4">
+              <span className="text-2xl font-bold">🧠</span>
+              <span className="text-xl font-bold">TheraBrake</span>
+            </div>
+            <p className="text-gray-300 mb-4">
+              Texas' Premier Mental Health Education Platform
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-neutral-medium hover:text-accent transition">
+              <a href="#" className="hover:text-accent transition">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="text-neutral-medium hover:text-accent transition">
+              <a href="#" className="hover:text-accent transition">
                 <Twitter className="h-5 w-5" />
               </a>
-              <a href="#" className="text-neutral-medium hover:text-accent transition">
+              <a href="#" className="hover:text-accent transition">
                 <Linkedin className="h-5 w-5" />
               </a>
-              <a href="#" className="text-neutral-medium hover:text-accent transition">
+              <a href="#" className="hover:text-accent transition">
                 <Youtube className="h-5 w-5" />
               </a>
             </div>
@@ -33,53 +34,53 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+            <h3 className="text-lg font-semibold mb-4 text-accent">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/courses/professional" className="text-neutral-medium hover:text-accent transition">
-                  CE Courses
+                <Link href="/courses" className="text-gray-300 hover:text-white transition">
+                  Browse Courses
                 </Link>
               </li>
               <li>
-                <Link href="/courses/personal" className="text-neutral-medium hover:text-accent transition">
-                  Personal Development
+                <Link href="/about" className="text-gray-300 hover:text-white transition">
+                  About Us
                 </Link>
               </li>
               <li>
-                <Link href="/courses/sowhat" className="text-neutral-medium hover:text-accent transition">
-                  So What Mindset™
+                <Link href="/instructors" className="text-gray-300 hover:text-white transition">
+                  Become an Instructor
                 </Link>
               </li>
               <li>
-                <Link href="/courses/leap" className="text-neutral-medium hover:text-accent transition">
-                  Leap & Launch™
+                <Link href="/faq" className="text-gray-300 hover:text-white transition">
+                  FAQs
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Resources */}
+          {/* Courses */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Resources</h4>
+            <h3 className="text-lg font-semibold mb-4 text-accent">Course Categories</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/about" className="text-neutral-medium hover:text-accent transition">
-                  About Us
+                <Link href="/courses/professional" className="text-gray-300 hover:text-white transition">
+                  Professional CE Credits
                 </Link>
               </li>
               <li>
-                <Link href="/instructors" className="text-neutral-medium hover:text-accent transition">
-                  Become an Instructor
+                <Link href="/courses/personal" className="text-gray-300 hover:text-white transition">
+                  Personal Growth
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="text-neutral-medium hover:text-accent transition">
-                  FAQ
+                <Link href="/courses/premium/so-what" className="text-gray-300 hover:text-white transition">
+                  So What Mindset
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-neutral-medium hover:text-accent transition">
-                  Blog
+                <Link href="/courses/premium/leap-launch" className="text-gray-300 hover:text-white transition">
+                  Leap & Launch
                 </Link>
               </li>
             </ul>
@@ -87,24 +88,24 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
+            <h3 className="text-lg font-semibold mb-4 text-accent">Contact Us</h3>
             <ul className="space-y-3">
-              <li className="flex items-start gap-2">
-                <MapPin className="h-5 w-5 text-accent mt-0.5" />
-                <span className="text-neutral-medium">
-                  Beaumont, Texas, USA
+              <li className="flex items-start">
+                <MapPin className="h-5 w-5 mr-2 mt-0.5 text-accent" />
+                <span className="text-gray-300">
+                  Austin, Texas
                 </span>
               </li>
-              <li className="flex items-start gap-2">
-                <Phone className="h-5 w-5 text-accent" />
-                <span className="text-neutral-medium">
-                  1-800-THERAPY
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Mail className="h-5 w-5 text-accent" />
-                <a href="mailto:support@therabrake.academy" className="text-neutral-medium hover:text-accent transition">
+              <li>
+                <a href="mailto:support@therabrake.academy" className="flex items-center text-gray-300 hover:text-white transition">
+                  <Mail className="h-5 w-5 mr-2 text-accent" />
                   support@therabrake.academy
+                </a>
+              </li>
+              <li>
+                <a href="tel:+15125551234" className="flex items-center text-gray-300 hover:text-white transition">
+                  <Phone className="h-5 w-5 mr-2 text-accent" />
+                  (512) 555-1234
                 </a>
               </li>
             </ul>
@@ -113,21 +114,21 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-neutral-medium/20">
-        <div className="container mx-auto px-4 py-6">
+      <div className="border-t border-gray-700">
+        <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-neutral-medium text-sm mb-4 md:mb-0">
-              © {currentYear} TheraBrake Academy. All rights reserved.
+            <p className="text-gray-400 text-sm">
+              © 2024 TheraBrake Academy. All rights reserved.
             </p>
-            <div className="flex space-x-6 text-sm">
-              <Link href="/privacy" className="text-neutral-medium hover:text-accent transition">
+            <div className="flex space-x-4 mt-2 md:mt-0">
+              <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="text-neutral-medium hover:text-accent transition">
+              <Link href="/terms" className="text-gray-400 hover:text-white text-sm transition">
                 Terms of Service
               </Link>
-              <Link href="/compliance" className="text-neutral-medium hover:text-accent transition">
-                CE Compliance
+              <Link href="/compliance" className="text-gray-400 hover:text-white text-sm transition">
+                Texas LPC Compliance
               </Link>
             </div>
           </div>

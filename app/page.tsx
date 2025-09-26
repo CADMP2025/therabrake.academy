@@ -1,137 +1,136 @@
 import Link from 'next/link'
-import { ArrowRight, BookOpen, Award, Users, Clock } from 'lucide-react'
+import { ArrowRight, Award, Users, Clock, Star } from 'lucide-react'
 
 export default function HomePage() {
   return (
-    <>
+    <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary to-primary-hover text-white py-20">
+      <section className="bg-gradient-to-br from-primary to-primary-dark text-white py-20">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-4">Welcome to TheraBrake Academy™</h1>
-          <p className="text-2xl mb-8">Pause, Process, Progress.</p>
-          <p className="text-xl mb-12 max-w-3xl mx-auto">
-            Here&apos;s where evidence meets empathy. If you&apos;re a therapist, you&apos;re in the right place.
-            Whether you&apos;re earning CEUs or seeking personal growth, we&apos;ve created something special for you.
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            Transform Your Mind,<br />
+            <span className="text-accent">Transform Your Practice</span>
+          </h1>
+          <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">
+            Texas' premier online learning platform for mental health professionals 
+            and individuals seeking personal growth.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/courses/professional" className="bg-action hover:bg-action-hover px-8 py-4 rounded-lg text-lg font-semibold transition inline-flex items-center">
-              Browse CE Courses <ArrowRight className="ml-2" />
+            <Link 
+              href="/courses"
+              className="bg-accent text-primary px-8 py-4 rounded-lg text-lg font-semibold hover:bg-accent-light transition inline-flex items-center justify-center"
+            >
+              Browse Courses
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
-            <Link href="/courses/personal" className="bg-secondary hover:bg-secondary-hover px-8 py-4 rounded-lg text-lg font-semibold transition inline-flex items-center">
-              Personal Development <ArrowRight className="ml-2" />
+            <Link 
+              href="/auth/register"
+              className="bg-white text-primary px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition"
+            >
+              Start Free Trial
             </Link>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16">
+      <section className="py-16 bg-background-light">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Why Choose TheraBrake Academy™?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+            Why Choose TheraBrake Academy?
+          </h2>
+          <div className="grid md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="h-8 w-8" />
-              </div>
-              <h3 className="font-semibold mb-2">Dual-Stream Learning</h3>
-              <p className="text-text-secondary">Professional CEUs + Personal Development</p>
+              <Award className="h-12 w-12 text-primary mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Texas LPC Approved</h3>
+              <p className="text-text-secondary">Earn CE credits approved by the Texas LPC Board</p>
             </div>
             <div className="text-center">
-              <div className="bg-secondary text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Award className="h-8 w-8" />
-              </div>
-              <h3 className="font-semibold mb-2">Trusted & Accredited</h3>
-              <p className="text-text-secondary">Courses that meet state and national requirements</p>
+              <Users className="h-12 w-12 text-secondary mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Expert Instructors</h3>
+              <p className="text-text-secondary">Learn from licensed professionals with years of experience</p>
             </div>
             <div className="text-center">
-              <div className="bg-accent text-text-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="h-8 w-8" />
-              </div>
-              <h3 className="font-semibold mb-2">Practical & Transformational</h3>
-              <p className="text-text-secondary">Step-by-step guidance you can actually apply</p>
+              <Clock className="h-12 w-12 text-accent mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Self-Paced Learning</h3>
+              <p className="text-text-secondary">Complete courses on your schedule, anywhere</p>
             </div>
             <div className="text-center">
-              <div className="bg-action text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Clock className="h-8 w-8" />
-              </div>
-              <h3 className="font-semibold mb-2">Learn Your Way</h3>
-              <p className="text-text-secondary">Self-paced video lessons and interactive quizzes</p>
+              <Star className="h-12 w-12 text-action mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Premium Programs</h3>
+              <p className="text-text-secondary">Transform your life with our signature programs</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Professional Pricing */}
-      <section className="bg-background-secondary py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-4">🎓 For Mental Health Professionals</h2>
-          <p className="text-center text-text-secondary mb-12 max-w-3xl mx-auto">
-            Keep your license current with engaging, evidence-based CE courses
-            that actually make a difference in your practice.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="font-semibold mb-2">1-Year CE Membership</h3>
-              <p className="text-3xl font-bold text-primary mb-4">$199</p>
-              <p className="text-text-secondary mb-4">Access to ALL Professional Development & CEU Courses</p>
-              <Link href="/courses/professional" className="text-primary hover:text-primary-hover font-semibold">
-                Learn More →
-              </Link>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="font-semibold mb-2">2-Year CE Membership</h3>
-              <p className="text-3xl font-bold text-primary mb-4">$299</p>
-              <p className="text-text-secondary mb-4">All CE courses for 24 months + Premium discounts</p>
-              <Link href="/courses/professional" className="text-primary hover:text-primary-hover font-semibold">
-                Learn More →
-              </Link>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow border-2 border-accent">
-              <h3 className="font-semibold mb-2">5-Year CE Membership</h3>
-              <p className="text-3xl font-bold text-primary mb-4">$699</p>
-              <p className="text-text-secondary mb-4">Complete Professional & Personal Development Access</p>
-              <Link href="/courses/professional" className="text-primary hover:text-primary-hover font-semibold">
-                Best Value →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Personal Growth */}
+      {/* Course Categories */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-4">🌱 For Personal Growth & Healing</h2>
-          <p className="text-center text-text-secondary mb-12 max-w-3xl mx-auto">
-            Whether you&apos;re working through your own challenges or supporting someone you love,
-            discover practical tools for real transformation.
-          </p>
-
-          <div className="text-center">
-            <Link href="/courses/personal" className="bg-secondary hover:bg-secondary-hover text-white px-8 py-4 rounded-lg text-lg font-semibold transition inline-flex items-center">
-              Visit Personal Development Catalog <ArrowRight className="ml-2" />
-            </Link>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+            Explore Our Course Categories
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+              <div className="bg-primary p-6">
+                <h3 className="text-2xl font-bold text-white">Professional Development</h3>
+              </div>
+              <div className="p-6">
+                <p className="text-text-secondary mb-4">
+                  CE credits for Texas LPCs. Build your practice with evidence-based techniques.
+                </p>
+                <Link href="/courses/professional" className="text-primary hover:underline font-semibold">
+                  View Courses →
+                </Link>
+              </div>
+            </div>
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+              <div className="bg-secondary p-6">
+                <h3 className="text-2xl font-bold text-white">Personal Growth</h3>
+              </div>
+              <div className="p-6">
+                <p className="text-text-secondary mb-4">
+                  Self-help and wellness programs designed for everyone seeking positive change.
+                </p>
+                <Link href="/courses/personal" className="text-secondary hover:underline font-semibold">
+                  View Courses →
+                </Link>
+              </div>
+            </div>
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+              <div className="bg-action p-6">
+                <h3 className="text-2xl font-bold text-white">Premium Programs</h3>
+              </div>
+              <div className="p-6">
+                <p className="text-text-secondary mb-4">
+                  Comprehensive transformation programs with personalized support.
+                </p>
+                <Link href="/courses/premium" className="text-action hover:underline font-semibold">
+                  View Programs →
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-r from-action to-action-hover text-white py-16">
+      <section className="py-16 bg-gradient-to-r from-primary to-secondary text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">🔑 Your Next Step Starts Here</h2>
-          <div className="space-y-4 text-lg">
-            <p>📚 Browse Our Courses → Find the right program for your needs.</p>
-            <p>💻 Enroll Today → Gain instant access to your learning dashboard.</p>
-            <p>🎉 Transform Tomorrow → Apply what you learn for real, lasting change.</p>
-          </div>
-          <div className="mt-8">
-            <Link href="/auth/register" className="bg-white text-action hover:bg-background-secondary px-8 py-4 rounded-lg text-lg font-semibold transition">
-              Start Your Journey Today
-            </Link>
-          </div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Ready to Start Your Journey?
+          </h2>
+          <p className="text-xl mb-8 text-white/90">
+            Join thousands of mental health professionals and individuals transforming their lives.
+          </p>
+          <Link 
+            href="/auth/register"
+            className="bg-accent text-primary px-8 py-4 rounded-lg text-lg font-semibold hover:bg-accent-light transition inline-block"
+          >
+            Get Started Today
+          </Link>
         </div>
       </section>
-    </>
+    </div>
   )
 }

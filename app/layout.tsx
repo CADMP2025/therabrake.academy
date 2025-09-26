@@ -7,8 +7,9 @@ import Footer from '@/components/layout/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'TheraBrake Academy - Pause, Process, Progress',
-  description: 'Dual-platform Learning Management System for mental health professionals seeking CE credits in Texas',
+  title: 'TheraBrake Academy - Texas Mental Health Education',
+  description: 'Premier online learning platform for mental health professionals and personal growth',
+  keywords: 'mental health, CE credits, Texas LPC, online courses, therapy training',
 }
 
 export default function RootLayout({
@@ -18,9 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} flex flex-col min-h-screen`}>
         <Header />
-        <main className="min-h-screen">
+        <main className="flex-grow">
           {children}
         </main>
         <Footer />
