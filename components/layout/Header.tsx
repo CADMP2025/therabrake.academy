@@ -1,5 +1,5 @@
-'use client'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 
@@ -10,9 +10,19 @@ export default function Header() {
     <header className="bg-primary text-white sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold">TheraBrake Academy™</span>
+          {/* Logo and Brand */}
+          <Link href="/" className="flex items-center space-x-3">
+            <Image 
+              src="/images/logo/logo.png" 
+              alt="TheraBrake Academy Logo" 
+              width={40} 
+              height={40}
+              className="rounded-lg"
+              priority
+            />
+            <span className="text-2xl font-bold">
+              TheraBrake Academy<sup className="text-sm align-super">™</sup>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
