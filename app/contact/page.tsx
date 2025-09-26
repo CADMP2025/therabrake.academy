@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Mail, Phone, MapPin, Sparkles, Send, ArrowRight } from 'lucide-react'
 
@@ -45,7 +46,7 @@ export default function ContactPage() {
                 </p>
               </div>
 
-              {/* Contact Methods Grid - Now 2 columns */}
+              {/* Contact Methods Grid - 2 columns */}
               <div className="grid md:grid-cols-2 gap-6 mt-12">
                 {/* Email */}
                 <div className="text-center p-6 bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl hover:shadow-lg transition-all duration-300">
