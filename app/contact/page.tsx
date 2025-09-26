@@ -1,4 +1,3 @@
-import { Metadata } from 'next'
 import Link from 'next/link'
 import { Mail, Phone, MapPin, Sparkles, Send, ArrowRight } from 'lucide-react'
 
