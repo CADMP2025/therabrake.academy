@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Clock, Award, DollarSign, Brain, Globe, Scale, Zap, Shield, Monitor, Briefcase, AlertTriangle, Lock, Gavel, Puzzle, Eye, User, Wine, Pill, MessageCircle, Heart, Users, Baby, Headphones, Siren, Medal, Bird, UserCheck, Star, TrendingUp, Leaf, Flower, Activity, Palette, Flag, Utensils, Smartphone } from 'lucide-react'
+import { Clock, Award, DollarSign, Brain, Globe, Scale, Zap, Shield, Monitor, Briefcase, AlertTriangle, Lock, FileText, Puzzle, Eye, Activity, Wine, Pill, MessageCircle, Heart, Home, Baby, Headphones, Cross, Medal, Bird, Users, Star, TrendingUp, UsersIcon, Leaf, Lotus, Waves, Palette, Flag, Utensils, Smartphone, Network, Sunrise, HeartCrack, HeartHandshake, Ribbon, CreditCard, Coins, Key, Rocket } from 'lucide-react'
 
 const currentCourses = [
   {
@@ -9,7 +9,8 @@ const currentCourses = [
     price: 59.99,
     description: 'Transform Your Practice for the Modern Era',
     fullDescription: 'Understanding trauma\'s pervasive impact while mastering digital delivery methods. Learn evidence-based trauma-informed approaches and master telehealth delivery.',
-    icon: Brain
+    icon: Brain,
+    emoji: '🌐'
   },
   {
     id: 'cultural-diversity',
@@ -18,7 +19,8 @@ const currentCourses = [
     price: 29.99,
     description: 'Serve Every Texan with Cultural Competence',
     fullDescription: 'Bridge differences with skill and sensitivity. Explore unique cultural dynamics of Texas communities.',
-    icon: Globe
+    icon: Globe,
+    emoji: '🌎'
   },
   {
     id: 'ethics-counselors',
@@ -27,7 +29,8 @@ const currentCourses = [
     price: 59.99,
     description: 'Navigate Complex Ethical Challenges with Clarity',
     fullDescription: 'Develop robust ethical decision-making frameworks using Texas-specific case law and LPC board decisions.',
-    icon: Scale
+    icon: Scale,
+    emoji: '⚖️'
   },
   {
     id: 'regulating-storm',
@@ -36,7 +39,8 @@ const currentCourses = [
     price: 59.99,
     description: 'Master the Neuroscience of Emotional Dysregulation',
     fullDescription: 'Reveal neurobiological connections between trauma and anger, implement brain-based interventions.',
-    icon: Zap
+    icon: Zap,
+    emoji: '🌩️'
   },
   {
     id: 'risk-management',
@@ -45,7 +49,8 @@ const currentCourses = [
     price: 19.99,
     description: 'Protect Your Practice, Serve with Peace of Mind',
     fullDescription: 'Learn from real Texas malpractice cases, develop systems for managing high-risk situations.',
-    icon: Shield
+    icon: Shield,
+    emoji: '🛡️'
   },
   {
     id: 'telehealth',
@@ -54,7 +59,8 @@ const currentCourses = [
     price: 29.99,
     description: 'Build a Thriving Virtual Practice',
     fullDescription: 'Excel in virtual counseling with HIPAA-compliant platforms and therapeutic presence techniques.',
-    icon: Monitor
+    icon: Monitor,
+    emoji: '💻'
   },
   {
     id: 'business-ethics',
@@ -63,7 +69,8 @@ const currentCourses = [
     price: 19.99,
     description: 'Where Clinical Ethics Meets Business Reality',
     fullDescription: 'Navigate financial sustainability while maintaining clinical ethics and professional values.',
-    icon: Briefcase
+    icon: Briefcase,
+    emoji: '💼'
   },
   {
     id: 'suicide-prevention',
@@ -72,7 +79,8 @@ const currentCourses = [
     price: 29.99,
     description: 'Recognize, Assess, and Respond to Suicidal Ideation',
     fullDescription: 'Master critical skills using evidence-based tools and Texas legal requirements.',
-    icon: AlertTriangle
+    icon: AlertTriangle,
+    emoji: '🚨'
   }
 ]
 
@@ -86,15 +94,17 @@ const expandedCourses = [
         hours: 4,
         price: 39.99,
         icon: Lock,
-        description: 'Navigate the Uncharted Territory of Digital Mental Health'
+        description: 'Navigate the Uncharted Territory of Digital Mental Health',
+        emoji: '🔒'
       },
       {
         id: 'legal-issues',
         title: 'Legal Issues and Documentation for Counselors',
         hours: 4,
         price: 39.99,
-        icon: Gavel,
-        description: 'Master the Law to Protect Your Practice'
+        icon: FileText,
+        description: 'Master the Law to Protect Your Practice',
+        emoji: '📜'
       }
     ]
   },
@@ -107,7 +117,8 @@ const expandedCourses = [
         hours: 8,
         price: 79.99,
         icon: Puzzle,
-        description: 'Beyond Traditional PTSD Treatment'
+        description: 'Beyond Traditional PTSD Treatment',
+        emoji: '🧩'
       },
       {
         id: 'emdr-level1',
@@ -115,15 +126,17 @@ const expandedCourses = [
         hours: 15,
         price: 149.99,
         icon: Eye,
-        description: 'Evidence-Based Trauma Treatment'
+        description: 'Evidence-Based Trauma Treatment',
+        emoji: '��️'
       },
       {
         id: 'somatic-approaches',
         title: 'Somatic Approaches to Trauma Recovery',
         hours: 6,
         price: 59.99,
-        icon: User,
-        description: 'Healing Trauma Through Body Wisdom'
+        icon: Activity,
+        description: 'Healing Trauma Through Body Wisdom',
+        emoji: '🧘'
       }
     ]
   },
@@ -136,7 +149,8 @@ const expandedCourses = [
         hours: 8,
         price: 79.99,
         icon: Wine,
-        description: 'Build Expertise in Addiction Treatment'
+        description: 'Build Expertise in Addiction Treatment',
+        emoji: '🍷'
       },
       {
         id: 'co-occurring',
@@ -144,7 +158,8 @@ const expandedCourses = [
         hours: 6,
         price: 59.99,
         icon: Pill,
-        description: 'Treat the Whole Person'
+        description: 'Treat the Whole Person',
+        emoji: '⚖️'
       },
       {
         id: 'motivational-interviewing',
@@ -152,9 +167,190 @@ const expandedCourses = [
         hours: 6,
         price: 59.99,
         icon: MessageCircle,
-        description: 'Master the Art of Change Conversation'
+        description: 'Master the Art of Change Conversation',
+        emoji: '💬'
       }
     ]
+  },
+  {
+    category: 'Family and Couples Therapy',
+    courses: [
+      {
+        id: 'gottman-method',
+        title: 'Gottman Method Couples Therapy Level 1',
+        hours: 12,
+        price: 119.99,
+        icon: Heart,
+        description: 'Transform Relationships with Science-Based Interventions',
+        emoji: '💑'
+      },
+      {
+        id: 'family-systems',
+        title: 'Family Systems and Structural Family Therapy',
+        hours: 8,
+        price: 79.99,
+        icon: Home,
+        description: 'Understand and Transform Family Dynamics',
+        emoji: '��'
+      }
+    ]
+  },
+  {
+    category: 'Child and Adolescent',
+    courses: [
+      {
+        id: 'play-therapy',
+        title: 'Play Therapy Fundamentals',
+        hours: 12,
+        price: 119.99,
+        icon: Baby,
+        description: 'Speak the Language Children Understand',
+        emoji: '🧸'
+      },
+      {
+        id: 'adolescent-depression',
+        title: 'Adolescent Depression and Anxiety Treatment',
+        hours: 8,
+        price: 79.99,
+        icon: Headphones,
+        description: 'Navigate the Unique Challenges of Teenage Mental Health',
+        emoji: '🎧'
+      }
+    ]
+  },
+  {
+    category: 'Crisis and Specialty Populations',
+    courses: [
+      {
+        id: 'crisis-intervention',
+        title: 'Crisis Intervention and De-escalation',
+        hours: 6,
+        price: 59.99,
+        icon: Cross,
+        description: 'Stay Calm and Effective When Stakes Are Highest',
+        emoji: '🚑'
+      },
+      {
+        id: 'veterans-ptsd',
+        title: 'Working with Military Veterans and PTSD',
+        hours: 6,
+        price: 59.99,
+        icon: Medal,
+        description: 'Honor Their Service Through Expert Care',
+        emoji: '🎖️'
+      },
+      {
+        id: 'grief-bereavement',
+        title: 'Grief and Bereavement Counseling',
+        hours: 8,
+        price: 79.99,
+        icon: Bird,
+        description: 'Guide Others Through Life\'s Most Difficult Journey',
+        emoji: '🕊️'
+      }
+    ]
+  },
+  {
+    category: 'Leadership and Practice Development',
+    courses: [
+      {
+        id: 'clinical-supervision',
+        title: 'Clinical Supervision Skills',
+        hours: 12,
+        price: 119.99,
+        icon: Users,
+        description: 'Lead the Next Generation of Mental Health Professionals',
+        emoji: '👥'
+      },
+      {
+        id: 'leadership-mental-health',
+        title: 'Leadership in Mental Health Organizations',
+        hours: 8,
+        price: 79.99,
+        icon: Star,
+        description: 'Transform Mental Health Care Through Effective Leadership',
+        emoji: '🌟'
+      },
+      {
+        id: 'private-practice',
+        title: 'Advanced Private Practice Management',
+        hours: 8,
+        price: 79.99,
+        icon: TrendingUp,
+        description: 'Build a Practice That Serves You While You Serve Others',
+        emoji: '📈'
+      }
+    ]
+  }
+]
+
+const personalCourses = [
+  {
+    id: 'healing-forward',
+    title: 'Healing Forward',
+    price: 199,
+    description: 'Relationship Recovery and Personal Reclamation',
+    icon: Sunrise,
+    emoji: '��'
+  },
+  {
+    id: 'rebuilding-betrayal',
+    title: 'Rebuilding After Betrayal',
+    price: 249,
+    description: 'Structured 4-Phase Recovery Framework',
+    icon: HeartCrack,
+    emoji: '🧩'
+  },
+  {
+    id: 'perfect-match',
+    title: 'Finding the Perfect Match',
+    price: 179,
+    description: 'A Self-Guided Journey to Authentic Love',
+    icon: HeartHandshake,
+    emoji: '💘'
+  },
+  {
+    id: 'cancer-diagnosis',
+    title: 'Cancer Diagnosis: It\'s Not the End',
+    price: 149,
+    description: 'Navigate Your Cancer Journey with Hope',
+    icon: Ribbon,
+    emoji: '🎗️'
+  },
+  {
+    id: 'credit-building',
+    title: 'Credit Building & Debt Management',
+    price: 99,
+    description: 'Your Friendly Guide to Financial Freedom',
+    icon: CreditCard,
+    emoji: '💳'
+  },
+  {
+    id: 'financial-literacy',
+    title: 'Financial Literacy & Independence',
+    price: 129,
+    description: 'Master Money Management for Lifelong Security',
+    icon: Coins,
+    emoji: '💰'
+  }
+]
+
+const premiumPrograms = [
+  {
+    id: 'so-what-mindset',
+    title: 'The So What Mindset',
+    price: 499,
+    description: 'Transformational Thinking and Resilience Training',
+    icon: Key,
+    emoji: '🔑'
+  },
+  {
+    id: 'leap-launch',
+    title: 'Leap & Launch!',
+    price: 299,
+    description: 'Flagship Business Development Program',
+    icon: Rocket,
+    emoji: '🚀'
   }
 ]
 
@@ -180,7 +376,10 @@ export default function ProfessionalCoursesPage() {
               <div key={course.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition group">
                 <div className="bg-gradient-to-br from-primary to-primary-dark p-4">
                   <div className="flex items-center justify-between">
-                    <course.icon className="h-10 w-10 text-white group-hover:scale-110 transition" />
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">{course.emoji}</span>
+                      <course.icon className="h-8 w-8 text-white" />
+                    </div>
                     <span className="text-white font-bold bg-white/20 px-2 py-1 rounded">{course.hours} CE</span>
                   </div>
                 </div>
@@ -212,80 +411,14 @@ export default function ProfessionalCoursesPage() {
           </div>
         </section>
 
-        {/* Expanded Catalog Preview */}
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold mb-6 text-center">Expanded CE Catalog (169+ Additional Hours)</h2>
-          {expandedCourses.map((category) => (
-            <div key={category.category} className="mb-8">
-              <h3 className="text-xl font-semibold mb-4 text-primary">{category.category}</h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {category.courses.map((course) => (
-                  <div key={course.id} className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition">
-                    <div className="flex items-start justify-between mb-2">
-                      <course.icon className="h-6 w-6 text-primary" />
-                      <span className="text-xs bg-secondary/20 text-secondary-dark px-2 py-1 rounded">{course.hours} CE</span>
-                    </div>
-                    <h4 className="font-semibold text-sm mb-1">{course.title}</h4>
-                    <p className="text-xs text-text-secondary mb-2">{course.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-bold text-primary">${course.price}</span>
-                      <Link href={`/courses/${course.id}`} className="text-xs text-primary hover:underline">
-                        Learn More →
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </section>
-        
-        {/* Membership Options */}
-        <div className="mt-12 bg-gradient-to-r from-accent/20 to-action/20 p-8 rounded-lg">
-          <div className="flex items-center mb-6">
-            <Award className="h-10 w-10 text-action mr-4" />
-            <h2 className="text-2xl font-bold text-text-primary">CE Membership Options</h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-              <h3 className="font-bold text-lg mb-2">1-Year CE Membership</h3>
-              <p className="text-3xl font-bold text-primary mb-2">$199</p>
-              <ul className="text-sm text-text-secondary space-y-1">
-                <li>✓ All 31+ CE credit hours</li>
-                <li>✓ 12 months access</li>
-                <li>✓ Perfect for annual requirements</li>
-              </ul>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-              <h3 className="font-bold text-lg mb-2">2-Year CE Membership</h3>
-              <p className="text-3xl font-bold text-primary mb-2">$299</p>
-              <ul className="text-sm text-text-secondary space-y-1">
-                <li>✓ All CE courses for 24 months</li>
-                <li>✓ $100 off premium programs</li>
-                <li>✓ Ideal for biennial renewals</li>
-              </ul>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition border-2 border-action">
-              <div className="bg-action text-white text-xs px-2 py-1 rounded inline-block mb-2">BEST VALUE</div>
-              <h3 className="font-bold text-lg mb-2">5-Year CE Membership</h3>
-              <p className="text-3xl font-bold text-action mb-2">$699</p>
-              <ul className="text-sm text-text-secondary space-y-1">
-                <li>✓ ALL 200+ CE hours</li>
-                <li>✓ ALL personal development</li>
-                <li>✓ $100 off premium programs</li>
-                <li>✓ 60 months access</li>
-              </ul>
-            </div>
-          </div>
-          <div className="text-center mt-8">
-            <p className="text-sm text-text-secondary mb-4">Save up to $1,300 with membership vs individual purchases!</p>
-            <Link 
-              href="/memberships"
-              className="bg-action text-white px-8 py-3 rounded-lg hover:bg-action/90 transition inline-block font-semibold"
-            >
-              View All Membership Benefits
-            </Link>
-          </div>
+        {/* Membership CTA */}
+        <div className="text-center my-12">
+          <Link 
+            href="/memberships"
+            className="bg-action text-white px-8 py-3 rounded-lg hover:bg-action/90 transition inline-block font-semibold text-lg"
+          >
+            View All Courses & Membership Options
+          </Link>
         </div>
       </div>
     </div>
