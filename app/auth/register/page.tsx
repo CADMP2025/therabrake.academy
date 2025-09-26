@@ -2,14 +2,9 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@supabase/supabase-js'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { User, Mail, Lock, Phone, Badge, MapPin, Loader2, Eye, EyeOff, GraduationCap, BookOpen, Briefcase } from 'lucide-react'
-
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 // Define the form data interface
 interface RegisterFormData {
@@ -41,7 +36,7 @@ interface FormErrors {
   submit?: string
 }
 
-export default function RegisterPage() {
+function RegisterPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -164,6 +159,10 @@ export default function RegisterPage() {
     setIsLoading(true)
     
     try {
+      // Dynamic import to avoid build-time errors
+      const { createSupabaseClient } = await import('@/lib/supabase/client')
+      const supabase = createSupabaseClient()
+      
       // Create auth user
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
@@ -199,7 +198,8 @@ export default function RegisterPage() {
         router.push(formData.role === 'instructor' ? '/instructor' : '/dashboard')
       }
     } catch (error: any) {
-      setErrors({ submit: error.message || 'Failed to create account' })
+      console.error('Registration error:', error)
+      setErrors({ submit: error.message || 'Failed to create account. Please try again.' })
     } finally {
       setIsLoading(false)
     }
@@ -368,9 +368,6 @@ export default function RegisterPage() {
                 placeholder="(555) 123-4567"
                 disabled={isLoading}
               />
-              {errors.phone && (
-                <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
-              )}
             </div>
 
             {/* Profession (for students) */}
@@ -524,3 +521,6 @@ export default function RegisterPage() {
     </div>
   )
 }
+
+// Export with dynamic to prevent SSR issues
+export default dynamic(() => Promise.resolve(RegisterPage), { ssr: false })
