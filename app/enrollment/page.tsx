@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense } from 'react'
+import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { 
@@ -31,7 +32,6 @@ interface PlanDetails {
 }
 
 const planDetails: Record<string, PlanDetails> = {
-  // CE Plans
   'ce-1year': {
     name: 'CE Annual Membership',
     price: 199,
@@ -80,8 +80,6 @@ const planDetails: Record<string, PlanDetails> = {
     color: 'blue',
     icon: GraduationCap
   },
-
-  // Personal Development Plans
   'personal-1year': {
     name: 'Personal Growth Annual',
     price: 199,
@@ -112,8 +110,6 @@ const planDetails: Record<string, PlanDetails> = {
     color: 'green',
     icon: Sprout
   },
-
-  // Premium Programs
   'so-what-mindset': {
     name: 'So What Mindset',
     price: 499,
@@ -148,7 +144,7 @@ const planDetails: Record<string, PlanDetails> = {
   }
 }
 
-export default function EnrollmentPage() {
+function EnrollmentContent() {
   const searchParams = useSearchParams()
   const [step, setStep] = useState<'details' | 'payment'>('details')
   const [formData, setFormData] = useState({
@@ -187,14 +183,12 @@ export default function EnrollmentPage() {
     }
 
     setIsProcessing(true)
-    // Simulate processing
     setTimeout(() => {
       setStep('payment')
       setIsProcessing(false)
     }, 1500)
   }
 
-  // Individual Course Browsing View
   if (!type && !planId) {
     return (
       <main className="min-h-screen bg-gray-50 py-12">
@@ -206,9 +200,7 @@ export default function EnrollmentPage() {
             <p className="text-neutral-medium text-center mb-8">
               Select a membership plan or browse individual courses
             </p>
-
             <div className="grid md:grid-cols-2 gap-6 mb-12">
-              {/* CE Courses */}
               <Link
                 href="/courses?category=ce"
                 className="p-6 border-2 border-gray-200 rounded-xl hover:border-primary transition-all group"
@@ -224,8 +216,6 @@ export default function EnrollmentPage() {
                   Browse CE Courses →
                 </p>
               </Link>
-
-              {/* Personal Development */}
               <Link
                 href="/courses?category=personal"
                 className="p-6 border-2 border-gray-200 rounded-xl hover:border-secondary transition-all group"
@@ -242,7 +232,6 @@ export default function EnrollmentPage() {
                 </p>
               </Link>
             </div>
-
             <div className="text-center">
               <p className="text-neutral-medium mb-4">Looking for membership benefits?</p>
               <Link
@@ -258,7 +247,6 @@ export default function EnrollmentPage() {
     )
   }
 
-  // Membership Comparison View (when type is specified but no plan)
   if (type && !planId) {
     const typePlans = Object.entries(planDetails).filter(([_, details]) => details.type === type)
     
@@ -273,11 +261,9 @@ export default function EnrollmentPage() {
               <ArrowLeft className="w-4 h-4" />
               Back to Pricing
             </Link>
-
             <h1 className="text-3xl font-bold text-neutral-dark mb-8 text-center">
               Choose Your {type === 'ce' ? 'CE' : type === 'personal' ? 'Personal Development' : 'Premium'} Plan
             </h1>
-
             <div className="grid lg:grid-cols-3 gap-6">
               {typePlans.map(([id, details]) => (
                 <div key={id} className="bg-white rounded-xl shadow-lg p-6">
@@ -310,7 +296,6 @@ export default function EnrollmentPage() {
     )
   }
 
-  // Invalid plan
   if (!plan) {
     return (
       <main className="min-h-screen bg-gray-50 py-12">
@@ -336,12 +321,10 @@ export default function EnrollmentPage() {
     )
   }
 
-  // Enrollment Form
   return (
     <main className="min-h-screen bg-gray-50 py-12">
       <div className="container-therabrake">
         <div className="max-w-5xl mx-auto">
-          {/* Progress Steps */}
           <div className="flex items-center justify-center mb-8">
             <div className="flex items-center gap-4">
               <div className={`flex items-center gap-2 ${step === 'details' ? 'text-primary' : 'text-neutral-medium'}`}>
@@ -352,9 +335,7 @@ export default function EnrollmentPage() {
                 </div>
                 <span className="font-medium">Your Details</span>
               </div>
-
               <div className="w-12 h-0.5 bg-gray-300" />
-
               <div className={`flex items-center gap-2 ${step === 'payment' ? 'text-primary' : 'text-neutral-medium'}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                   step === 'payment' ? 'bg-primary text-white' : 'bg-gray-200'
@@ -365,15 +346,12 @@ export default function EnrollmentPage() {
               </div>
             </div>
           </div>
-
           <div className="grid lg:grid-cols-3 gap-8">
-            {/* Order Summary - Sticky Sidebar */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
                 <h2 className="text-xl font-bold text-neutral-dark mb-4">
                   Order Summary
                 </h2>
-
                 <div className="mb-6">
                   <div className="flex items-start gap-3 mb-4">
                     <div className={`p-2 rounded-lg bg-${plan.color}/10`}>
@@ -384,7 +362,6 @@ export default function EnrollmentPage() {
                       <p className="text-sm text-neutral-medium">{plan.duration}</p>
                     </div>
                   </div>
-
                   <div className="border-t pt-4">
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-neutral-medium">Subtotal</span>
@@ -404,7 +381,6 @@ export default function EnrollmentPage() {
                     </div>
                   </div>
                 </div>
-
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-sm text-neutral-medium">
                     <Shield className="w-4 h-4 text-secondary" />
@@ -421,8 +397,6 @@ export default function EnrollmentPage() {
                 </div>
               </div>
             </div>
-
-            {/* Main Content */}
             <div className="lg:col-span-2">
               {step === 'details' ? (
                 <div className="bg-white rounded-xl shadow-lg p-8">
@@ -432,24 +406,20 @@ export default function EnrollmentPage() {
                   <p className="text-neutral-medium mb-6">
                     Enter your details to create your account and continue to payment
                   </p>
-
                   {error && (
                     <div className="mb-6 p-4 bg-alert/10 border border-alert rounded-lg flex items-start gap-2">
                       <AlertCircle className="w-5 h-5 text-alert mt-0.5" />
                       <span className="text-alert">{error}</span>
                     </div>
                   )}
-
                   <form onSubmit={handleSubmit}>
                     <div className="space-y-6">
-                      {/* Personal Information */}
                       <div>
                         <div>
                           <h3 className="font-semibold text-neutral-dark mb-4 flex items-center gap-2">
                             <User className="w-5 h-5" />
                             Personal Information
                           </h3>
-
                           <div className="grid md:grid-cols-2 gap-4">
                             <div>
                               <label className="block text-sm font-medium text-neutral-dark mb-2">
@@ -464,7 +434,6 @@ export default function EnrollmentPage() {
                                 required
                               />
                             </div>
-
                             <div>
                               <label className="block text-sm font-medium text-neutral-dark mb-2">
                                 Email Address *
@@ -478,7 +447,6 @@ export default function EnrollmentPage() {
                                 required
                               />
                             </div>
-
                             <div>
                               <label className="block text-sm font-medium text-neutral-dark mb-2">
                                 Phone Number
@@ -491,7 +459,6 @@ export default function EnrollmentPage() {
                                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                               />
                             </div>
-
                             {type === 'ce' && (
                               <>
                                 <div>
@@ -507,7 +474,6 @@ export default function EnrollmentPage() {
                                     placeholder="LPC12345"
                                   />
                                 </div>
-
                                 <div>
                                   <label className="block text-sm font-medium text-neutral-dark mb-2">
                                     License State
@@ -528,8 +494,6 @@ export default function EnrollmentPage() {
                             )}
                           </div>
                         </div>
-
-                        {/* Login Option */}
                         <div className="text-center py-4 border-y">
                           <p className="text-neutral-medium mb-2">Already have an account?</p>
                           <Link
@@ -540,8 +504,6 @@ export default function EnrollmentPage() {
                           </Link>
                         </div>
                       </div>
-
-                      {/* Terms Agreement */}
                       <div>
                         <label className="flex items-start gap-3 cursor-pointer">
                           <input
@@ -564,8 +526,6 @@ export default function EnrollmentPage() {
                           </span>
                         </label>
                       </div>
-
-                      {/* Submit Button */}
                       <div>
                         <button
                           type="submit"
@@ -587,7 +547,6 @@ export default function EnrollmentPage() {
                       </div>
                     </div>
                   </form>
-
                   <div className="mt-8 pt-6 border-t flex items-center justify-center gap-6">
                     <div className="flex items-center gap-2 text-sm text-neutral-medium">
                       <Lock className="w-4 h-4" />
@@ -608,7 +567,6 @@ export default function EnrollmentPage() {
                   <h2 className="text-2xl font-bold text-neutral-dark mb-6">
                     Complete Payment
                   </h2>
-
                   <div className="text-center py-12">
                     <CreditCard className="w-16 h-16 text-primary mx-auto mb-4" />
                     <p className="text-neutral-medium mb-4">
@@ -618,7 +576,6 @@ export default function EnrollmentPage() {
                       You will be redirected to Stripe to complete your payment securely.
                     </p>
                   </div>
-
                   <button
                     onClick={() => setStep('details')}
                     className="w-full py-3 px-6 bg-gray-200 text-neutral-dark rounded-lg font-medium hover:bg-gray-300 transition-colors"
@@ -632,5 +589,17 @@ export default function EnrollmentPage() {
         </div>
       </div>
     </main>
+  )
+}
+
+export default function EnrollmentPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-gray-50 py-12 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </main>
+    }>
+      <EnrollmentContent />
+    </Suspense>
   )
 }
