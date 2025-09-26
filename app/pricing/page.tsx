@@ -372,7 +372,7 @@ export default function PricingPage() {
             />
 
             <PricingCard
-              title="�� 5-Year Personal"
+              title="🌱 5-Year Personal"
               price="$699"
               color="secondary"
               whatYouGet={[
