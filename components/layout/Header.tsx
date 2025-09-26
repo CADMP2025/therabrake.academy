@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
-import { Menu, X, ChevronDown, User, Brain } from 'lucide-react'
+import { Menu, X, ChevronDown, User } from 'lucide-react'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -21,10 +21,17 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3">
-            <Brain className="h-10 w-10 text-accent" />
-            <div className="flex flex-col">
+            <Image 
+              src="/images/logo/logo.png" 
+              alt="TheraBrake Academy Logo" 
+              width={50} 
+              height={50}
+              className="rounded-full"
+              priority
+            />
+            <div className="flex items-baseline space-x-1">
               <span className="text-2xl font-bold">TheraBrake Academy</span>
-              <span className="text-xs text-accent">Pause, Process, Progress</span>
+              <span className="text-xs align-super">™</span>
             </div>
           </Link>
 
