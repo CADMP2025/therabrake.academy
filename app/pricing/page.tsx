@@ -28,7 +28,7 @@ interface PricingCardProps {
   price: string
   popular?: boolean
   color: 'primary' | 'action' | 'secondary'
-  features?: string[]  // Made optional with ?
+  features?: string[]
   bonus?: string
   description?: string
   buttonText?: string
@@ -65,7 +65,7 @@ function PricingCard({
   }
 
   return (
-    <div className={`bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all hover:scale-105 ${popular ? 'border-2 border-action' : ''}`}>
+    <div className={`bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all hover:scale-105 ${popular ? 'border-2 border-action' : ''} flex flex-col`}>
       <div className={`${colorClasses[color]} p-6 text-white relative`}>
         {popular && (
           <div className="absolute top-2 right-2 bg-white text-action px-3 py-1 rounded-full text-sm font-bold animate-pulse">
@@ -76,7 +76,7 @@ function PricingCard({
         <div className="text-4xl font-bold">{price}</div>
         {description && <p className="text-sm mt-2 opacity-90">{description}</p>}
       </div>
-      <div className="p-6 flex flex-col h-full">
+      <div className="p-6 flex flex-col flex-grow">
         {whatYouGet && (
           <>
             <h4 className="font-bold text-neutral-dark mb-3">What You Get:</h4>
@@ -132,9 +132,10 @@ function PricingCard({
         
         <Link 
           href={buttonLink}
-          className={`w-full text-center py-3 px-6 rounded-lg font-semibold text-white transition-colors ${buttonColorClasses[color]} mt-auto`}
+          className={`w-full text-center py-3 px-6 rounded-lg font-semibold text-white transition-colors ${buttonColorClasses[color]} mt-auto flex items-center justify-center gap-2 group`}
         >
-          {buttonText}
+          <span>{buttonText}</span>
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>
     </div>
@@ -286,7 +287,7 @@ export default function PricingPage() {
             />
 
             <PricingCard
-              title="🌟 5-Year CE + Personal"
+              title="�� 5-Year CE + Personal"
               price="$699"
               color="secondary"
               whatYouGet={[
@@ -313,7 +314,7 @@ export default function PricingPage() {
       </section>
 
       {/* Personal Development Memberships */}
-      <section className="py-12">
+      <section className="py-12" id="personal">
         <div className="container-therabrake">
           <div className="flex items-center justify-center gap-3 mb-2">
             <Sprout className="w-8 h-8 text-secondary" />
@@ -326,65 +327,119 @@ export default function PricingPage() {
           </p>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <h3 className="text-xl font-bold text-neutral-dark mb-4">1-Year – $299</h3>
-              <ul className="space-y-2 text-neutral-medium mb-6">
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" />
-                  <span>Access to all personal growth courses</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" />
-                  <span>Tools for relationships, resilience, health, and finance</span>
-                </li>
-              </ul>
-              <Link 
-                href="/enrollment?type=personal&plan=personal-1year&price=299"
-                className="block w-full text-center py-2 px-4 bg-secondary text-white rounded-lg font-medium hover:bg-green-600 transition-colors"
-              >
-                Enroll Now
-              </Link>
-            </div>
+            <PricingCard
+              title="🌱 1-Year Personal"
+              price="$299"
+              color="primary"
+              whatYouGet={[
+                "Access to <strong>all personal growth courses</strong>",
+                "Tools for relationships, resilience, health, and finance",
+                "Monthly group coaching calls",
+                "Community access and support",
+                "Downloadable workbooks and resources",
+                "Valid for <strong>12 months</strong>"
+              ]}
+              bestFor="Individuals ready to invest in personal transformation"
+              value={[
+                "Individual courses cost $500+",
+                "Get everything for just $299",
+                "Save over $200"
+              ]}
+              buttonText="Start Your Journey"
+              buttonLink="/enrollment?type=personal&plan=personal-1year&price=299"
+            />
 
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <h3 className="text-xl font-bold text-neutral-dark mb-4">2-Year – $399</h3>
-              <ul className="space-y-2 text-neutral-medium mb-6">
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" />
-                  <span>Everything in 1-Year plus bonus discounts</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" />
-                  <span>Best for steady, long-term transformation</span>
-                </li>
-              </ul>
-              <Link 
-                href="/enrollment?type=personal&plan=personal-2year&price=399"
-                className="block w-full text-center py-2 px-4 bg-secondary text-white rounded-lg font-medium hover:bg-green-600 transition-colors"
-              >
-                Enroll Now
-              </Link>
-            </div>
+            <PricingCard
+              title="🌱 2-Year Personal"
+              price="$399"
+              color="action"
+              whatYouGet={[
+                "Everything in 1-Year membership",
+                "Extended <strong>24-month access</strong>",
+                "Priority coaching slots",
+                "Bonus discounts on premium programs",
+                "Early access to new courses",
+                "Best for steady transformation"
+              ]}
+              bestFor="Those committed to long-term personal development"
+              value={[
+                "Two 1-year memberships = $598",
+                "You pay only $399",
+                "Save almost $200"
+              ]}
+              buttonText="Enroll for 2 Years"
+              buttonLink="/enrollment?type=personal&plan=personal-2year&price=399"
+            />
 
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <h3 className="text-xl font-bold text-neutral-dark mb-4">5-Year – $699</h3>
-              <ul className="space-y-2 text-neutral-medium mb-6">
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" />
-                  <span>All personal growth content + exclusive discounts</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" />
-                  <span>Lock in long-term access at the lowest rate</span>
-                </li>
-              </ul>
-              <Link 
-                href="/enrollment?type=personal&plan=personal-5year&price=699"
-                className="block w-full text-center py-2 px-4 bg-secondary text-white rounded-lg font-medium hover:bg-green-600 transition-colors"
-              >
-                Enroll Now
-              </Link>
-            </div>
+            <PricingCard
+              title="🌟 5-Year Personal"
+              price="$699"
+              color="secondary"
+              whatYouGet={[
+                "All personal growth content",
+                "Valid for <strong>60 months (5 years)</strong>",
+                "VIP support access",
+                "Exclusive discounts on all programs",
+                "Future courses included",
+                "Lowest per-month rate"
+              ]}
+              bestFor="Maximum value seekers who want lifetime-like access"
+              value={[
+                "5 years of courses = $1,500+",
+                "Get everything for $699",
+                "Save over $800"
+              ]}
+              buttonText="Best Value - Enroll"
+              buttonLink="/enrollment?type=personal&plan=personal-5year&price=699"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Premium Programs */}
+      <section className="py-12 bg-gradient-to-br from-purple-50 to-orange-50">
+        <div className="container-therabrake">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold font-heading text-neutral-dark mb-2">
+              Premium Transformation Programs
+            </h2>
+            <p className="text-lg text-neutral-medium">Intensive programs for breakthrough results</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <PricingCard
+              title="🧠 So What Mindset"
+              price="$499"
+              color="primary"
+              features={[
+                "12 transformative modules",
+                "Live monthly Q&A sessions",
+                "Private community access",
+                "Personal breakthrough toolkit",
+                "Certificate of completion",
+                "Bonus: 1-on-1 coaching session"
+              ]}
+              description="Transform your thinking, transform your life"
+              buttonText="Enroll in Program"
+              buttonLink="/enrollment?type=premium&plan=so-what-mindset&price=499"
+            />
+
+            <PricingCard
+              title="🚀 Leap & Launch"
+              price="$299"
+              color="action"
+              features={[
+                "8-week transformation program",
+                "Weekly live sessions",
+                "Action planning workbooks",
+                "Accountability partner matching",
+                "Success metrics dashboard",
+                "30-day money-back guarantee"
+              ]}
+              description="Build your dream practice with confidence"
+              buttonText="Start Your Launch"
+              buttonLink="/enrollment?type=premium&plan=leap-and-launch&price=299"
+            />
           </div>
         </div>
       </section>
@@ -439,12 +494,11 @@ export default function PricingPage() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <ArrowRight className="w-8 h-8 animate-pulse" />
             <h2 className="text-3xl font-bold font-heading">
-              Your Choice, Your Pace
+              Ready to Start Your Journey?
             </h2>
           </div>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
-            Take one course today or invest in a membership for the greatest value. 
-            Either way, you&apos;re moving forward with TheraBrake Academy™.
+            Join thousands of professionals and individuals who are transforming their practices and lives with TheraBrake Academy™.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
