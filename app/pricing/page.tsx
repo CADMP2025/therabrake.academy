@@ -28,7 +28,7 @@ interface PricingCardProps {
   price: string
   popular?: boolean
   color: 'primary' | 'action' | 'secondary'
-  features: string[]
+  features?: string[]  // Made optional with ?
   bonus?: string
   description?: string
   buttonText?: string
@@ -89,6 +89,17 @@ function PricingCard({
               ))}
             </ul>
           </>
+        )}
+        
+        {features && (
+          <ul className="space-y-3 mb-6 flex-grow">
+            {features.map((feature, idx) => (
+              <li key={idx} className="flex items-start gap-2">
+                <CheckCircle className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
+                <span className="text-neutral-dark" dangerouslySetInnerHTML={{ __html: feature }} />
+              </li>
+            ))}
+          </ul>
         )}
         
         {bestFor && (
