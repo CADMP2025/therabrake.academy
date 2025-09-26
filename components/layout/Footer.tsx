@@ -1,137 +1,99 @@
-import Link from 'next/link'
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube } from 'lucide-react'
+import { Mail, Phone, MapPin } from 'lucide-react'
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear()
+
   return (
-    <footer className="bg-text-primary text-white">
-      {/* Main Footer */}
+    <footer className="bg-primary text-white">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <span className="text-2xl font-bold">🧠</span>
-              <span className="text-xl font-bold">TheraBrake</span>
-            </div>
-            <p className="text-gray-300 mb-4">
-              Texas' Premier Mental Health Education Platform
+            <h3 className="text-xl font-bold mb-4">TheraBrake Academy™</h3>
+            <p className="text-sm mb-4 opacity-90">
+              Pause, Process, Progress<br />
+              Professional CE Credits & Personal Growth
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="hover:text-accent transition">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="#" className="hover:text-accent transition">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="#" className="hover:text-accent transition">
-                <Linkedin className="h-5 w-5" />
-              </a>
-              <a href="#" className="hover:text-accent transition">
-                <Youtube className="h-5 w-5" />
-              </a>
-            </div>
+            <address className="not-italic text-sm space-y-2 opacity-90">
+              <div className="flex items-start">
+                <MapPin className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0" />
+                <span>
+                  6120 College St. Suite D185<br />
+                  Beaumont, TX 77707
+                </span>
+              </div>
+              <div className="flex items-center">
+                <Phone className="h-4 w-4 mr-2 flex-shrink-0" />
+                <a href="tel:+13462982988" className="hover:text-accent transition">
+                  (346) 298-2988
+                </a>
+              </div>
+              <div className="flex items-center">
+                <Mail className="h-4 w-4 mr-2 flex-shrink-0" />
+                <a href="mailto:info@therabrake.academy" className="hover:text-accent transition">
+                  info@therabrake.academy
+                </a>
+              </div>
+            </address>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-accent">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/courses" className="text-gray-300 hover:text-white transition">
-                  Browse Courses
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="text-gray-300 hover:text-white transition">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/instructors" className="text-gray-300 hover:text-white transition">
-                  Become an Instructor
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="text-gray-300 hover:text-white transition">
-                  FAQs
-                </Link>
-              </li>
-            </ul>
+            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+            <nav className="space-y-2">
+              <Link href="/courses" className="block text-sm hover:text-accent transition opacity-90">
+                Browse Courses
+              </Link>
+              <Link href="/pricing" className="block text-sm hover:text-accent transition opacity-90">
+                Pricing
+              </Link>
+              <Link href="/about" className="block text-sm hover:text-accent transition opacity-90">
+                About Us
+              </Link>
+              <Link href="/contact" className="block text-sm hover:text-accent transition opacity-90">
+                Contact
+              </Link>
+              <Link href="/support" className="block text-sm hover:text-accent transition opacity-90">
+                Support
+              </Link>
+            </nav>
           </div>
 
-          {/* Courses */}
+          {/* Legal */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-accent">Course Categories</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/courses/professional" className="text-gray-300 hover:text-white transition">
-                  Professional CE Credits
-                </Link>
-              </li>
-              <li>
-                <Link href="/courses/personal" className="text-gray-300 hover:text-white transition">
-                  Personal Growth
-                </Link>
-              </li>
-              <li>
-                <Link href="/courses/premium/so-what" className="text-gray-300 hover:text-white transition">
-                  So What Mindset
-                </Link>
-              </li>
-              <li>
-                <Link href="/courses/premium/leap-launch" className="text-gray-300 hover:text-white transition">
-                  Leap & Launch
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-accent">Contact Us</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <MapPin className="h-5 w-5 mr-2 mt-0.5 text-accent" />
-                <span className="text-gray-300">
-                  Austin, Texas
-                </span>
-              </li>
-              <li>
-                <a href="mailto:support@therabrake.academy" className="flex items-center text-gray-300 hover:text-white transition">
-                  <Mail className="h-5 w-5 mr-2 text-accent" />
-                  support@therabrake.academy
-                </a>
-              </li>
-              <li>
-                <a href="tel:+15125551234" className="flex items-center text-gray-300 hover:text-white transition">
-                  <Phone className="h-5 w-5 mr-2 text-accent" />
-                  (512) 555-1234
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-700">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">
-              © 2024 TheraBrake Academy. All rights reserved.
-            </p>
-            <div className="flex space-x-4 mt-2 md:mt-0">
-              <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition">
+            <h4 className="text-lg font-semibold mb-4">Legal</h4>
+            <nav className="space-y-2">
+              <Link href="/terms" className="block text-sm hover:text-accent transition opacity-90">
+                Terms of Use
+              </Link>
+              <Link href="/privacy" className="block text-sm hover:text-accent transition opacity-90">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="text-gray-400 hover:text-white text-sm transition">
-                Terms of Service
+              <Link href="/refund-policy" className="block text-sm hover:text-accent transition opacity-90">
+                Refund Policy
               </Link>
-              <Link href="/compliance" className="text-gray-400 hover:text-white text-sm transition">
-                Texas LPC Compliance
-              </Link>
-            </div>
+            </nav>
           </div>
+
+          {/* Professional */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Professional</h4>
+            <nav className="space-y-2">
+              <Link href="/tx-lpc-approved" className="block text-sm hover:text-accent transition opacity-90">
+                TX LPC Approved
+              </Link>
+              <Link href="/become-instructor" className="block text-sm hover:text-accent transition opacity-90">
+                Become Instructor
+              </Link>
+            </nav>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-12 pt-8 border-t border-primary-dark text-center">
+          <p className="text-sm opacity-75">
+            © {currentYear} TheraBrake Academy™. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
