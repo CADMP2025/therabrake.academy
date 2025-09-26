@@ -1,387 +1,316 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { 
-  ArrowLeft,
-  CheckCircle,
-  Clock,
-  CreditCard,
-  GraduationCap,
-  Lock,
-  Mail,
-  Phone,
-  Rocket,
-  Shield,
-  User,
-  AlertCircle,
+  ArrowLeft, 
+  ArrowRight,
+  CheckCircle, 
+  Shield, 
+  Clock, 
+  AlertCircle, 
+  CreditCard, 
+  Lock, 
+  User, 
   Loader2,
-  Calendar,
-  Award,
-  BookOpen,
-  Sprout
+  GraduationCap,
+  Sprout,
+  Brain
 } from 'lucide-react'
-
-// Type definitions
-type EnrollmentType = 'ce' | 'personal' | 'premium' | 'individual' | 'membership'
-type PaymentFrequency = 'monthly' | 'annual' | 'onetime'
 
 interface PlanDetails {
   name: string
-  description: string
   price: number
-  originalPrice?: number
-  discount?: number
   duration: string
+  type: 'ce' | 'personal' | 'premium'
   features: string[]
-  type: EnrollmentType
-  icon: React.ReactNode
   color: string
+  icon: React.ElementType
+  discount?: number
 }
 
-// Plan configurations
-const PLAN_DETAILS: Record<string, PlanDetails> = {
-  // CE Memberships
+const planDetails: Record<string, PlanDetails> = {
+  // CE Plans
   'ce-1year': {
-    name: '1-Year CE Membership',
-    description: 'Complete access to all CE courses for annual license renewal',
+    name: 'CE Annual Membership',
     price: 199,
     duration: '12 months',
-    features: [
-      'Access to all 31+ CE credit hours',
-      'Texas LPC approved courses',
-      'Instant certificate generation',
-      'Progress tracking dashboard',
-      'New courses added monthly'
-    ],
     type: 'ce',
-    icon: <GraduationCap className="w-6 h-6" />,
-    color: 'primary'
+    features: [
+      'Unlimited access to all CE courses',
+      'Texas LPC approved credits',
+      'Auto-generated certificates',
+      'Progress tracking',
+      'Mobile app access',
+      'Early bird discount - Save $100!'
+    ],
+    color: 'blue',
+    icon: GraduationCap,
+    discount: 100
   },
   'ce-2year': {
-    name: '2-Year CE Membership',
-    description: 'Best value for biennial license renewals',
-    price: 299,
+    name: 'CE 2-Year Membership',
+    price: 349,
     duration: '24 months',
-    features: [
-      'Everything in 1-Year membership',
-      '$100 discount on So What Mindset',
-      '$100 discount on Leap & Launch',
-      'Priority customer support',
-      'Early access to new content'
-    ],
     type: 'ce',
-    icon: <Award className="w-6 h-6" />,
-    color: 'action'
+    features: [
+      'Everything in Annual, plus:',
+      'Locked-in pricing for 2 years',
+      'Priority support',
+      'Exclusive webinars',
+      'Save $249 over monthly!'
+    ],
+    color: 'blue',
+    icon: GraduationCap,
+    discount: 249
   },
-  'ce-5year': {
-    name: '5-Year CE + Personal Development',
-    description: 'Ultimate professional and personal growth package',
+  'ce-lifetime': {
+    name: 'CE Lifetime Access',
     price: 699,
-    duration: '60 months',
-    features: [
-      'All CE courses (200+ hours when complete)',
-      'All personal development courses',
-      'Premium program discounts',
-      'VIP member benefits',
-      'Lifetime course updates'
-    ],
+    duration: 'Forever',
     type: 'ce',
-    icon: <Rocket className="w-6 h-6" />,
-    color: 'secondary'
+    features: [
+      'One-time payment, lifetime access',
+      'All future courses included',
+      'VIP support',
+      'Instructor consultation sessions',
+      'Best value - Never pay again!'
+    ],
+    color: 'blue',
+    icon: GraduationCap
   },
-  // Personal Development
+
+  // Personal Development Plans
   'personal-1year': {
-    name: '1-Year Personal Development',
-    description: 'Transform your personal and professional life',
-    price: 299,
+    name: 'Personal Growth Annual',
+    price: 199,
     duration: '12 months',
-    features: [
-      'All personal growth courses',
-      'Relationship enhancement tools',
-      'Resilience building programs',
-      'Health & wellness modules',
-      'Financial planning resources'
-    ],
     type: 'personal',
-    icon: <Sprout className="w-6 h-6" />,
-    color: 'secondary'
-  },
-  'personal-2year': {
-    name: '2-Year Personal Development',
-    description: 'Extended access for lasting transformation',
-    price: 399,
-    duration: '24 months',
     features: [
-      'Everything in 1-Year membership',
-      '$100 off So What Mindset',
-      '$100 off Leap & Launch',
-      'Bonus workshops and webinars',
-      'Community access'
+      'All personal development courses',
+      'Monthly group coaching calls',
+      'Community access',
+      'Downloadable resources',
+      'Progress certificates'
     ],
-    type: 'personal',
-    icon: <Sprout className="w-6 h-6" />,
-    color: 'secondary'
+    color: 'green',
+    icon: Sprout
   },
-  'personal-5year': {
-    name: '5-Year Personal Development',
-    description: 'Lock in the lowest rate for continuous growth',
-    price: 699,
-    duration: '60 months',
+  'personal-lifetime': {
+    name: 'Personal Growth Lifetime',
+    price: 499,
+    duration: 'Forever',
+    type: 'personal',
     features: [
-      'All personal development content',
-      'Exclusive member-only courses',
-      'Premium program discounts',
-      'Quarterly coaching calls',
-      'Lifetime updates'
+      'Lifetime access to all content',
+      'Future courses included',
+      'Priority coaching slots',
+      'Exclusive community',
+      'Best investment in yourself!'
     ],
-    type: 'personal',
-    icon: <Sprout className="w-6 h-6" />,
-    color: 'secondary'
+    color: 'green',
+    icon: Sprout
   },
+
   // Premium Programs
   'so-what-mindset': {
-    name: 'The So What Mindset',
-    description: 'Transformational thinking and resilience training',
+    name: 'So What Mindset',
     price: 499,
-    originalPrice: 499,
-    discount: 100,
-    duration: '6 months',
+    duration: 'Lifetime access',
+    type: 'premium',
     features: [
-      'Complete transformation framework',
-      'Weekly video modules',
-      'Interactive workbooks',
-      'Group coaching sessions',
+      '12 transformative modules',
+      'Live monthly Q&A sessions',
+      'Private community access',
+      'Personal breakthrough toolkit',
       'Certificate of completion',
-      'Member discount available ($399)'
+      'Bonus: 1-on-1 coaching session'
     ],
-    type: 'premium',
-    icon: <Rocket className="w-6 h-6" />,
-    color: 'action'
+    color: 'purple',
+    icon: Brain
   },
-  'leap-launch': {
-    name: 'Leap & Launch!',
-    description: 'Build and scale your dream practice',
+  'leap-and-launch': {
+    name: 'Leap & Launch',
     price: 299,
-    originalPrice: 299,
-    discount: 100,
-    duration: '6 months',
-    features: [
-      'Business development blueprint',
-      'Marketing strategies',
-      'Financial planning tools',
-      'Client acquisition systems',
-      'Practice management resources',
-      'Member discount available ($199)'
-    ],
+    duration: 'Lifetime access',
     type: 'premium',
-    icon: <BookOpen className="w-6 h-6" />,
-    color: 'primary'
+    features: [
+      '8-week transformation program',
+      'Weekly live sessions',
+      'Action planning workbooks',
+      'Accountability partner matching',
+      'Success metrics dashboard',
+      'Money-back guarantee'
+    ],
+    color: 'orange',
+    icon: Brain
   }
 }
 
 export default function EnrollmentPage() {
   const searchParams = useSearchParams()
-  const router = useRouter()
-  
-  // Extract query parameters
-  const type = searchParams.get('type') as EnrollmentType
-  const planId = searchParams.get('plan')
-  const price = searchParams.get('price')
-  const category = searchParams.get('category')
-  
-  // State management
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [step, setStep] = useState<'details' | 'payment'>('details')
   const [formData, setFormData] = useState({
-    email: '',
     fullName: '',
+    email: '',
     phone: '',
     licenseNumber: '',
     licenseState: 'TX',
     agreeToTerms: false
   })
-  const [step, setStep] = useState<'details' | 'payment'>('details')
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [error, setError] = useState('')
   
-  // Get plan details
-  const plan = planId ? PLAN_DETAILS[planId] : null
+  const type = searchParams.get('type') as 'ce' | 'personal' | 'premium' | null
+  const planId = searchParams.get('plan')
+  const price = searchParams.get('price')
   
-  useEffect(() => {
-    // Check if user is logged in (mock check - replace with actual auth check)
-    const checkAuth = async () => {
-      // In production, check Supabase auth status
-      setIsLoggedIn(false) // For now, assume not logged in
-    }
-    checkAuth()
-  }, [])
-  
+  const plan = planId ? planDetails[planId] : null
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target
+    const checked = (e.target as HTMLInputElement).checked
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+      [name]: type === 'checkbox' ? checked : value
     }))
   }
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError(null)
-    
-    // Validation
-    if (!formData.email || !formData.fullName) {
-      setError('Please fill in all required fields')
-      return
-    }
+    setError('')
     
     if (!formData.agreeToTerms) {
       setError('Please agree to the terms and conditions')
       return
     }
-    
-    setLoading(true)
-    
-    try {
-      // In production, this would:
-      // 1. Create/update user account
-      // 2. Initialize Stripe checkout
-      // 3. Redirect to payment
-      
-      console.log('Enrollment data:', {
-        plan: planId,
-        type,
-        price,
-        user: formData
-      })
-      
-      // Mock successful submission
-      setTimeout(() => {
-        setStep('payment')
-        setLoading(false)
-      }, 1500)
-    } catch (err) {
-      setError('An error occurred. Please try again.')
-      setLoading(false)
-    }
+
+    setIsProcessing(true)
+    // Simulate processing
+    setTimeout(() => {
+      setStep('payment')
+      setIsProcessing(false)
+    }, 1500)
   }
-  
-  // Handle individual course browsing
-  if (type === 'individual') {
+
+  // Individual Course Browsing View
+  if (!type && !planId) {
     return (
       <main className="min-h-screen bg-gray-50 py-12">
         <div className="container-therabrake">
           <div className="max-w-4xl mx-auto">
-            <Link 
-              href="/pricing"
-              className="inline-flex items-center gap-2 text-primary hover:text-blue-600 mb-6"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Pricing
-            </Link>
-            
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h1 className="text-3xl font-bold text-neutral-dark mb-4">
-                Browse Individual Courses
-              </h1>
-              <p className="text-neutral-medium mb-8">
-                Select the perfect course for your needs. Each course is priced individually based on CE credit hours.
-              </p>
-              
-              <div className="grid md:grid-cols-2 gap-6">
-                <Link 
-                  href="/courses?category=ce"
-                  className="p-6 border-2 border-gray-200 rounded-xl hover:border-primary transition-all group"
-                >
-                  <GraduationCap className="w-12 h-12 text-primary mb-4" />
-                  <h3 className="text-xl font-bold text-neutral-dark mb-2 group-hover:text-primary">
-                    CE Courses
-                  </h3>
-                  <p className="text-neutral-medium mb-4">
-                    Texas LPC approved continuing education courses
-                  </p>
-                  <p className="text-primary font-bold">
-                    Starting at $19.99 →
-                  </p>
-                </Link>
-                
-                <Link 
-                  href="/courses?category=personal"
-                  className="p-6 border-2 border-gray-200 rounded-xl hover:border-secondary transition-all group"
-                >
-                  <Sprout className="w-12 h-12 text-secondary mb-4" />
-                  <h3 className="text-xl font-bold text-neutral-dark mb-2 group-hover:text-secondary">
-                    Personal Development
-                  </h3>
-                  <p className="text-neutral-medium mb-4">
-                    Transform your personal and professional life
-                  </p>
-                  <p className="text-secondary font-bold">
-                    From $99 →
-                  </p>
-                </Link>
-              </div>
+            <h1 className="text-3xl font-bold text-neutral-dark mb-2 text-center">
+              Choose Your Learning Path
+            </h1>
+            <p className="text-neutral-medium text-center mb-8">
+              Select a membership plan or browse individual courses
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-6 mb-12">
+              {/* CE Courses */}
+              <Link
+                href="/courses?category=ce"
+                className="p-6 border-2 border-gray-200 rounded-xl hover:border-primary transition-all group"
+              >
+                <GraduationCap className="w-12 h-12 text-primary mb-4" />
+                <h3 className="text-xl font-bold text-neutral-dark mb-2 group-hover:text-primary">
+                  CE Courses for Professionals
+                </h3>
+                <p className="text-neutral-medium mb-4">
+                  Texas LPC approved continuing education courses with certificates
+                </p>
+                <p className="text-primary font-bold">
+                  Browse CE Courses →
+                </p>
+              </Link>
+
+              {/* Personal Development */}
+              <Link
+                href="/courses?category=personal"
+                className="p-6 border-2 border-gray-200 rounded-xl hover:border-secondary transition-all group"
+              >
+                <Sprout className="w-12 h-12 text-secondary mb-4" />
+                <h3 className="text-xl font-bold text-neutral-dark mb-2 group-hover:text-secondary">
+                  Personal Development
+                </h3>
+                <p className="text-neutral-medium mb-4">
+                  Transform your life with our personal growth programs
+                </p>
+                <p className="text-secondary font-bold">
+                  Browse Personal Courses →
+                </p>
+              </Link>
+            </div>
+
+            <div className="text-center">
+              <p className="text-neutral-medium mb-4">Looking for membership benefits?</p>
+              <Link
+                href="/pricing"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-blue-600"
+              >
+                View Membership Plans
+              </Link>
             </div>
           </div>
         </div>
       </main>
     )
   }
-  
-  // Handle membership comparison
-  if (type === 'membership' && !planId) {
+
+  // Membership Comparison View (when type is specified but no plan)
+  if (type && !planId) {
+    const typePlans = Object.entries(planDetails).filter(([_, details]) => details.type === type)
+    
     return (
       <main className="min-h-screen bg-gray-50 py-12">
         <div className="container-therabrake">
           <div className="max-w-6xl mx-auto">
-            <Link 
+            <Link
               href="/pricing"
               className="inline-flex items-center gap-2 text-primary hover:text-blue-600 mb-6"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Pricing
             </Link>
-            
+
             <h1 className="text-3xl font-bold text-neutral-dark mb-8 text-center">
-              Choose Your Membership Plan
+              Choose Your {type === 'ce' ? 'CE' : type === 'personal' ? 'Personal Development' : 'Premium'} Plan
             </h1>
-            
+
             <div className="grid lg:grid-cols-3 gap-6">
-              {Object.entries(PLAN_DETAILS)
-                .filter(([_, details]) => details.type === 'ce' || details.type === 'personal')
-                .slice(0, 6)
-                .map(([id, details]) => (
-                  <div key={id} className="bg-white rounded-xl shadow-lg p-6">
-                    <div className="text-center mb-4">
-                      {details.icon}
-                      <h3 className="text-xl font-bold mt-2">{details.name}</h3>
-                      <p className="text-3xl font-bold text-primary mt-2">${details.price}</p>
-                      <p className="text-neutral-medium">{details.duration}</p>
-                    </div>
-                    <ul className="space-y-2 mb-6">
-                      {details.features.slice(0, 3).map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-sm">
-                          <CheckCircle className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <Link
-                      href={`/enrollment?type=${details.type}&plan=${id}&price=${details.price}`}
-                      className="block w-full text-center py-2 px-4 bg-primary text-white rounded-lg font-medium hover:bg-blue-600"
-                    >
-                      Select Plan
-                    </Link>
+              {typePlans.map(([id, details]) => (
+                <div key={id} className="bg-white rounded-xl shadow-lg p-6">
+                  <div className="text-center mb-4">
+                    <details.icon className="w-12 h-12 mx-auto text-primary mb-2" />
+                    <h3 className="text-xl font-bold mt-2">{details.name}</h3>
+                    <p className="text-3xl font-bold text-primary mt-2">${details.price}</p>
+                    <p className="text-neutral-medium">{details.duration}</p>
                   </div>
-                ))}
+                  <ul className="space-y-2 mb-6">
+                    {details.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href={`/enrollment?type=${details.type}&plan=${id}&price=${details.price}`}
+                    className="block w-full text-center py-2 px-4 bg-primary text-white rounded-lg font-medium hover:bg-blue-600"
+                  >
+                    Select Plan
+                  </Link>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </main>
     )
   }
-  
-  // No plan selected
+
+  // Invalid plan
   if (!plan) {
     return (
       <main className="min-h-screen bg-gray-50 py-12">
@@ -389,25 +318,25 @@ export default function EnrollmentPage() {
           <div className="max-w-2xl mx-auto text-center">
             <AlertCircle className="w-16 h-16 text-alert mx-auto mb-4" />
             <h1 className="text-3xl font-bold text-neutral-dark mb-4">
-              No Plan Selected
+              Plan Not Found
             </h1>
             <p className="text-neutral-medium mb-8">
-              Please select a membership plan or course to continue with enrollment.
+              The selected plan could not be found. Please choose a valid plan.
             </p>
-            <Link 
+            <Link
               href="/pricing"
               className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-blue-600"
             >
               <ArrowLeft className="w-4 h-4" />
-              Return to Pricing
+              View Available Plans
             </Link>
           </div>
         </div>
       </main>
     )
   }
-  
-  // Main enrollment form
+
+  // Enrollment Form
   return (
     <main className="min-h-screen bg-gray-50 py-12">
       <div className="container-therabrake">
@@ -423,9 +352,9 @@ export default function EnrollmentPage() {
                 </div>
                 <span className="font-medium">Your Details</span>
               </div>
-              
+
               <div className="w-12 h-0.5 bg-gray-300" />
-              
+
               <div className={`flex items-center gap-2 ${step === 'payment' ? 'text-primary' : 'text-neutral-medium'}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                   step === 'payment' ? 'bg-primary text-white' : 'bg-gray-200'
@@ -436,26 +365,26 @@ export default function EnrollmentPage() {
               </div>
             </div>
           </div>
-          
+
           <div className="grid lg:grid-cols-3 gap-8">
-            {/* Left: Plan Summary */}
+            {/* Order Summary - Sticky Sidebar */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
                 <h2 className="text-xl font-bold text-neutral-dark mb-4">
                   Order Summary
                 </h2>
-                
+
                 <div className="mb-6">
                   <div className="flex items-start gap-3 mb-4">
                     <div className={`p-2 rounded-lg bg-${plan.color}/10`}>
-                      {plan.icon}
+                      <plan.icon className="w-6 h-6 text-primary" />
                     </div>
                     <div>
                       <h3 className="font-bold text-neutral-dark">{plan.name}</h3>
                       <p className="text-sm text-neutral-medium">{plan.duration}</p>
                     </div>
                   </div>
-                  
+
                   <div className="border-t pt-4">
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-neutral-medium">Subtotal</span>
@@ -475,7 +404,7 @@ export default function EnrollmentPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-sm text-neutral-medium">
                     <Shield className="w-4 h-4 text-secondary" />
@@ -492,8 +421,8 @@ export default function EnrollmentPage() {
                 </div>
               </div>
             </div>
-            
-            {/* Right: Form */}
+
+            {/* Main Content */}
             <div className="lg:col-span-2">
               {step === 'details' ? (
                 <div className="bg-white rounded-xl shadow-lg p-8">
@@ -501,26 +430,26 @@ export default function EnrollmentPage() {
                     Complete Your Enrollment
                   </h1>
                   <p className="text-neutral-medium mb-6">
-                    {isLoggedIn ? 'Confirm your details to proceed' : 'Create your account or sign in to continue'}
+                    Enter your details to create your account and continue to payment
                   </p>
-                  
+
                   {error && (
                     <div className="mb-6 p-4 bg-alert/10 border border-alert rounded-lg flex items-start gap-2">
                       <AlertCircle className="w-5 h-5 text-alert mt-0.5" />
                       <span className="text-alert">{error}</span>
                     </div>
                   )}
-                  
+
                   <form onSubmit={handleSubmit}>
                     <div className="space-y-6">
-                      {/* Account Section */}
-                      {!isLoggedIn && (
+                      {/* Personal Information */}
+                      <div>
                         <div>
                           <h3 className="font-semibold text-neutral-dark mb-4 flex items-center gap-2">
                             <User className="w-5 h-5" />
-                            Account Information
+                            Personal Information
                           </h3>
-                          
+
                           <div className="grid md:grid-cols-2 gap-4">
                             <div>
                               <label className="block text-sm font-medium text-neutral-dark mb-2">
@@ -535,7 +464,7 @@ export default function EnrollmentPage() {
                                 required
                               />
                             </div>
-                            
+
                             <div>
                               <label className="block text-sm font-medium text-neutral-dark mb-2">
                                 Email Address *
@@ -549,7 +478,7 @@ export default function EnrollmentPage() {
                                 required
                               />
                             </div>
-                            
+
                             <div>
                               <label className="block text-sm font-medium text-neutral-dark mb-2">
                                 Phone Number
@@ -562,8 +491,8 @@ export default function EnrollmentPage() {
                                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                               />
                             </div>
-                            
-                            {(type === 'ce' || type === 'premium') && (
+
+                            {type === 'ce' && (
                               <>
                                 <div>
                                   <label className="block text-sm font-medium text-neutral-dark mb-2">
@@ -578,7 +507,7 @@ export default function EnrollmentPage() {
                                     placeholder="LPC12345"
                                   />
                                 </div>
-                                
+
                                 <div>
                                   <label className="block text-sm font-medium text-neutral-dark mb-2">
                                     License State
@@ -599,22 +528,20 @@ export default function EnrollmentPage() {
                             )}
                           </div>
                         </div>
-                      )}
-                      
-                      {/* Already have account */}
-                      {!isLoggedIn && (
+
+                        {/* Login Option */}
                         <div className="text-center py-4 border-y">
                           <p className="text-neutral-medium mb-2">Already have an account?</p>
-                          <Link 
+                          <Link
                             href={`/login?redirect=/enrollment?type=${type}&plan=${planId}&price=${price}`}
                             className="text-primary hover:text-blue-600 font-medium"
                           >
-                            Sign in instead →
+                            Sign in to continue
                           </Link>
                         </div>
-                      )}
-                      
-                      {/* Terms */}
+                      </div>
+
+                      {/* Terms Agreement */}
                       <div>
                         <label className="flex items-start gap-3 cursor-pointer">
                           <input
@@ -629,38 +556,38 @@ export default function EnrollmentPage() {
                             I agree to the{' '}
                             <Link href="/terms" className="text-primary hover:underline">
                               Terms of Service
-                            </Link>
-                            {' '}and{' '}
+                            </Link>{' '}
+                            and{' '}
                             <Link href="/privacy" className="text-primary hover:underline">
                               Privacy Policy
                             </Link>
-                            . I understand that my enrollment will auto-renew if applicable and I can cancel anytime.
                           </span>
                         </label>
                       </div>
-                      
+
                       {/* Submit Button */}
-                      <button
-                        type="submit"
-                        disabled={loading || !formData.agreeToTerms}
-                        className="w-full py-3 px-6 bg-primary text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                      >
-                        {loading ? (
-                          <>
-                            <Loader2 className="w-5 h-5 animate-spin" />
-                            Processing...
-                          </>
-                        ) : (
-                          <>
-                            Continue to Payment
-                            <ArrowRight className="w-5 h-5" />
-                          </>
-                        )}
-                      </button>
+                      <div>
+                        <button
+                          type="submit"
+                          disabled={isProcessing}
+                          className="w-full py-3 px-6 bg-primary text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        >
+                          {isProcessing ? (
+                            <>
+                              <Loader2 className="w-5 h-5 animate-spin" />
+                              Processing...
+                            </>
+                          ) : (
+                            <>
+                              Continue to Payment
+                              <ArrowRight className="w-5 h-5" />
+                            </>
+                          )}
+                        </button>
+                      </div>
                     </div>
                   </form>
-                  
-                  {/* Security badges */}
+
                   <div className="mt-8 pt-6 border-t flex items-center justify-center gap-6">
                     <div className="flex items-center gap-2 text-sm text-neutral-medium">
                       <Lock className="w-4 h-4" />
@@ -677,22 +604,21 @@ export default function EnrollmentPage() {
                   </div>
                 </div>
               ) : (
-                // Payment step (placeholder)
                 <div className="bg-white rounded-xl shadow-lg p-8">
                   <h2 className="text-2xl font-bold text-neutral-dark mb-6">
-                    Payment Information
+                    Complete Payment
                   </h2>
-                  
+
                   <div className="text-center py-12">
                     <CreditCard className="w-16 h-16 text-primary mx-auto mb-4" />
                     <p className="text-neutral-medium mb-4">
-                      Redirecting to secure checkout...
+                      Redirecting to secure Stripe checkout...
                     </p>
                     <p className="text-sm text-neutral-medium">
-                      You will be redirected to Stripe for secure payment processing
+                      You will be redirected to Stripe to complete your payment securely.
                     </p>
                   </div>
-                  
+
                   <button
                     onClick={() => setStep('details')}
                     className="w-full py-3 px-6 bg-gray-200 text-neutral-dark rounded-lg font-medium hover:bg-gray-300 transition-colors"
