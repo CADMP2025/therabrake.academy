@@ -1,4 +1,3 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Mail, Phone, MapPin, Sparkles, Send, ArrowRight } from 'lucide-react'
 
@@ -46,8 +45,8 @@ export default function ContactPage() {
                 </p>
               </div>
 
-              {/* Contact Methods Grid */}
-              <div className="grid md:grid-cols-3 gap-6 mt-12">
+              {/* Contact Methods Grid - Now 2 columns */}
+              <div className="grid md:grid-cols-2 gap-6 mt-12">
                 {/* Email */}
                 <div className="text-center p-6 bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl hover:shadow-lg transition-all duration-300">
                   <Mail className="h-10 w-10 text-primary mx-auto mb-3" />
@@ -72,17 +71,16 @@ export default function ContactPage() {
                   </a>
                   <p className="text-sm text-text-secondary mt-1">Monday-Friday, 9AM-6PM CST</p>
                 </div>
+              </div>
 
-                {/* Address */}
-                <div className="text-center p-6 bg-gradient-to-br from-accent/5 to-accent/10 rounded-xl hover:shadow-lg transition-all duration-300">
-                  <MapPin className="h-10 w-10 text-action mx-auto mb-3" />
-                  <h3 className="font-semibold text-lg mb-2">Visit Us</h3>
-                  <address className="not-italic text-text-secondary">
-                    6120 College St.<br />
-                    Suite D185<br />
-                    Beaumont, TX 77707
-                  </address>
-                </div>
+              {/* Mailing Address - Separate Section */}
+              <div className="mt-8 text-center p-6 bg-gray-50 rounded-xl">
+                <MapPin className="h-8 w-8 text-action mx-auto mb-3" />
+                <h3 className="font-semibold text-lg mb-2">Mailing Address</h3>
+                <address className="not-italic text-text-secondary">
+                  6120 College St. Suite D185<br />
+                  Beaumont, TX 77707
+                </address>
               </div>
             </div>
 
