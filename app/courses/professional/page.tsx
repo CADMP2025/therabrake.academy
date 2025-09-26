@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Clock, Award, DollarSign, Brain, Globe, Scale, Zap, Shield, Monitor, Briefcase, AlertTriangle, Lock, FileText, Puzzle, Eye, Activity, Wine, Pill, MessageCircle, Heart, Home, Baby, Headphones, Cross, Medal, Bird, Users, Star, TrendingUp, UsersIcon, Leaf, Lotus, Waves, Palette, Flag, Utensils, Smartphone, Network, Sunrise, HeartCrack, HeartHandshake, Ribbon, CreditCard, Coins, Key, Rocket } from 'lucide-react'
+import { Clock, Award, DollarSign, Brain, Globe, Scale, Zap, Shield, Monitor, Briefcase, AlertTriangle, Lock, FileText, Puzzle, Eye, Activity, Wine, Pill, MessageCircle, Heart, Home, Baby, Headphones, Cross, Medal, Bird, Users, Star, TrendingUp, Leaf, Palette, Flag, Smartphone, Sun, HeartOff, Handshake, Gift, CreditCard, Coins, Key, Rocket } from 'lucide-react'
 
 const currentCourses = [
   {
@@ -127,7 +127,7 @@ const expandedCourses = [
         price: 149.99,
         icon: Eye,
         description: 'Evidence-Based Trauma Treatment',
-        emoji: '��️'
+        emoji: '👁️'
       },
       {
         id: 'somatic-approaches',
@@ -191,7 +191,7 @@ const expandedCourses = [
         price: 79.99,
         icon: Home,
         description: 'Understand and Transform Family Dynamics',
-        emoji: '��'
+        emoji: '🏠'
       }
     ]
   },
@@ -281,76 +281,6 @@ const expandedCourses = [
         emoji: '📈'
       }
     ]
-  }
-]
-
-const personalCourses = [
-  {
-    id: 'healing-forward',
-    title: 'Healing Forward',
-    price: 199,
-    description: 'Relationship Recovery and Personal Reclamation',
-    icon: Sunrise,
-    emoji: '��'
-  },
-  {
-    id: 'rebuilding-betrayal',
-    title: 'Rebuilding After Betrayal',
-    price: 249,
-    description: 'Structured 4-Phase Recovery Framework',
-    icon: HeartCrack,
-    emoji: '🧩'
-  },
-  {
-    id: 'perfect-match',
-    title: 'Finding the Perfect Match',
-    price: 179,
-    description: 'A Self-Guided Journey to Authentic Love',
-    icon: HeartHandshake,
-    emoji: '💘'
-  },
-  {
-    id: 'cancer-diagnosis',
-    title: 'Cancer Diagnosis: It\'s Not the End',
-    price: 149,
-    description: 'Navigate Your Cancer Journey with Hope',
-    icon: Ribbon,
-    emoji: '🎗️'
-  },
-  {
-    id: 'credit-building',
-    title: 'Credit Building & Debt Management',
-    price: 99,
-    description: 'Your Friendly Guide to Financial Freedom',
-    icon: CreditCard,
-    emoji: '💳'
-  },
-  {
-    id: 'financial-literacy',
-    title: 'Financial Literacy & Independence',
-    price: 129,
-    description: 'Master Money Management for Lifelong Security',
-    icon: Coins,
-    emoji: '💰'
-  }
-]
-
-const premiumPrograms = [
-  {
-    id: 'so-what-mindset',
-    title: 'The So What Mindset',
-    price: 499,
-    description: 'Transformational Thinking and Resilience Training',
-    icon: Key,
-    emoji: '🔑'
-  },
-  {
-    id: 'leap-launch',
-    title: 'Leap & Launch!',
-    price: 299,
-    description: 'Flagship Business Development Program',
-    icon: Rocket,
-    emoji: '🚀'
   }
 ]
 
