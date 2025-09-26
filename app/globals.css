@@ -3,30 +3,7 @@
 @import 'tailwindcss/utilities';
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-  }
-
-  * {
-    @apply border-border;
-  }
-
   body {
-    @apply bg-background text-foreground;
-  }
-}
-
-@layer components {
-  /* Custom component styles */
-  .container {
-    @apply mx-auto px-4;
-  }
-}
-
-@layer utilities {
-  /* Custom utilities */
-  .text-balance {
-    text-wrap: balance;
+    @apply bg-white text-gray-900;
   }
 }
