@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight, BookOpen, Award, Users, Clock } from 'lucide-react'
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
@@ -10,9 +10,8 @@ export default function Home() {
           <h1 className="text-5xl font-bold mb-4">Welcome to TheraBrake Academy™</h1>
           <p className="text-2xl mb-8">Pause, Process, Progress.</p>
           <p className="text-xl mb-12 max-w-3xl mx-auto">
-            Learning isn't just about earning credits or ticking boxes—it's about transformation. 
-            Whether you're a licensed professional ready to grow your practice or an individual 
-            ready to reclaim your life, you'll find a course here designed for you.
+            Here&apos;s where evidence meets empathy. If you&apos;re a therapist, you&apos;re in the right place.
+            Whether you&apos;re earning CEUs or seeking personal growth, we&apos;ve created something special for you.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/courses/professional" className="bg-action hover:bg-action-hover px-8 py-4 rounded-lg text-lg font-semibold transition inline-flex items-center">
@@ -62,15 +61,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Professional Development Section */}
+      {/* Professional Pricing */}
       <section className="bg-background-secondary py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-4">🎓 For Mental Health Professionals</h2>
           <p className="text-center text-text-secondary mb-12 max-w-3xl mx-auto">
-            Earn accredited Continuing Education Units (CEUs) while mastering real-world skills that 
-            elevate your career and protect your clients. From Ethics and HIPAA Compliance to 
-            Trauma-Informed Care and Telehealth Mastery.
+            Keep your license current with engaging, evidence-based CE courses
+            that actually make a difference in your practice.
           </p>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-lg shadow">
               <h3 className="font-semibold mb-2">1-Year CE Membership</h3>
@@ -100,15 +99,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Personal Development Section */}
+      {/* Personal Growth */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-4">🌱 For Personal Growth & Healing</h2>
           <p className="text-center text-text-secondary mb-12 max-w-3xl mx-auto">
-            Life happens. Betrayal, financial setbacks, relationship struggles, even health crises. 
-            But your story isn't over. Discover powerful frameworks to help you pause, process, and 
-            progress toward a stronger you.
+            Whether you&apos;re working through your own challenges or supporting someone you love,
+            discover practical tools for real transformation.
           </p>
+
           <div className="text-center">
             <Link href="/courses/personal" className="bg-secondary hover:bg-secondary-hover text-white px-8 py-4 rounded-lg text-lg font-semibold transition inline-flex items-center">
               Visit Personal Development Catalog <ArrowRight className="ml-2" />

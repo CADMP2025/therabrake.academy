@@ -1,64 +1,136 @@
 import Link from 'next/link'
-import { Mail, Phone, MapPin } from 'lucide-react'
+import { Facebook, Twitter, Linkedin, Youtube, Mail, MapPin, Phone } from 'lucide-react'
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear()
+
   return (
-    <footer className="bg-text-primary text-white mt-16">
+    <footer className="bg-neutral-dark text-white">
+      {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Company Info */}
           <div>
-            <h3 className="text-2xl font-bold mb-4">
-              TheraBrake <span className="text-accent">Academy™</span>
-            </h3>
-            <p className="text-gray-300">Pause, Process, Progress</p>
+            <h3 className="text-2xl font-bold mb-4">TheraBrake Academy™</h3>
+            <p className="text-neutral-medium mb-4">
+              Pause, Process, Progress. Your trusted partner in mental health continuing education.
+            </p>
+            <div className="flex space-x-4">
+              <a href="#" className="text-neutral-medium hover:text-accent transition">
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a href="#" className="text-neutral-medium hover:text-accent transition">
+                <Twitter className="h-5 w-5" />
+              </a>
+              <a href="#" className="text-neutral-medium hover:text-accent transition">
+                <Linkedin className="h-5 w-5" />
+              </a>
+              <a href="#" className="text-neutral-medium hover:text-accent transition">
+                <Youtube className="h-5 w-5" />
+              </a>
+            </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
+            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li><Link href="/courses/professional" className="text-gray-300 hover:text-accent">CE Courses</Link></li>
-              <li><Link href="/courses/personal" className="text-gray-300 hover:text-accent">Personal Development</Link></li>
-              <li><Link href="/about" className="text-gray-300 hover:text-accent">About Us</Link></li>
-              <li><Link href="/contact" className="text-gray-300 hover:text-accent">Contact</Link></li>
+              <li>
+                <Link href="/courses/professional" className="text-neutral-medium hover:text-accent transition">
+                  CE Courses
+                </Link>
+              </li>
+              <li>
+                <Link href="/courses/personal" className="text-neutral-medium hover:text-accent transition">
+                  Personal Development
+                </Link>
+              </li>
+              <li>
+                <Link href="/courses/sowhat" className="text-neutral-medium hover:text-accent transition">
+                  So What Mindset™
+                </Link>
+              </li>
+              <li>
+                <Link href="/courses/leap" className="text-neutral-medium hover:text-accent transition">
+                  Leap & Launch™
+                </Link>
+              </li>
             </ul>
           </div>
 
-          {/* Support */}
+          {/* Resources */}
           <div>
-            <h4 className="font-semibold mb-4">Support</h4>
+            <h4 className="text-lg font-semibold mb-4">Resources</h4>
             <ul className="space-y-2">
-              <li><Link href="/auth/login" className="text-gray-300 hover:text-accent">Student Login</Link></li>
-              <li><Link href="/instructor/login" className="text-gray-300 hover:text-accent">Instructor Portal</Link></li>
-              <li><Link href="/help" className="text-gray-300 hover:text-accent">Help Center</Link></li>
-              <li><Link href="/terms" className="text-gray-300 hover:text-accent">Terms & Privacy</Link></li>
+              <li>
+                <Link href="/about" className="text-neutral-medium hover:text-accent transition">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/instructors" className="text-neutral-medium hover:text-accent transition">
+                  Become an Instructor
+                </Link>
+              </li>
+              <li>
+                <Link href="/faq" className="text-neutral-medium hover:text-accent transition">
+                  FAQ
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="text-neutral-medium hover:text-accent transition">
+                  Blog
+                </Link>
+              </li>
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Contact */}
           <div>
-            <h4 className="font-semibold mb-4">Contact Us</h4>
-            <div className="space-y-2">
-              <p className="flex items-center text-gray-300">
-                <Mail className="h-4 w-4 mr-2" />
-                info@therabrake.academy
-              </p>
-              <p className="flex items-center text-gray-300">
-                <Phone className="h-4 w-4 mr-2" />
-                1-800-THERAPY
-              </p>
-              <p className="flex items-center text-gray-300">
-                <MapPin className="h-4 w-4 mr-2" />
-                6120 College St. Suite D185<br />
-                Beaumont, TX 77707
-              </p>
-            </div>
+            <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
+            <ul className="space-y-3">
+              <li className="flex items-start gap-2">
+                <MapPin className="h-5 w-5 text-accent mt-0.5" />
+                <span className="text-neutral-medium">
+                  Beaumont, Texas, USA
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Phone className="h-5 w-5 text-accent" />
+                <span className="text-neutral-medium">
+                  1-800-THERAPY
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Mail className="h-5 w-5 text-accent" />
+                <a href="mailto:support@therabrake.academy" className="text-neutral-medium hover:text-accent transition">
+                  support@therabrake.academy
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
+      </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-          <p>© 2025 TheraBrake Academy. All rights reserved.</p>
+      {/* Bottom Bar */}
+      <div className="border-t border-neutral-medium/20">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-neutral-medium text-sm mb-4 md:mb-0">
+              © {currentYear} TheraBrake Academy. All rights reserved.
+            </p>
+            <div className="flex space-x-6 text-sm">
+              <Link href="/privacy" className="text-neutral-medium hover:text-accent transition">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="text-neutral-medium hover:text-accent transition">
+                Terms of Service
+              </Link>
+              <Link href="/compliance" className="text-neutral-medium hover:text-accent transition">
+                CE Compliance
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
