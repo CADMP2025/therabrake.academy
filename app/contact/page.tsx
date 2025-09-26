@@ -1,5 +1,5 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Mail, Phone, MapPin, Sparkles, Send, ArrowRight } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Contact Us | TheraBrake Academy™',
