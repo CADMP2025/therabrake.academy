@@ -32,84 +32,113 @@ interface PlanDetails {
 }
 
 const planDetails: Record<string, PlanDetails> = {
+  // CE Plans
   'ce-1year': {
-    name: 'CE Annual Membership',
+    name: '🎓 1-Year CE Membership',
     price: 199,
     duration: '12 months',
     type: 'ce',
     features: [
-      'Unlimited access to all CE courses',
-      'Texas LPC approved credits',
-      'Auto-generated certificates',
-      'Progress tracking',
-      'Mobile app access',
-      'Early bird discount - Save $100!'
+      'Full access to all CEU courses (31+ credit hours)',
+      'Complete your annual CE requirement',
+      'Self-paced learning with videos and quizzes',
+      'Instant digital certificates',
+      'New courses added regularly',
+      'Save over $100 vs individual courses'
     ],
     color: 'blue',
     icon: GraduationCap,
-    discount: 100
+    discount: 0
   },
   'ce-2year': {
-    name: 'CE 2-Year Membership',
-    price: 349,
+    name: '🎓 2-Year CE Membership',
+    price: 299,
     duration: '24 months',
     type: 'ce',
     features: [
-      'Everything in Annual, plus:',
-      'Locked-in pricing for 2 years',
-      'Priority support',
-      'Exclusive webinars',
-      'Save $249 over monthly!'
+      'Everything in 1-Year Membership',
+      'Extended to 24 months access',
+      '$100 discount on So What Mindset',
+      '$100 discount on Leap & Launch',
+      'Lock in current pricing for 2 years',
+      'Best for biennial license renewals'
     ],
     color: 'blue',
     icon: GraduationCap,
-    discount: 249
+    discount: 0
   },
   'ce-lifetime': {
-    name: 'CE Lifetime Access',
+    name: '🌟 5-Year CE + Personal',
     price: 699,
-    duration: 'Forever',
+    duration: '60 months',
     type: 'ce',
     features: [
-      'One-time payment, lifetime access',
-      'All future courses included',
-      'VIP support',
-      'Instructor consultation sessions',
-      'Best value - Never pay again!'
+      'Complete professional access (200+ CE hours)',
+      'All personal development courses included',
+      'Valid for 60 months (5 years)',
+      '$100 off So What Mindset ($399 instead of $499)',
+      '$100 off Leap & Launch ($199 instead of $299)',
+      'Save over $2,500 - Best value!'
     ],
     color: 'blue',
-    icon: GraduationCap
+    icon: GraduationCap,
+    discount: 0
   },
+
+  // Personal Development Plans
   'personal-1year': {
-    name: 'Personal Growth Annual',
-    price: 199,
+    name: '🌱 1-Year Personal Growth',
+    price: 299,
     duration: '12 months',
     type: 'personal',
     features: [
-      'All personal development courses',
-      'Monthly group coaching calls',
-      'Community access',
-      'Downloadable resources',
-      'Progress certificates'
+      'Access to all personal growth courses',
+      'Tools for relationships & resilience',
+      'Health and finance modules',
+      'Downloadable workbooks',
+      'Self-paced learning',
+      'Community access'
     ],
     color: 'green',
-    icon: Sprout
+    icon: Sprout,
+    discount: 0
   },
-  'personal-lifetime': {
-    name: 'Personal Growth Lifetime',
-    price: 499,
-    duration: 'Forever',
+  'personal-2year': {
+    name: '🌱 2-Year Personal Growth',
+    price: 399,
+    duration: '24 months',
     type: 'personal',
     features: [
-      'Lifetime access to all content',
-      'Future courses included',
-      'Priority coaching slots',
-      'Exclusive community',
-      'Best investment in yourself!'
+      'Everything in 1-Year membership',
+      'Extended 24-month access',
+      'Bonus discounts on premium programs',
+      'Priority support',
+      'Best for long-term transformation',
+      'Lock in current pricing'
     ],
     color: 'green',
-    icon: Sprout
+    icon: Sprout,
+    discount: 0
   },
+  'personal-5year': {
+    name: '🌱 5-Year Personal Growth',
+    price: 699,
+    duration: '60 months',
+    type: 'personal',
+    features: [
+      'All personal growth content',
+      'Valid for 60 months (5 years)',
+      'Exclusive discounts on new programs',
+      'VIP support access',
+      'Future courses included',
+      'Lowest per-month rate'
+    ],
+    color: 'green',
+    icon: Sprout,
+    discount: 0
+  },
+
+  // Premium Programs (existing)
   'so-what-mindset': {
     name: 'So What Mindset',
     price: 499,
@@ -202,22 +231,22 @@ function EnrollmentContent() {
             </p>
             <div className="grid md:grid-cols-2 gap-6 mb-12">
               <Link
-                href="/courses?category=ce"
+                href="/pricing"
                 className="p-6 border-2 border-gray-200 rounded-xl hover:border-primary transition-all group"
               >
                 <GraduationCap className="w-12 h-12 text-primary mb-4" />
                 <h3 className="text-xl font-bold text-neutral-dark mb-2 group-hover:text-primary">
-                  CE Courses for Professionals
+                  CE Memberships
                 </h3>
                 <p className="text-neutral-medium mb-4">
-                  Texas LPC approved continuing education courses with certificates
+                  Texas LPC approved continuing education with certificates
                 </p>
                 <p className="text-primary font-bold">
-                  Browse CE Courses →
+                  View CE Plans →
                 </p>
               </Link>
               <Link
-                href="/courses?category=personal"
+                href="/pricing#personal"
                 className="p-6 border-2 border-gray-200 rounded-xl hover:border-secondary transition-all group"
               >
                 <Sprout className="w-12 h-12 text-secondary mb-4" />
@@ -228,17 +257,17 @@ function EnrollmentContent() {
                   Transform your life with our personal growth programs
                 </p>
                 <p className="text-secondary font-bold">
-                  Browse Personal Courses →
+                  View Personal Plans →
                 </p>
               </Link>
             </div>
             <div className="text-center">
-              <p className="text-neutral-medium mb-4">Looking for membership benefits?</p>
+              <p className="text-neutral-medium mb-4">Ready to browse courses?</p>
               <Link
-                href="/pricing"
+                href="/courses"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-blue-600"
               >
-                View Membership Plans
+                Browse Individual Courses
               </Link>
             </div>
           </div>
@@ -367,7 +396,7 @@ function EnrollmentContent() {
                       <span className="text-neutral-medium">Subtotal</span>
                       <span className="font-semibold">${plan.price}</span>
                     </div>
-                    {plan.discount && (
+                    {plan.discount && plan.discount > 0 && (
                       <div className="flex justify-between items-center mb-2 text-secondary">
                         <span>Member Discount</span>
                         <span>-${plan.discount}</span>
@@ -376,7 +405,7 @@ function EnrollmentContent() {
                     <div className="flex justify-between items-center pt-2 border-t">
                       <span className="font-bold text-lg">Total</span>
                       <span className="font-bold text-2xl text-primary">
-                        ${plan.discount ? plan.price - plan.discount : plan.price}
+                        ${plan.discount && plan.discount > 0 ? plan.price - plan.discount : plan.price}
                       </span>
                     </div>
                   </div>
@@ -494,7 +523,7 @@ function EnrollmentContent() {
                             )}
                           </div>
                         </div>
-                        <div className="text-center py-4 border-y">
+                        <div className="text-center py-4 border-y mt-6">
                           <p className="text-neutral-medium mb-2">Already have an account?</p>
                           <Link
                             href={`/login?redirect=/enrollment?type=${type}&plan=${planId}&price=${price}`}
