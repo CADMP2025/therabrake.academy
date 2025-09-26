@@ -1,62 +1,32 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 @layer base {
   :root {
-    --color-primary: 59 130 246;
-    --color-secondary: 16 185 129;
-    --color-accent: 250 204 21;
-    --color-action: 249 115 22;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+  }
+
+  * {
+    @apply border-border;
   }
 
   body {
-    @apply bg-white text-text-primary;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-bold text-text-primary;
-  }
-
-  /* Smooth scrolling */
-  html {
-    scroll-behavior: smooth;
+    @apply bg-background text-foreground;
   }
 }
 
 @layer components {
-  /* Custom button styles */
-  .btn-primary {
-    @apply bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition;
-  }
-
-  .btn-secondary {
-    @apply bg-secondary text-white px-4 py-2 rounded-lg hover:bg-secondary-dark transition;
-  }
-
-  .btn-accent {
-    @apply bg-accent text-primary px-4 py-2 rounded-lg hover:bg-accent-light transition;
-  }
-
-  /* Card styles */
-  .card {
-    @apply bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition;
-  }
-
-  /* Container */
+  /* Custom component styles */
   .container {
-    @apply max-w-7xl mx-auto;
+    @apply mx-auto px-4;
   }
 }
 
 @layer utilities {
-  /* Text selection */
-  ::selection {
-    @apply bg-primary text-white;
-  }
-
-  /* Focus styles */
-  .focus-visible:focus {
-    @apply outline-none ring-2 ring-primary ring-offset-2;
+  /* Custom utilities */
+  .text-balance {
+    text-wrap: balance;
   }
 }
