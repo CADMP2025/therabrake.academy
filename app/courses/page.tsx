@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Clock, DollarSign, ChevronDown, ChevronUp, ArrowRight, Award, Heart, BookOpen, Users } from 'lucide-react'
