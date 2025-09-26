@@ -1,27 +1,31 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
-import { Menu, X, ChevronDown, User } from 'lucide-react'
+import { Menu, X, ChevronDown, User, Brain } from 'lucide-react'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [coursesDropdownOpen, setCoursesDropdownOpen] = useState(false)
 
   const courseCategories = [
-    { name: 'Professional Development', href: '/courses/professional' },
+    { name: 'Professional CE Credits', href: '/courses/professional' },
     { name: 'Personal Growth', href: '/courses/personal' },
     { name: 'Premium Programs', href: '/courses/premium' },
+    { name: 'Memberships', href: '/memberships' },
   ]
 
   return (
     <header className="bg-primary text-white sticky top-0 z-50 shadow-lg">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold">🧠</span>
-            <span className="text-xl font-bold">TheraBrake</span>
-            <span className="text-accent font-semibold">Academy</span>
+          <Link href="/" className="flex items-center space-x-3">
+            <Brain className="h-10 w-10 text-accent" />
+            <div className="flex flex-col">
+              <span className="text-2xl font-bold">TheraBrake Academy</span>
+              <span className="text-xs text-accent">Pause, Process, Progress</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -44,18 +48,18 @@ export default function Header() {
               
               {coursesDropdownOpen && (
                 <div 
-                  className="absolute top-full left-0 mt-2 w-56 bg-white text-text-primary rounded-lg shadow-xl py-2"
+                  className="absolute top-full left-0 mt-2 w-64 bg-white text-text-primary rounded-lg shadow-xl py-2"
                   onMouseEnter={() => setCoursesDropdownOpen(true)}
                   onMouseLeave={() => setCoursesDropdownOpen(false)}
                 >
-                  <Link href="/courses" className="block px-4 py-2 hover:bg-background-secondary">
+                  <Link href="/courses" className="block px-4 py-2 hover:bg-background-secondary transition">
                     All Courses
                   </Link>
                   {courseCategories.map((category) => (
                     <Link
                       key={category.name}
                       href={category.href}
-                      className="block px-4 py-2 hover:bg-background-secondary"
+                      className="block px-4 py-2 hover:bg-background-secondary transition"
                     >
                       {category.name}
                     </Link>
@@ -79,7 +83,7 @@ export default function Header() {
             </Link>
             <Link 
               href="/auth/register"
-              className="bg-accent text-primary px-4 py-2 rounded-lg hover:bg-accent-light transition"
+              className="bg-action text-white px-6 py-2 rounded-lg hover:bg-action/90 transition font-semibold"
             >
               Get Started
             </Link>
@@ -125,7 +129,7 @@ export default function Header() {
                 </Link>
                 <Link 
                   href="/auth/register"
-                  className="block bg-accent text-primary px-4 py-2 rounded-lg hover:bg-accent-light transition text-center mt-2"
+                  className="block bg-action text-white px-4 py-2 rounded-lg hover:bg-action/90 transition text-center mt-2"
                 >
                   Get Started
                 </Link>
