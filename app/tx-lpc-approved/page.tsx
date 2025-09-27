@@ -22,23 +22,18 @@ export default function TXLPCApprovedPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-20">
       <div className="container mx-auto px-4 max-w-4xl">
-        {/* Header with Badge */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center p-3 bg-green-100 rounded-full mb-6">
             <CheckCircle className="w-12 h-12 text-green-600" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            <span className="text-green-600">✅</span> Texas LPC Approved Continuing Education
+            ✅ Texas LPC Approved Continuing Education
           </h1>
           <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-            TheraBrake Academy™ courses are designed to comply with the{' '}
-            <strong>Texas Behavioral Health Executive Council (BHEC)</strong> and{' '}
-            <strong>22 Texas Administrative Code § 681.140</strong> requirements for 
-            Licensed Professional Counselors (LPCs).
+            TheraBrake Academy™ courses are designed to comply with the Texas Behavioral Health Executive Council (BHEC) and 22 Texas Administrative Code § 681.140 requirements for Licensed Professional Counselors (LPCs).
           </p>
         </div>
 
-        {/* CEU Requirements Section */}
         <section className="mb-12">
           <div className="flex items-center mb-6">
             <Book className="w-8 h-8 text-blue-600 mr-3" />
@@ -49,55 +44,49 @@ export default function TXLPCApprovedPage() {
               <li className="flex items-start">
                 <Clock className="w-5 h-5 text-blue-600 mt-1 mr-3 flex-shrink-0" />
                 <span className="text-gray-700">
-                  <strong className="font-semibold">24 total CE hours</strong> are required each renewal period.
+                  <strong>24 total CE hours</strong> are required each renewal period.
                 </span>
               </li>
               <li className="flex items-start">
                 <Shield className="w-5 h-5 text-blue-600 mt-1 mr-3 flex-shrink-0" />
                 <span className="text-gray-700">
-                  <strong className="font-semibold">6 hours in Ethics</strong> are required each cycle.
+                  <strong>6 hours in Ethics</strong> are required each cycle.
                 </span>
               </li>
               <li className="flex items-start">
                 <Users className="w-5 h-5 text-blue-600 mt-1 mr-3 flex-shrink-0" />
                 <span className="text-gray-700">
-                  <strong className="font-semibold">3 hours in Cultural Diversity / Competency</strong> are required each cycle.
+                  <strong>3 hours in Cultural Diversity / Competency</strong> are required each cycle.
                 </span>
               </li>
               <li className="flex items-start">
                 <ScrollText className="w-5 h-5 text-blue-600 mt-1 mr-3 flex-shrink-0" />
                 <span className="text-gray-700">
-                  <strong className="font-semibold">Texas Jurisprudence Exam</strong> must be completed every renewal; 
-                  this counts as <strong>1 hour of ethics CE</strong>.
+                  <strong>Texas Jurisprudence Exam</strong> must be completed every renewal; this counts as <strong>1 hour of ethics CE</strong>.
                 </span>
               </li>
               <li className="flex items-start">
                 <GraduationCap className="w-5 h-5 text-blue-600 mt-1 mr-3 flex-shrink-0" />
                 <span className="text-gray-700">
-                  <strong className="font-semibold">Supervisors</strong> must also complete{' '}
-                  <strong>6 hours in supervision</strong>.
+                  <strong>Supervisors</strong> must also complete <strong>6 hours in supervision</strong>.
                 </span>
               </li>
               <li className="flex items-start">
                 <Calendar className="w-5 h-5 text-orange-600 mt-1 mr-3 flex-shrink-0" />
                 <span className="text-gray-700">
-                  Beginning <strong className="font-semibold">January 1, 2024</strong>, at least{' '}
-                  <strong>50% of CE hours must come from qualifying providers</strong> (such as accredited 
-                  universities, national professional associations, or governmental entities).
+                  Beginning <strong>January 1, 2024</strong>, at least <strong>50% of CE hours must come from qualifying providers</strong> (such as accredited universities, national professional associations, or governmental entities).
                 </span>
               </li>
               <li className="flex items-start">
                 <Award className="w-5 h-5 text-blue-600 mt-1 mr-3 flex-shrink-0" />
                 <span className="text-gray-700">
-                  Up to <strong className="font-semibold">10 CE hours may be carried forward</strong> into 
-                  the next renewal cycle if not used.
+                  Up to <strong>10 CE hours may be carried forward</strong> into the next renewal cycle if not used.
                 </span>
               </li>
             </ul>
           </div>
         </section>
 
-        {/* Documentation & Audit Compliance */}
         <section className="mb-12">
           <div className="flex items-center mb-6">
             <FileText className="w-8 h-8 text-purple-600 mr-3" />
@@ -108,12 +97,12 @@ export default function TXLPCApprovedPage() {
               <li className="text-gray-700">
                 <div className="flex items-start mb-2">
                   <CheckCircle className="w-5 h-5 text-green-500 mt-1 mr-3 flex-shrink-0" />
-                  <span>Learners receive a <strong className="font-semibold">certificate of completion</strong> that includes:</span>
+                  <span>Learners receive a <strong>certificate of completion</strong> that includes:</span>
                 </div>
                 <ul className="ml-12 mt-2 space-y-1">
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
-                    <span className="text-gray-600">Participant&apos;s name</span>
+                    <span className="text-gray-600">Participant name</span>
                   </li>
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
@@ -129,27 +118,22 @@ export default function TXLPCApprovedPage() {
                   </li>
                 </ul>
               </li>
-              
               <li className="flex items-start">
                 <AlertCircle className="w-5 h-5 text-orange-500 mt-1 mr-3 flex-shrink-0" />
                 <span className="text-gray-700">
-                  <strong className="font-semibold">BHEC does not pre-approve individual courses or providers.</strong>{' '}
-                  Instead, licensees are responsible for ensuring their courses meet the above requirements.
+                  <strong>BHEC does not pre-approve individual courses or providers.</strong> Instead, licensees are responsible for ensuring their courses meet the above requirements.
                 </span>
               </li>
-              
               <li className="flex items-start">
                 <FolderOpen className="w-5 h-5 text-purple-600 mt-1 mr-3 flex-shrink-0" />
                 <span className="text-gray-700">
-                  All records of CE completion must be <strong className="font-semibold">retained for at least 3 years</strong>{' '}
-                  in case of audit.
+                  All records of CE completion must be <strong>retained for at least 3 years</strong> in case of audit.
                 </span>
               </li>
             </ul>
           </div>
         </section>
 
-        {/* Our Commitment */}
         <section className="mb-12">
           <div className="flex items-center mb-6">
             <Award className="w-8 h-8 text-green-600 mr-3" />
@@ -162,36 +146,27 @@ export default function TXLPCApprovedPage() {
             <ul className="space-y-3">
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">
-                  Align with Texas LPC renewal requirements
-                </span>
+                <span className="text-gray-700">Align with Texas LPC renewal requirements</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">
-                  Provide clear documentation for audit purposes
-                </span>
+                <span className="text-gray-700">Provide clear documentation for audit purposes</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">
-                  Deliver relevant, practical training directly related to the practice of professional counseling
-                </span>
+                <span className="text-gray-700">Deliver relevant, practical training directly related to the practice of professional counseling</span>
               </li>
             </ul>
           </div>
         </section>
 
-        {/* Official Reference */}
         <section className="mb-12">
           <div className="bg-gray-100 p-6 rounded-lg border border-gray-300">
             <div className="flex items-start">
               <ScrollText className="w-6 h-6 text-gray-700 mt-1 mr-3 flex-shrink-0" />
               <div>
                 <p className="text-gray-700">
-                  📜 For the full rule, please see{' '}
-                  <strong className="font-semibold">22 TAC § 681.140 – Requirements for Continuing Education</strong>{' '}
-                  via the Texas Administrative Code.
+                  📜 For the full rule, please see <strong>22 TAC § 681.140 – Requirements for Continuing Education</strong> via the Texas Administrative Code.
                 </p>
                 <a 
                   href="https://texreg.sos.state.tx.us/public/readtac$ext.ViewTAC?tac_view=5&ti=22&pt=30&ch=681&sch=D&rl=Y"
@@ -207,14 +182,12 @@ export default function TXLPCApprovedPage() {
           </div>
         </section>
 
-        {/* Call to Action */}
         <div className="bg-blue-50 p-8 rounded-lg text-center border border-blue-200">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">
             Ready to Earn Your Texas LPC CEUs?
           </h3>
           <p className="text-gray-700 mb-6">
-            Browse our selection of BHEC-compliant continuing education courses designed specifically 
-            for Texas Licensed Professional Counselors.
+            Browse our selection of BHEC-compliant continuing education courses designed specifically for Texas Licensed Professional Counselors.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             
