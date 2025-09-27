@@ -1,184 +1,82 @@
-'use client'
-
-import { 
-  CheckCircle, 
-  FileText, 
-  Book, 
-  Award, 
-  Clock,
-  Users,
-  Calendar,
-  AlertCircle,
-  Shield,
-  GraduationCap,
-  ScrollText,
-  FolderOpen,
-  Info,
-  ExternalLink,
-  ChevronRight
-} from 'lucide-react'
-
 export default function TXLPCApprovedPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-20">
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center p-3 bg-green-100 rounded-full mb-6">
-            <CheckCircle className="w-12 h-12 text-green-600" />
-          </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             ✅ Texas LPC Approved Continuing Education
           </h1>
           <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-            TheraBrake Academy™ courses are designed to comply with the Texas Behavioral Health Executive Council (BHEC) and 22 Texas Administrative Code § 681.140 requirements for Licensed Professional Counselors (LPCs).
+            TheraBrake Academy™ courses are designed to comply with the Texas Behavioral Health Executive Council (BHEC) 
+            and 22 Texas Administrative Code § 681.140 requirements for Licensed Professional Counselors (LPCs).
           </p>
         </div>
 
         <section className="mb-12">
-          <div className="flex items-center mb-6">
-            <Book className="w-8 h-8 text-blue-600 mr-3" />
-            <h2 className="text-2xl font-bold text-gray-900">CEU Requirements Under Texas LPC Rules</h2>
-          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">CEU Requirements Under Texas LPC Rules</h2>
           <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
-            <ul className="space-y-4">
-              <li className="flex items-start">
-                <Clock className="w-5 h-5 text-blue-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">
-                  <strong>24 total CE hours</strong> are required each renewal period.
-                </span>
-              </li>
-              <li className="flex items-start">
-                <Shield className="w-5 h-5 text-blue-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">
-                  <strong>6 hours in Ethics</strong> are required each cycle.
-                </span>
-              </li>
-              <li className="flex items-start">
-                <Users className="w-5 h-5 text-blue-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">
-                  <strong>3 hours in Cultural Diversity / Competency</strong> are required each cycle.
-                </span>
-              </li>
-              <li className="flex items-start">
-                <ScrollText className="w-5 h-5 text-blue-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">
-                  <strong>Texas Jurisprudence Exam</strong> must be completed every renewal; this counts as <strong>1 hour of ethics CE</strong>.
-                </span>
-              </li>
-              <li className="flex items-start">
-                <GraduationCap className="w-5 h-5 text-blue-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">
-                  <strong>Supervisors</strong> must also complete <strong>6 hours in supervision</strong>.
-                </span>
-              </li>
-              <li className="flex items-start">
-                <Calendar className="w-5 h-5 text-orange-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">
-                  Beginning <strong>January 1, 2024</strong>, at least <strong>50% of CE hours must come from qualifying providers</strong> (such as accredited universities, national professional associations, or governmental entities).
-                </span>
-              </li>
-              <li className="flex items-start">
-                <Award className="w-5 h-5 text-blue-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">
-                  Up to <strong>10 CE hours may be carried forward</strong> into the next renewal cycle if not used.
-                </span>
-              </li>
+            <ul className="space-y-3 text-gray-700">
+              <li>• <strong>24 total CE hours</strong> are required each renewal period.</li>
+              <li>• <strong>6 hours in Ethics</strong> are required each cycle.</li>
+              <li>• <strong>3 hours in Cultural Diversity / Competency</strong> are required each cycle.</li>
+              <li>• <strong>Texas Jurisprudence Exam</strong> must be completed every renewal; this counts as <strong>1 hour of ethics CE</strong>.</li>
+              <li>• <strong>Supervisors</strong> must also complete <strong>6 hours in supervision</strong>.</li>
+              <li>• Beginning <strong>January 1, 2024</strong>, at least <strong>50% of CE hours must come from qualifying providers</strong>.</li>
+              <li>• Up to <strong>10 CE hours may be carried forward</strong> into the next renewal cycle if not used.</li>
             </ul>
           </div>
         </section>
 
         <section className="mb-12">
-          <div className="flex items-center mb-6">
-            <FileText className="w-8 h-8 text-purple-600 mr-3" />
-            <h2 className="text-2xl font-bold text-gray-900">Documentation & Audit Compliance</h2>
-          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Documentation & Audit Compliance</h2>
           <div className="bg-purple-50 p-6 rounded-lg border border-purple-200">
-            <ul className="space-y-4">
-              <li className="text-gray-700">
-                <div className="flex items-start mb-2">
-                  <CheckCircle className="w-5 h-5 text-green-500 mt-1 mr-3 flex-shrink-0" />
-                  <span>Learners receive a <strong>certificate of completion</strong> that includes:</span>
-                </div>
-                <ul className="ml-12 mt-2 space-y-1">
-                  <li className="flex items-center">
-                    <span className="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
-                    <span className="text-gray-600">Participant name</span>
-                  </li>
-                  <li className="flex items-center">
-                    <span className="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
-                    <span className="text-gray-600">Course title and topic</span>
-                  </li>
-                  <li className="flex items-center">
-                    <span className="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
-                    <span className="text-gray-600">Date of completion</span>
-                  </li>
-                  <li className="flex items-center">
-                    <span className="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
-                    <span className="text-gray-600">Number of CE hours earned</span>
-                  </li>
-                </ul>
-              </li>
-              <li className="flex items-start">
-                <AlertCircle className="w-5 h-5 text-orange-500 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">
-                  <strong>BHEC does not pre-approve individual courses or providers.</strong> Instead, licensees are responsible for ensuring their courses meet the above requirements.
-                </span>
-              </li>
-              <li className="flex items-start">
-                <FolderOpen className="w-5 h-5 text-purple-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">
-                  All records of CE completion must be <strong>retained for at least 3 years</strong> in case of audit.
-                </span>
-              </li>
+            <p className="text-gray-700 mb-4">
+              Learners receive a <strong>certificate of completion</strong> that includes:
+            </p>
+            <ul className="ml-8 space-y-2 text-gray-600">
+              <li>• Participant name</li>
+              <li>• Course title and topic</li>
+              <li>• Date of completion</li>
+              <li>• Number of CE hours earned</li>
             </ul>
+            <p className="text-gray-700 mt-4">
+              <strong>BHEC does not pre-approve individual courses or providers.</strong> Instead, licensees are responsible 
+              for ensuring their courses meet the above requirements.
+            </p>
+            <p className="text-gray-700 mt-4">
+              All records of CE completion must be <strong>retained for at least 3 years</strong> in case of audit.
+            </p>
           </div>
         </section>
 
         <section className="mb-12">
-          <div className="flex items-center mb-6">
-            <Award className="w-8 h-8 text-green-600 mr-3" />
-            <h2 className="text-2xl font-bold text-gray-900">Our Commitment</h2>
-          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Our Commitment</h2>
           <div className="bg-green-50 p-6 rounded-lg border border-green-200">
             <p className="text-gray-700 mb-4">
               TheraBrake Academy™ designs all professional development and CEU courses to:
             </p>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">Align with Texas LPC renewal requirements</span>
-              </li>
-              <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">Provide clear documentation for audit purposes</span>
-              </li>
-              <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
-                <span className="text-gray-700">Deliver relevant, practical training directly related to the practice of professional counseling</span>
-              </li>
+            <ul className="space-y-2 text-gray-700">
+              <li>✓ Align with Texas LPC renewal requirements</li>
+              <li>✓ Provide clear documentation for audit purposes</li>
+              <li>✓ Deliver relevant, practical training directly related to the practice of professional counseling</li>
             </ul>
           </div>
         </section>
 
         <section className="mb-12">
           <div className="bg-gray-100 p-6 rounded-lg border border-gray-300">
-            <div className="flex items-start">
-              <ScrollText className="w-6 h-6 text-gray-700 mt-1 mr-3 flex-shrink-0" />
-              <div>
-                <p className="text-gray-700">
-                  📜 For the full rule, please see <strong>22 TAC § 681.140 – Requirements for Continuing Education</strong> via the Texas Administrative Code.
-                </p>
-                <a 
-                  href="https://texreg.sos.state.tx.us/public/readtac$ext.ViewTAC?tac_view=5&ti=22&pt=30&ch=681&sch=D&rl=Y"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center mt-3 text-blue-600 hover:text-blue-700 font-medium underline"
-                >
-                  View Official Texas Administrative Code
-                  <ExternalLink className="w-4 h-4 ml-1" />
-                </a>
-              </div>
-            </div>
+            <p className="text-gray-700">
+              📜 For the full rule, please see <strong>22 TAC § 681.140 – Requirements for Continuing Education</strong> 
+              via the Texas Administrative Code.
+            </p>
+            <a 
+              href="https://texreg.sos.state.tx.us/public/readtac$ext.ViewTAC?tac_view=5&ti=22&pt=30&ch=681&sch=D&rl=Y"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-3 text-blue-600 hover:text-blue-700 font-medium underline"
+            >
+              View Official Texas Administrative Code →
+            </a>
           </div>
         </section>
 
@@ -187,26 +85,25 @@ export default function TXLPCApprovedPage() {
             Ready to Earn Your Texas LPC CEUs?
           </h3>
           <p className="text-gray-700 mb-6">
-            Browse our selection of BHEC-compliant continuing education courses designed specifically for Texas Licensed Professional Counselors.
+            Browse our selection of BHEC-compliant continuing education courses designed specifically 
+            for Texas Licensed Professional Counselors.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             
               href="/courses"
-              className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Browse CEU Courses
-              <ChevronRight className="w-5 h-5 ml-2" />
+              Browse CEU Courses →
             </a>
             
               href="/contact"
-              className="inline-flex items-center justify-center px-6 py-3 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors"
+              className="inline-block px-6 py-3 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors"
             >
               Contact Support
-              <Info className="w-5 h-5 ml-2" />
             </a>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
