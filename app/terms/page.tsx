@@ -1,10 +1,11 @@
+'use client'
+
 import { 
   CheckCircle,
   FileText,
   Shield,
   AlertTriangle,
   Lock,
-  Scale,
   Info,
   BookOpen,
   UserCheck,
@@ -14,6 +15,12 @@ import {
 } from 'lucide-react'
 
 export default function TermsPage() {
+  const currentDate = new Date().toLocaleDateString('en-US', { 
+    month: 'long', 
+    day: 'numeric', 
+    year: 'numeric' 
+  })
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-20">
       <div className="container mx-auto px-4 max-w-4xl">
@@ -23,7 +30,7 @@ export default function TermsPage() {
             Terms of Use
           </h1>
           <p className="text-gray-600">
-            Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            Last updated: {currentDate}
           </p>
         </div>
 
@@ -159,8 +166,8 @@ export default function TermsPage() {
               <h3 className="font-semibold text-gray-900 mb-2">No Warranty:</h3>
               <p className="text-gray-700">
                 The Academy disclaims all warranties, express or implied, including merchantability, 
-                fitness for a particular purpose, or non-infringement. Content is provided "as is" 
-                and "as available."
+                fitness for a particular purpose, or non-infringement. Content is provided &quot;as is&quot; 
+                and &quot;as available.&quot;
               </p>
             </div>
             

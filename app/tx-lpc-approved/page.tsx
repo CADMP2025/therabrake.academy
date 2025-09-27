@@ -1,3 +1,5 @@
+'use client'
+
 import { 
   CheckCircle, 
   FileText, 
@@ -111,7 +113,7 @@ export default function TXLPCApprovedPage() {
                 <ul className="ml-12 mt-2 space-y-1">
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
-                    <span className="text-gray-600">Participant's name</span>
+                    <span className="text-gray-600">Participant&apos;s name</span>
                   </li>
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
