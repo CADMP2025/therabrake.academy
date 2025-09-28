@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev:main": "next dev -p 3000",
+    "dev:test": "next dev -p 3001"
   },
   "dependencies": {
     "@stripe/stripe-js": "^7.9.0",
