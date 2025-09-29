@@ -3,19 +3,19 @@
 import { useState, useCallback, useEffect } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import Table from '@tiptap/extension-table'
-import TableRow from '@tiptap/extension-table-row'
-import TableCell from '@tiptap/extension-table-cell'
-import TableHeader from '@tiptap/extension-table-header'
-import Image from '@tiptap/extension-image'
-import Link from '@tiptap/extension-link'
-import TextAlign from '@tiptap/extension-text-align'
-import Underline from '@tiptap/extension-underline'
-import Highlight from '@tiptap/extension-highlight'
-import CodeBlock from '@tiptap/extension-code-block'
-import Youtube from '@tiptap/extension-youtube'
-import Color from '@tiptap/extension-color'
-import TextStyle from '@tiptap/extension-text-style'
+import { Table } from '@tiptap/extension-table'
+import { TableRow } from '@tiptap/extension-table-row'
+import { TableCell } from '@tiptap/extension-table-cell'
+import { TableHeader } from '@tiptap/extension-table-header'
+import { Image } from '@tiptap/extension-image'
+import { Link } from '@tiptap/extension-link'
+import { TextAlign } from '@tiptap/extension-text-align'
+import { Underline } from '@tiptap/extension-underline'
+import { Highlight } from '@tiptap/extension-highlight'
+import { CodeBlock } from '@tiptap/extension-code-block'
+import { Youtube } from '@tiptap/extension-youtube'
+import { Color } from '@tiptap/extension-color'
+import { TextStyle } from '@tiptap/extension-text-style'
 import { useDebouncedCallback } from 'use-debounce'
 import DOMPurify from 'dompurify'
 import { 
@@ -205,6 +205,7 @@ export function CourseBuilder({
     setShowPasteModal(false)
     setPastedContent('')
   }
+
   return (
     <div className="h-full bg-white rounded-lg shadow-sm">
       {/* Header */}
