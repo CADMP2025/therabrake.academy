@@ -2,157 +2,101 @@
 @tailwind components;
 @tailwind utilities;
 
-/* TheraBrake Custom Properties */
 @layer base {
   :root {
-    /* Brand Colors */
-    --color-primary: 59 130 246; /* #3B82F6 */
-    --color-secondary: 16 185 129; /* #10B981 */
-    --color-accent: 250 204 21; /* #FACC15 */
-    --color-action: 249 115 22; /* #F97316 */
-    --color-alert: 239 68 68; /* #EF4444 */
-    
-    /* Neutral Colors */
-    --color-text-primary: 31 41 55; /* #1F2937 */
-    --color-text-secondary: 107 114 128; /* #6B7280 */
-    --color-background-light: 249 250 251; /* #F9FAFB */
-    --color-neutral-light: 229 231 235; /* #E5E7EB */
+    --primary: 59 130 246;      /* #3B82F6 */
+    --secondary: 16 185 129;     /* #10B981 */
+    --accent: 250 204 21;        /* #FACC15 */
+    --action: 249 115 22;        /* #F97316 */
+    --dark: 17 24 39;            /* #111827 */
+    --light: 249 250 251;        /* #F9FAFB */
+  }
+
+  body {
+    @apply bg-light text-dark;
   }
 }
 
-/* TheraBrake Component Styles */
 @layer components {
   /* Buttons */
   .btn-primary {
     @apply px-6 py-3 bg-primary text-white rounded-lg font-medium 
-           hover:bg-primary/90 transition-all duration-200 
+           hover:bg-blue-600 transition-all duration-200 
            hover:shadow-lg hover:scale-105 active:scale-95;
   }
 
   .btn-secondary {
     @apply px-6 py-3 bg-secondary text-white rounded-lg font-medium 
-           hover:bg-secondary/90 transition-all duration-200;
+           hover:bg-green-600 transition-all duration-200 
+           hover:shadow-lg hover:scale-105 active:scale-95;
   }
 
-  .btn-outline {
-    @apply px-6 py-3 border-2 border-primary text-primary rounded-lg 
-           font-medium hover:bg-primary hover:text-white transition-all duration-200;
+  .btn-accent {
+    @apply px-6 py-3 bg-accent text-dark rounded-lg font-medium 
+           hover:bg-yellow-500 transition-all duration-200 
+           hover:shadow-lg hover:scale-105 active:scale-95;
+  }
+
+  .btn-action {
+    @apply px-6 py-3 bg-action text-white rounded-lg font-medium 
+           hover:bg-orange-600 transition-all duration-200 
+           hover:shadow-lg hover:scale-105 active:scale-95;
   }
 
   /* Cards */
   .card {
-    @apply bg-white rounded-xl shadow-lg hover:shadow-xl 
-           transition-shadow duration-300 overflow-hidden;
+    @apply bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow;
   }
 
-  .card-hover {
-    @apply transform hover:scale-105 hover:-translate-y-2 
-           transition-all duration-300;
+  .card-dark {
+    @apply bg-dark text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow;
   }
 
-  /* Course Icons Styling */
-  .course-icon {
-    @apply w-12 h-12 flex items-center justify-center 
-           rounded-lg bg-gradient-to-br;
+  /* Inputs */
+  .input {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg 
+           focus:ring-2 focus:ring-primary focus:border-transparent
+           transition-all duration-200;
   }
 
-  .course-icon-primary {
-    @apply from-primary/20 to-primary/10 text-primary;
+  .textarea {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg 
+           focus:ring-2 focus:ring-primary focus:border-transparent
+           transition-all duration-200 resize-none;
   }
 
-  .course-icon-secondary {
-    @apply from-secondary/20 to-secondary/10 text-secondary;
+  /* Navigation */
+  .nav-link {
+    @apply text-gray-600 hover:text-primary transition-colors duration-200;
   }
 
-  .course-icon-accent {
-    @apply from-accent/20 to-accent/10 text-accent;
+  .nav-link-active {
+    @apply text-primary font-semibold;
   }
+}
 
-  .course-icon-action {
-    @apply from-action/20 to-action/10 text-action;
-  }
-
+@layer utilities {
   /* Animations */
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  .animate-slideDown {
-    animation: slideDown 0.3s ease-out;
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .animate-fadeIn {
-    animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.5s ease-out;
   }
 
-  /* Loading States */
-  .skeleton {
-    @apply animate-pulse bg-gray-200 rounded;
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
   }
 
-  /* Form Elements */
-  .input-primary {
-    @apply w-full px-4 py-3 border border-neutral-light rounded-lg 
-           focus:outline-none focus:ring-2 focus:ring-primary 
-           focus:border-transparent transition-all duration-200;
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-gray-100;
   }
 
-  /* Gradients */
-  .gradient-primary {
-    @apply bg-gradient-to-r from-primary to-secondary;
-  }
-
-  .gradient-warm {
-    @apply bg-gradient-to-r from-accent to-action;
-  }
-
-  .gradient-hero {
-    @apply bg-gradient-to-br from-primary/10 via-white to-secondary/10;
-  }
-}
-
-/* Utility Classes */
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-}
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  .dark-compatible {
-    @apply bg-gray-900 text-white;
-  }
-}
-
-/* Print Styles */
-@media print {
-  .no-print {
-    display: none !important;
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 rounded-full hover:bg-gray-500;
   }
 }
