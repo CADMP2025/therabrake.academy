@@ -2,16 +2,157 @@
 @tailwind components;
 @tailwind utilities;
 
+/* TheraBrake Custom Properties */
+@layer base {
+  :root {
+    /* Brand Colors */
+    --color-primary: 59 130 246; /* #3B82F6 */
+    --color-secondary: 16 185 129; /* #10B981 */
+    --color-accent: 250 204 21; /* #FACC15 */
+    --color-action: 249 115 22; /* #F97316 */
+    --color-alert: 239 68 68; /* #EF4444 */
+    
+    /* Neutral Colors */
+    --color-text-primary: 31 41 55; /* #1F2937 */
+    --color-text-secondary: 107 114 128; /* #6B7280 */
+    --color-background-light: 249 250 251; /* #F9FAFB */
+    --color-neutral-light: 229 231 235; /* #E5E7EB */
+  }
+}
+
+/* TheraBrake Component Styles */
 @layer components {
-  .button {
-    @apply inline-flex items-center rounded-xl px-4 py-2 font-medium 
-           bg-brand-orange text-white hover:bg-brand-orange/90 transition;
+  /* Buttons */
+  .btn-primary {
+    @apply px-6 py-3 bg-primary text-white rounded-lg font-medium 
+           hover:bg-primary/90 transition-all duration-200 
+           hover:shadow-lg hover:scale-105 active:scale-95;
   }
-  .input {
-    @apply w-full rounded-lg border border-brand-gray/40 px-3 py-2 
-           focus:outline-none focus:ring-2 focus:ring-brand-blue;
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-secondary text-white rounded-lg font-medium 
+           hover:bg-secondary/90 transition-all duration-200;
   }
+
+  .btn-outline {
+    @apply px-6 py-3 border-2 border-primary text-primary rounded-lg 
+           font-medium hover:bg-primary hover:text-white transition-all duration-200;
+  }
+
+  /* Cards */
   .card {
-    @apply rounded-2xl bg-white shadow-sm ring-1 ring-black/5 p-4;
+    @apply bg-white rounded-xl shadow-lg hover:shadow-xl 
+           transition-shadow duration-300 overflow-hidden;
+  }
+
+  .card-hover {
+    @apply transform hover:scale-105 hover:-translate-y-2 
+           transition-all duration-300;
+  }
+
+  /* Course Icons Styling */
+  .course-icon {
+    @apply w-12 h-12 flex items-center justify-center 
+           rounded-lg bg-gradient-to-br;
+  }
+
+  .course-icon-primary {
+    @apply from-primary/20 to-primary/10 text-primary;
+  }
+
+  .course-icon-secondary {
+    @apply from-secondary/20 to-secondary/10 text-secondary;
+  }
+
+  .course-icon-accent {
+    @apply from-accent/20 to-accent/10 text-accent;
+  }
+
+  .course-icon-action {
+    @apply from-action/20 to-action/10 text-action;
+  }
+
+  /* Animations */
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .animate-slideDown {
+    animation: slideDown 0.3s ease-out;
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  /* Loading States */
+  .skeleton {
+    @apply animate-pulse bg-gray-200 rounded;
+  }
+
+  /* Form Elements */
+  .input-primary {
+    @apply w-full px-4 py-3 border border-neutral-light rounded-lg 
+           focus:outline-none focus:ring-2 focus:ring-primary 
+           focus:border-transparent transition-all duration-200;
+  }
+
+  /* Gradients */
+  .gradient-primary {
+    @apply bg-gradient-to-r from-primary to-secondary;
+  }
+
+  .gradient-warm {
+    @apply bg-gradient-to-r from-accent to-action;
+  }
+
+  .gradient-hero {
+    @apply bg-gradient-to-br from-primary/10 via-white to-secondary/10;
+  }
+}
+
+/* Utility Classes */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .dark-compatible {
+    @apply bg-gray-900 text-white;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
   }
 }
