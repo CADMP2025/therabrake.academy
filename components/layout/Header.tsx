@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 import { User } from '@supabase/supabase-js'
 import { Menu, X, LogOut, User as UserIcon, BookOpen, GraduationCap } from 'lucide-react'
 
@@ -13,7 +13,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
-  const supabase = createClient()
+  // Using imported supabase client
 
   useEffect(() => {
     const getUser = async () => {
