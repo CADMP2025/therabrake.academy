@@ -1,3 +1,4 @@
+import { supabase } from '@/lib/supabase/client'
 'use client'
 
 import Link from 'next/link'
