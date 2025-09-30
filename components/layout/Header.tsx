@@ -6,13 +6,22 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase/client'
 import { User } from '@supabase/supabase-js'
-import { Menu, X, LogOut, User as UserIcon, BookOpen, GraduationCap } from 'lucide-react'
+import { Menu, X, LogOut, User as UserIcon, BookOpen, GraduationCap, Home, Info, Phone } from 'lucide-react'
 
 export function Header() {
   const pathname = usePathname()
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     const getUser = async () => {
@@ -34,59 +43,107 @@ export function Header() {
   }
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200">
+    <header className={`fixed w-full top-0 z-50 transition-all duration-300 ${
+      isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm shadow-md'
+    }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <Image
-              src="/images/logo/logo.png"
-              alt="TheraBrake Academy"
-              width={150}
-              height={40}
-              className="h-10 w-auto"
-            />
+          <Link href="/" className="flex items-center group">
+            <div className="relative">
+              <Image
+                src="/images/logo/logo.png"
+                alt="TheraBrake Academy"
+                width={150}
+                height={40}
+                className="h-10 w-auto transition-transform group-hover:scale-105"
+                priority
+              />
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link 
-              href="/courses" 
-              className={pathname === '/courses' ? 'nav-link-active' : 'nav-link'}
+              href="/" 
+              className={`flex items-center space-x-1 font-medium transition-colors ${
+                pathname === '/' 
+                  ? 'text-primary' 
+                  : 'text-gray-600 hover:text-primary'
+              }`}
             >
-              <BookOpen className="inline-block w-4 h-4 mr-1" />
-              Courses
+              <Home className="w-4 h-4" />
+              <span>Home</span>
+            </Link>
+            
+            <Link 
+              href="/courses" 
+              className={`flex items-center space-x-1 font-medium transition-colors ${
+                pathname.startsWith('/courses') 
+                  ? 'text-primary' 
+                  : 'text-gray-600 hover:text-primary'
+              }`}
+            >
+              <BookOpen className="w-4 h-4" />
+              <span>Courses</span>
+            </Link>
+
+            <Link 
+              href="/about" 
+              className={`flex items-center space-x-1 font-medium transition-colors ${
+                pathname === '/about' 
+                  ? 'text-primary' 
+                  : 'text-gray-600 hover:text-primary'
+              }`}
+            >
+              <Info className="w-4 h-4" />
+              <span>About</span>
+            </Link>
+
+            <Link 
+              href="/contact" 
+              className={`flex items-center space-x-1 font-medium transition-colors ${
+                pathname === '/contact' 
+                  ? 'text-primary' 
+                  : 'text-gray-600 hover:text-primary'
+              }`}
+            >
+              <Phone className="w-4 h-4" />
+              <span>Contact</span>
             </Link>
             
             {user ? (
               <>
                 <Link 
                   href="/dashboard" 
-                  className={pathname === '/dashboard' ? 'nav-link-active' : 'nav-link'}
+                  className={`font-medium transition-colors ${
+                    pathname === '/dashboard' 
+                      ? 'text-primary' 
+                      : 'text-gray-600 hover:text-primary'
+                  }`}
                 >
                   Dashboard
                 </Link>
-                <Link 
-                  href="/profile" 
-                  className={pathname === '/profile' ? 'nav-link-active' : 'nav-link'}
-                >
-                  <UserIcon className="inline-block w-4 h-4 mr-1" />
-                  Profile
-                </Link>
                 <button 
                   onClick={handleSignOut}
-                  className="nav-link flex items-center"
+                  className="flex items-center space-x-1 font-medium text-gray-600 hover:text-red-600 transition-colors"
                 >
-                  <LogOut className="w-4 h-4 mr-1" />
-                  Sign Out
+                  <LogOut className="w-4 h-4" />
+                  <span>Sign Out</span>
                 </button>
               </>
             ) : (
               <>
-                <Link href="/auth/login" className="nav-link">
+                <Link 
+                  href="/auth/login" 
+                  className="font-medium text-gray-600 hover:text-primary transition-colors"
+                >
                   Sign In
                 </Link>
-                <Link href="/auth/register" className="btn-primary">
+                <Link 
+                  href="/auth/register" 
+                  className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-blue-600 transition-all hover:shadow-lg transform hover:scale-105"
+                >
                   Get Started
                 </Link>
               </>
@@ -95,7 +152,7 @@ export function Header() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden"
+            className="md:hidden p-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -104,35 +161,72 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 animate-fadeIn">
+          <div className="md:hidden py-4 border-t animate-fadeIn">
             <div className="flex flex-col space-y-3">
               <Link 
+                href="/" 
+                className={`px-3 py-2 rounded-lg font-medium transition-colors ${
+                  pathname === '/' 
+                    ? 'bg-primary/10 text-primary' 
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Home
+              </Link>
+              
+              <Link 
                 href="/courses" 
-                className={pathname === '/courses' ? 'nav-link-active' : 'nav-link'}
+                className={`px-3 py-2 rounded-lg font-medium transition-colors ${
+                  pathname.startsWith('/courses') 
+                    ? 'bg-primary/10 text-primary' 
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Courses
+              </Link>
+
+              <Link 
+                href="/about" 
+                className={`px-3 py-2 rounded-lg font-medium transition-colors ${
+                  pathname === '/about' 
+                    ? 'bg-primary/10 text-primary' 
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </Link>
+
+              <Link 
+                href="/contact" 
+                className={`px-3 py-2 rounded-lg font-medium transition-colors ${
+                  pathname === '/contact' 
+                    ? 'bg-primary/10 text-primary' 
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact
               </Link>
               
               {user ? (
                 <>
                   <Link 
                     href="/dashboard" 
-                    className={pathname === '/dashboard' ? 'nav-link-active' : 'nav-link'}
+                    className={`px-3 py-2 rounded-lg font-medium transition-colors ${
+                      pathname === '/dashboard' 
+                        ? 'bg-primary/10 text-primary' 
+                        : 'text-gray-600 hover:bg-gray-100'
+                    }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Dashboard
                   </Link>
-                  <Link 
-                    href="/profile" 
-                    className={pathname === '/profile' ? 'nav-link-active' : 'nav-link'}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Profile
-                  </Link>
                   <button 
                     onClick={handleSignOut}
-                    className="nav-link text-left"
+                    className="px-3 py-2 rounded-lg font-medium text-left text-red-600 hover:bg-red-50 transition-colors"
                   >
                     Sign Out
                   </button>
@@ -141,14 +235,14 @@ export function Header() {
                 <>
                   <Link 
                     href="/auth/login" 
-                    className="nav-link"
+                    className="px-3 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Sign In
                   </Link>
                   <Link 
                     href="/auth/register" 
-                    className="btn-primary text-center"
+                    className="px-3 py-2 bg-primary text-white rounded-lg font-medium text-center hover:bg-blue-600 transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Get Started
