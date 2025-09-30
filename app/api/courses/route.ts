@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 import { z } from 'zod';
 
 const courseSchema = z.object({
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const validated = courseSchema.parse(body);
     
-    const supabase = createClient();
+    // Using imported supabase instance;
     
     // Create course
     const { data: course, error } = await supabase

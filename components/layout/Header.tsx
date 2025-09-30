@@ -1,4 +1,3 @@
-import { supabase } from '@/lib/supabase/client'
 'use client'
 
 import Link from 'next/link'
@@ -9,12 +8,11 @@ import { supabase } from '@/lib/supabase/client'
 import { User } from '@supabase/supabase-js'
 import { Menu, X, LogOut, User as UserIcon, BookOpen, GraduationCap } from 'lucide-react'
 
-export default function Header() {
-  const [user, setUser] = useState<User | null>(null)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+export function Header() {
   const pathname = usePathname()
   const router = useRouter()
-  // Using imported supabase client
+  const [user, setUser] = useState<User | null>(null)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useEffect(() => {
     const getUser = async () => {
@@ -28,165 +26,136 @@ export default function Header() {
     })
 
     return () => subscription.unsubscribe()
-  }, [supabase])
+  }, [])
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
-    router.push('/')
+    router.push('/auth/login')
   }
 
-  const navLinks = [
-    { href: '/courses', label: 'Browse Courses', icon: BookOpen },
-    { href: '/about', label: 'About', icon: null },
-    { href: '/contact', label: 'Contact', icon: null },
-  ]
-
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50 border-b-2 border-primary/10">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo with Image */}
-          <Link href="/" className="flex items-center space-x-3 group">
-            <div className="relative w-12 h-12 transition-transform group-hover:scale-105">
-              <Image
-                src="/images/logo/logo.png"
-                alt="TheraBrake Academy"
-                width={48}
-                height={48}
-                className="object-contain"
-                priority
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                TheraBrake
-              </span>
-              <span className="text-xs text-text-secondary uppercase tracking-wider">Academy</span>
-            </div>
+    <header className="bg-white shadow-sm border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/images/logo/logo.png"
+              alt="TheraBrake Academy"
+              width={150}
+              height={40}
+              className="h-10 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`flex items-center gap-2 text-sm font-medium transition-all duration-200 hover:text-primary ${
-                  pathname === link.href
-                    ? 'text-primary border-b-2 border-primary pb-1'
-                    : 'text-text-secondary hover:translate-y-[-2px]'
-                }`}
-              >
-                {link.icon && <link.icon className="w-4 h-4" />}
-                {link.label}
-              </Link>
-            ))}
+            <Link 
+              href="/courses" 
+              className={pathname === '/courses' ? 'nav-link-active' : 'nav-link'}
+            >
+              <BookOpen className="inline-block w-4 h-4 mr-1" />
+              Courses
+            </Link>
             
             {user ? (
-              <div className="flex items-center gap-4">
-                <Link
-                  href="/dashboard"
-                  className="flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all duration-200"
+              <>
+                <Link 
+                  href="/dashboard" 
+                  className={pathname === '/dashboard' ? 'nav-link-active' : 'nav-link'}
                 >
-                  <UserIcon className="w-4 h-4" />
-                  <span className="font-medium">Dashboard</span>
+                  Dashboard
                 </Link>
-                <button
+                <Link 
+                  href="/profile" 
+                  className={pathname === '/profile' ? 'nav-link-active' : 'nav-link'}
+                >
+                  <UserIcon className="inline-block w-4 h-4 mr-1" />
+                  Profile
+                </Link>
+                <button 
                   onClick={handleSignOut}
-                  className="flex items-center gap-2 px-4 py-2 text-text-secondary hover:text-alert transition-colors"
+                  className="nav-link flex items-center"
                 >
-                  <LogOut className="w-4 h-4" />
-                  <span className="text-sm">Sign Out</span>
+                  <LogOut className="w-4 h-4 mr-1" />
+                  Sign Out
                 </button>
-              </div>
+              </>
             ) : (
-              <div className="flex items-center gap-4">
-                <Link
-                  href="/auth/login"
-                  className="text-sm font-medium text-text-secondary hover:text-primary transition-colors"
-                >
+              <>
+                <Link href="/auth/login" className="nav-link">
                   Sign In
                 </Link>
-                <Link
-                  href="/auth/register"
-                  className="px-6 py-2.5 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium hover:shadow-lg transition-all duration-200 hover:scale-105"
-                >
+                <Link href="/auth/register" className="btn-primary">
                   Get Started
                 </Link>
-              </div>
+              </>
             )}
           </nav>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile menu button */}
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6 text-text-primary" />
-            ) : (
-              <Menu className="h-6 w-6 text-text-primary" />
-            )}
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t animate-slideDown">
-            <nav className="flex flex-col space-y-3">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                    pathname === link.href
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-text-secondary hover:bg-gray-50'
-                  }`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.icon && <link.icon className="w-4 h-4" />}
-                  {link.label}
-                </Link>
-              ))}
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden py-4 animate-fadeIn">
+            <div className="flex flex-col space-y-3">
+              <Link 
+                href="/courses" 
+                className={pathname === '/courses' ? 'nav-link-active' : 'nav-link'}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Courses
+              </Link>
               
               {user ? (
                 <>
-                  <Link
-                    href="/dashboard"
-                    className="flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-lg"
-                    onClick={() => setMobileMenuOpen(false)}
+                  <Link 
+                    href="/dashboard" 
+                    className={pathname === '/dashboard' ? 'nav-link-active' : 'nav-link'}
+                    onClick={() => setIsMenuOpen(false)}
                   >
-                    <UserIcon className="w-4 h-4" />
                     Dashboard
                   </Link>
-                  <button
-                    onClick={handleSignOut}
-                    className="flex items-center gap-2 px-4 py-2 text-alert text-left"
+                  <Link 
+                    href="/profile" 
+                    className={pathname === '/profile' ? 'nav-link-active' : 'nav-link'}
+                    onClick={() => setIsMenuOpen(false)}
                   >
-                    <LogOut className="w-4 h-4" />
+                    Profile
+                  </Link>
+                  <button 
+                    onClick={handleSignOut}
+                    className="nav-link text-left"
+                  >
                     Sign Out
                   </button>
                 </>
               ) : (
                 <>
-                  <Link
-                    href="/auth/login"
-                    className="px-4 py-2 text-text-secondary"
-                    onClick={() => setMobileMenuOpen(false)}
+                  <Link 
+                    href="/auth/login" 
+                    className="nav-link"
+                    onClick={() => setIsMenuOpen(false)}
                   >
                     Sign In
                   </Link>
-                  <Link
-                    href="/auth/register"
-                    className="px-4 py-2 bg-primary text-white rounded-lg text-center"
-                    onClick={() => setMobileMenuOpen(false)}
+                  <Link 
+                    href="/auth/register" 
+                    className="btn-primary text-center"
+                    onClick={() => setIsMenuOpen(false)}
                   >
                     Get Started
                   </Link>
                 </>
               )}
-            </nav>
+            </div>
           </div>
         )}
       </div>
