@@ -1,13 +1,13 @@
 import dynamic from "next/dynamic";
-const CourseBuilder = dynamic(() => import("@/components/course/CourseBuilder"), { 
-  ssr: false 
-});
+
+const IntegratedCourseBuilder = dynamic(
+  () => import("@/components/course/IntegratedCourseBuilder").then(mod => mod.IntegratedCourseBuilder),
+  { 
+    ssr: false,
+    loading: () => <div>Loading course builder...</div>
+  }
+);
 
 export default function CourseBuilderPage() {
-  return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Cut & Paste Course Builder</h1>
-      <CourseBuilder />
-    </div>
-  );
+  return <IntegratedCourseBuilder />;
 }
