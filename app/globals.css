@@ -2,23 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-/* TheraBrake Brand Colors as CSS variables */
+/* Custom CSS without @apply to avoid build errors */
 :root {
   --color-primary: #3B82F6;
+  --color-primary-light: #60A5FA;
+  --color-primary-dark: #2563EB;
   --color-secondary: #10B981;
+  --color-secondary-light: #34D399;
+  --color-secondary-dark: #059669;
   --color-accent: #FACC15;
+  --color-accent-light: #FDE047;
+  --color-accent-dark: #EAB308;
   --color-action: #F97316;
-  --color-dark: #111827;
-  --color-light: #F9FAFB;
+  --color-action-light: #FB923C;
+  --color-action-dark: #EA580C;
 }
 
-/* Base styles */
 body {
-  background-color: var(--color-light);
-  color: var(--color-dark);
+  background-color: #F9FAFB;
+  color: #111827;
 }
 
-/* Button styles without @apply */
+/* Button styles */
 .btn-primary {
   padding: 0.75rem 1.5rem;
   background-color: var(--color-primary);
@@ -27,19 +32,12 @@ body {
   font-weight: 500;
   transition: all 0.2s;
   display: inline-block;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
 }
 
 .btn-primary:hover {
-  background-color: #2563EB;
+  background-color: var(--color-primary-dark);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   transform: scale(1.05);
-}
-
-.btn-primary:active {
-  transform: scale(0.95);
 }
 
 .btn-secondary {
@@ -50,13 +48,10 @@ body {
   font-weight: 500;
   transition: all 0.2s;
   display: inline-block;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
 }
 
 .btn-secondary:hover {
-  background-color: #059669;
+  background-color: var(--color-secondary-dark);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   transform: scale(1.05);
 }
@@ -64,18 +59,15 @@ body {
 .btn-accent {
   padding: 0.75rem 1.5rem;
   background-color: var(--color-accent);
-  color: var(--color-dark);
+  color: #111827;
   border-radius: 0.5rem;
   font-weight: 500;
   transition: all 0.2s;
   display: inline-block;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
 }
 
 .btn-accent:hover {
-  background-color: #EAB308;
+  background-color: var(--color-accent-dark);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   transform: scale(1.05);
 }
@@ -88,13 +80,10 @@ body {
   font-weight: 500;
   transition: all 0.2s;
   display: inline-block;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
 }
 
 .btn-action:hover {
-  background-color: #EA580C;
+  background-color: var(--color-action-dark);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   transform: scale(1.05);
 }
@@ -127,22 +116,7 @@ body {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.textarea {
-  width: 100%;
-  padding: 0.5rem 1rem;
-  border: 1px solid #D1D5DB;
-  border-radius: 0.5rem;
-  transition: all 0.2s;
-  resize: vertical;
-}
-
-.textarea:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Navigation styles */
+/* Navigation */
 .nav-link {
   color: #6B7280;
   transition: color 0.2s;
