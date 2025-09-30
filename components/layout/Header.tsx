@@ -45,31 +45,37 @@ export function Header() {
   return (
     <header className={`fixed w-full top-0 z-50 transition-all duration-300 ${
       isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm shadow-md'
-    }`}>
+    } border-b-4 border-primary`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center group">
-            <div className="relative">
-              <Image
-                src="/images/logo/logo.png"
-                alt="TheraBrake Academy"
-                width={150}
-                height={40}
-                className="h-10 w-auto transition-transform group-hover:scale-105"
-                priority
-              />
+          {/* Logo and Brand Name */}
+          <Link href="/" className="flex items-center space-x-2 group">
+            <Image
+              src="/images/logo/logo.png"
+              alt="TheraBrake Academy"
+              width={40}
+              height={40}
+              className="h-10 w-10 transition-transform group-hover:scale-110"
+              priority
+            />
+            <div className="flex flex-col">
+              <span className="text-xl font-bold">
+                <span className="text-primary">Thera</span>
+                <span className="text-action">Brake</span>
+                <sup className="text-xs text-gray-500 ml-0.5">™</sup>
+              </span>
+              <span className="text-xs text-gray-500 -mt-1">Academy</span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6">
             <Link 
               href="/" 
-              className={`flex items-center space-x-1 font-medium transition-colors ${
+              className={`flex items-center space-x-1 font-medium transition-all duration-200 px-3 py-2 rounded-lg ${
                 pathname === '/' 
-                  ? 'text-primary' 
-                  : 'text-gray-600 hover:text-primary'
+                  ? 'bg-primary/10 text-primary' 
+                  : 'text-gray-600 hover:text-primary hover:bg-primary/5'
               }`}
             >
               <Home className="w-4 h-4" />
@@ -78,10 +84,10 @@ export function Header() {
             
             <Link 
               href="/courses" 
-              className={`flex items-center space-x-1 font-medium transition-colors ${
+              className={`flex items-center space-x-1 font-medium transition-all duration-200 px-3 py-2 rounded-lg ${
                 pathname.startsWith('/courses') 
-                  ? 'text-primary' 
-                  : 'text-gray-600 hover:text-primary'
+                  ? 'bg-primary/10 text-primary' 
+                  : 'text-gray-600 hover:text-primary hover:bg-primary/5'
               }`}
             >
               <BookOpen className="w-4 h-4" />
@@ -90,10 +96,10 @@ export function Header() {
 
             <Link 
               href="/about" 
-              className={`flex items-center space-x-1 font-medium transition-colors ${
+              className={`flex items-center space-x-1 font-medium transition-all duration-200 px-3 py-2 rounded-lg ${
                 pathname === '/about' 
-                  ? 'text-primary' 
-                  : 'text-gray-600 hover:text-primary'
+                  ? 'bg-primary/10 text-primary' 
+                  : 'text-gray-600 hover:text-primary hover:bg-primary/5'
               }`}
             >
               <Info className="w-4 h-4" />
@@ -102,10 +108,10 @@ export function Header() {
 
             <Link 
               href="/contact" 
-              className={`flex items-center space-x-1 font-medium transition-colors ${
+              className={`flex items-center space-x-1 font-medium transition-all duration-200 px-3 py-2 rounded-lg ${
                 pathname === '/contact' 
-                  ? 'text-primary' 
-                  : 'text-gray-600 hover:text-primary'
+                  ? 'bg-primary/10 text-primary' 
+                  : 'text-gray-600 hover:text-primary hover:bg-primary/5'
               }`}
             >
               <Phone className="w-4 h-4" />
@@ -116,17 +122,17 @@ export function Header() {
               <>
                 <Link 
                   href="/dashboard" 
-                  className={`font-medium transition-colors ${
+                  className={`font-medium transition-all duration-200 px-3 py-2 rounded-lg ${
                     pathname === '/dashboard' 
-                      ? 'text-primary' 
-                      : 'text-gray-600 hover:text-primary'
+                      ? 'bg-secondary/10 text-secondary' 
+                      : 'text-gray-600 hover:text-secondary hover:bg-secondary/5'
                   }`}
                 >
                   Dashboard
                 </Link>
                 <button 
                   onClick={handleSignOut}
-                  className="flex items-center space-x-1 font-medium text-gray-600 hover:text-red-600 transition-colors"
+                  className="flex items-center space-x-1 font-medium text-gray-600 hover:text-red-600 transition-all duration-200 px-3 py-2 rounded-lg hover:bg-red-50"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Sign Out</span>
@@ -136,13 +142,13 @@ export function Header() {
               <>
                 <Link 
                   href="/auth/login" 
-                  className="font-medium text-gray-600 hover:text-primary transition-colors"
+                  className="font-medium text-gray-600 hover:text-primary transition-all duration-200 px-3 py-2"
                 >
                   Sign In
                 </Link>
                 <Link 
                   href="/auth/register" 
-                  className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-blue-600 transition-all hover:shadow-lg transform hover:scale-105"
+                  className="px-5 py-2.5 bg-gradient-to-r from-primary to-blue-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-primary transition-all duration-300 hover:shadow-lg transform hover:scale-105"
                 >
                   Get Started
                 </Link>
@@ -152,7 +158,7 @@ export function Header() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 text-gray-600 hover:text-primary transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -161,14 +167,14 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t animate-fadeIn">
-            <div className="flex flex-col space-y-3">
+          <div className="md:hidden py-4 border-t border-gray-100 animate-fadeIn">
+            <div className="flex flex-col space-y-2">
               <Link 
                 href="/" 
-                className={`px-3 py-2 rounded-lg font-medium transition-colors ${
+                className={`px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
                   pathname === '/' 
                     ? 'bg-primary/10 text-primary' 
-                    : 'text-gray-600 hover:bg-gray-100'
+                    : 'text-gray-600 hover:bg-gray-50'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -177,10 +183,10 @@ export function Header() {
               
               <Link 
                 href="/courses" 
-                className={`px-3 py-2 rounded-lg font-medium transition-colors ${
+                className={`px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
                   pathname.startsWith('/courses') 
                     ? 'bg-primary/10 text-primary' 
-                    : 'text-gray-600 hover:bg-gray-100'
+                    : 'text-gray-600 hover:bg-gray-50'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -189,10 +195,10 @@ export function Header() {
 
               <Link 
                 href="/about" 
-                className={`px-3 py-2 rounded-lg font-medium transition-colors ${
+                className={`px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
                   pathname === '/about' 
                     ? 'bg-primary/10 text-primary' 
-                    : 'text-gray-600 hover:bg-gray-100'
+                    : 'text-gray-600 hover:bg-gray-50'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -201,24 +207,26 @@ export function Header() {
 
               <Link 
                 href="/contact" 
-                className={`px-3 py-2 rounded-lg font-medium transition-colors ${
+                className={`px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
                   pathname === '/contact' 
                     ? 'bg-primary/10 text-primary' 
-                    : 'text-gray-600 hover:bg-gray-100'
+                    : 'text-gray-600 hover:bg-gray-50'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contact
               </Link>
               
+              <hr className="my-2 border-gray-200" />
+              
               {user ? (
                 <>
                   <Link 
                     href="/dashboard" 
-                    className={`px-3 py-2 rounded-lg font-medium transition-colors ${
+                    className={`px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
                       pathname === '/dashboard' 
-                        ? 'bg-primary/10 text-primary' 
-                        : 'text-gray-600 hover:bg-gray-100'
+                        ? 'bg-secondary/10 text-secondary' 
+                        : 'text-gray-600 hover:bg-gray-50'
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -226,7 +234,7 @@ export function Header() {
                   </Link>
                   <button 
                     onClick={handleSignOut}
-                    className="px-3 py-2 rounded-lg font-medium text-left text-red-600 hover:bg-red-50 transition-colors"
+                    className="px-4 py-3 rounded-lg font-medium text-left text-red-600 hover:bg-red-50 transition-all duration-200"
                   >
                     Sign Out
                   </button>
@@ -235,14 +243,14 @@ export function Header() {
                 <>
                   <Link 
                     href="/auth/login" 
-                    className="px-3 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+                    className="px-4 py-3 rounded-lg font-medium text-gray-600 hover:bg-gray-50 transition-all duration-200"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Sign In
                   </Link>
                   <Link 
                     href="/auth/register" 
-                    className="px-3 py-2 bg-primary text-white rounded-lg font-medium text-center hover:bg-blue-600 transition-colors"
+                    className="px-4 py-3 bg-gradient-to-r from-primary to-blue-600 text-white rounded-lg font-medium text-center hover:from-blue-600 hover:to-primary transition-all duration-300"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Get Started
