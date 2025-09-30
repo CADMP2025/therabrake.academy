@@ -2,101 +2,173 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --primary: 59 130 246;      /* #3B82F6 */
-    --secondary: 16 185 129;     /* #10B981 */
-    --accent: 250 204 21;        /* #FACC15 */
-    --action: 249 115 22;        /* #F97316 */
-    --dark: 17 24 39;            /* #111827 */
-    --light: 249 250 251;        /* #F9FAFB */
-  }
+/* TheraBrake Brand Colors as CSS variables */
+:root {
+  --color-primary: #3B82F6;
+  --color-secondary: #10B981;
+  --color-accent: #FACC15;
+  --color-action: #F97316;
+  --color-dark: #111827;
+  --color-light: #F9FAFB;
+}
 
-  body {
-    @apply bg-light text-dark;
+/* Base styles */
+body {
+  background-color: var(--color-light);
+  color: var(--color-dark);
+}
+
+/* Button styles without @apply */
+.btn-primary {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: inline-block;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #2563EB;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+}
+
+.btn-primary:active {
+  transform: scale(0.95);
+}
+
+.btn-secondary {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-secondary);
+  color: white;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: inline-block;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: #059669;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+}
+
+.btn-accent {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-accent);
+  color: var(--color-dark);
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: inline-block;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-accent:hover {
+  background-color: #EAB308;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+}
+
+.btn-action {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-action);
+  color: white;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: inline-block;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-action:hover {
+  background-color: #EA580C;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+}
+
+/* Card styles */
+.card {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Input styles */
+.input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #D1D5DB;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #D1D5DB;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Navigation styles */
+.nav-link {
+  color: #6B7280;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--color-primary);
+}
+
+.nav-link-active {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
   }
 }
 
-@layer components {
-  /* Buttons */
-  .btn-primary {
-    @apply px-6 py-3 bg-primary text-white rounded-lg font-medium 
-           hover:bg-blue-600 transition-all duration-200 
-           hover:shadow-lg hover:scale-105 active:scale-95;
-  }
-
-  .btn-secondary {
-    @apply px-6 py-3 bg-secondary text-white rounded-lg font-medium 
-           hover:bg-green-600 transition-all duration-200 
-           hover:shadow-lg hover:scale-105 active:scale-95;
-  }
-
-  .btn-accent {
-    @apply px-6 py-3 bg-accent text-dark rounded-lg font-medium 
-           hover:bg-yellow-500 transition-all duration-200 
-           hover:shadow-lg hover:scale-105 active:scale-95;
-  }
-
-  .btn-action {
-    @apply px-6 py-3 bg-action text-white rounded-lg font-medium 
-           hover:bg-orange-600 transition-all duration-200 
-           hover:shadow-lg hover:scale-105 active:scale-95;
-  }
-
-  /* Cards */
-  .card {
-    @apply bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow;
-  }
-
-  .card-dark {
-    @apply bg-dark text-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow;
-  }
-
-  /* Inputs */
-  .input {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg 
-           focus:ring-2 focus:ring-primary focus:border-transparent
-           transition-all duration-200;
-  }
-
-  .textarea {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg 
-           focus:ring-2 focus:ring-primary focus:border-transparent
-           transition-all duration-200 resize-none;
-  }
-
-  /* Navigation */
-  .nav-link {
-    @apply text-gray-600 hover:text-primary transition-colors duration-200;
-  }
-
-  .nav-link-active {
-    @apply text-primary font-semibold;
-  }
-}
-
-@layer utilities {
-  /* Animations */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .animate-fadeIn {
-    animation: fadeIn 0.5s ease-out;
-  }
-
-  /* Custom scrollbar */
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    @apply bg-gray-100;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-gray-400 rounded-full hover:bg-gray-500;
-  }
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
 }
