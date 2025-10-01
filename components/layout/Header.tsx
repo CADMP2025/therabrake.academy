@@ -13,15 +13,6 @@ export default function Header() {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   useEffect(() => {
     const getUser = async () => {
@@ -43,9 +34,7 @@ export default function Header() {
   }
 
   return (
-    <header className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm shadow-md'
-    } border-b-4 border-primary`}>
+    <header className="bg-primary text-white sticky top-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Brand Name */}
@@ -59,12 +48,9 @@ export default function Header() {
               priority
             />
             <div className="flex flex-col">
-              <span className="text-xl font-bold">
-                <span className="text-primary">Thera</span>
-                <span className="text-action">Brake</span>
-                <sup className="text-xs text-gray-500 ml-0.5">™</sup>
+              <span className="text-xl font-bold text-white">
+                TheraBrake Academy<sup className="text-xs ml-0.5">™</sup>
               </span>
-              <span className="text-xs text-gray-500 -mt-1">Academy</span>
             </div>
           </Link>
 
@@ -72,83 +58,78 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-6">
             <Link 
               href="/" 
-              className={`flex items-center space-x-1 font-medium transition-all duration-200 px-3 py-2 rounded-lg ${
+              className={`font-medium transition-all duration-200 ${
                 pathname === '/' 
-                  ? 'bg-primary/10 text-primary' 
-                  : 'text-gray-600 hover:text-primary hover:bg-primary/5'
+                  ? 'text-accent' 
+                  : 'text-white hover:text-accent'
               }`}
             >
-              <Home className="w-4 h-4" />
-              <span>Home</span>
+              Home
             </Link>
             
             <Link 
               href="/courses" 
-              className={`flex items-center space-x-1 font-medium transition-all duration-200 px-3 py-2 rounded-lg ${
+              className={`font-medium transition-all duration-200 ${
                 pathname.startsWith('/courses') 
-                  ? 'bg-primary/10 text-primary' 
-                  : 'text-gray-600 hover:text-primary hover:bg-primary/5'
+                  ? 'text-accent' 
+                  : 'text-white hover:text-accent'
               }`}
             >
-              <BookOpen className="w-4 h-4" />
-              <span>Courses</span>
+              Courses
             </Link>
 
             <Link 
               href="/about" 
-              className={`flex items-center space-x-1 font-medium transition-all duration-200 px-3 py-2 rounded-lg ${
+              className={`font-medium transition-all duration-200 ${
                 pathname === '/about' 
-                  ? 'bg-primary/10 text-primary' 
-                  : 'text-gray-600 hover:text-primary hover:bg-primary/5'
+                  ? 'text-accent' 
+                  : 'text-white hover:text-accent'
               }`}
             >
-              <Info className="w-4 h-4" />
-              <span>About</span>
+              About
             </Link>
 
             <Link 
               href="/contact" 
-              className={`flex items-center space-x-1 font-medium transition-all duration-200 px-3 py-2 rounded-lg ${
+              className={`font-medium transition-all duration-200 ${
                 pathname === '/contact' 
-                  ? 'bg-primary/10 text-primary' 
-                  : 'text-gray-600 hover:text-primary hover:bg-primary/5'
+                  ? 'text-accent' 
+                  : 'text-white hover:text-accent'
               }`}
             >
-              <Phone className="w-4 h-4" />
-              <span>Contact</span>
+              Contact
             </Link>
             
             {user ? (
               <>
                 <Link 
                   href="/dashboard" 
-                  className={`font-medium transition-all duration-200 px-3 py-2 rounded-lg ${
+                  className={`font-medium transition-all duration-200 ${
                     pathname === '/dashboard' 
-                      ? 'bg-secondary/10 text-secondary' 
-                      : 'text-gray-600 hover:text-secondary hover:bg-secondary/5'
+                      ? 'text-accent' 
+                      : 'text-white hover:text-accent'
                   }`}
                 >
                   Dashboard
                 </Link>
                 <button 
                   onClick={handleSignOut}
-                  className="flex items-center space-x-1 font-medium text-gray-600 hover:text-red-600 transition-all duration-200 px-3 py-2 rounded-lg hover:bg-red-50"
+                  className="font-medium text-white hover:text-accent transition-all duration-200"
                 >
-                  <LogOut className="w-4 h-4" />
-                  <span>Sign Out</span>
+                  Sign Out
                 </button>
               </>
             ) : (
               <>
                 <Link 
                   href="/auth/login" 
-                  className="font-medium text-gray-600 hover:text-primary transition-all duration-200 px-3 py-2"
+                  className="font-medium text-white hover:text-accent transition-all duration-200"
                 >
                   Sign In
                 </Link>
                 <Link 
                   href="/auth/register" 
-                  className="px-5 py-2.5 bg-gradient-to-r from-primary to-blue-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-primary transition-all duration-300 hover:shadow-lg transform hover:scale-105"
+                  className="px-4 py-2 bg-action text-white rounded-lg font-medium hover:bg-action/90 transition-all duration-300"
                 >
                   Get Started
                 </Link>
@@ -158,7 +139,7 @@ export default function Header() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 text-gray-600 hover:text-primary transition-colors"
+            className="md:hidden p-2 text-white hover:text-accent transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -167,14 +148,14 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-100 animate-fadeIn">
+          <div className="md:hidden py-4 border-t border-primary-dark">
             <div className="flex flex-col space-y-2">
               <Link 
                 href="/" 
-                className={`px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded font-medium transition-all duration-200 ${
                   pathname === '/' 
-                    ? 'bg-primary/10 text-primary' 
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'text-accent' 
+                    : 'text-white hover:text-accent'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -183,10 +164,10 @@ export default function Header() {
               
               <Link 
                 href="/courses" 
-                className={`px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded font-medium transition-all duration-200 ${
                   pathname.startsWith('/courses') 
-                    ? 'bg-primary/10 text-primary' 
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'text-accent' 
+                    : 'text-white hover:text-accent'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -195,10 +176,10 @@ export default function Header() {
 
               <Link 
                 href="/about" 
-                className={`px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded font-medium transition-all duration-200 ${
                   pathname === '/about' 
-                    ? 'bg-primary/10 text-primary' 
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'text-accent' 
+                    : 'text-white hover:text-accent'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -207,26 +188,26 @@ export default function Header() {
 
               <Link 
                 href="/contact" 
-                className={`px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded font-medium transition-all duration-200 ${
                   pathname === '/contact' 
-                    ? 'bg-primary/10 text-primary' 
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'text-accent' 
+                    : 'text-white hover:text-accent'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contact
               </Link>
               
-              <hr className="my-2 border-gray-200" />
+              <hr className="my-2 border-primary-dark" />
               
               {user ? (
                 <>
                   <Link 
                     href="/dashboard" 
-                    className={`px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
+                    className={`px-4 py-2 rounded font-medium transition-all duration-200 ${
                       pathname === '/dashboard' 
-                        ? 'bg-secondary/10 text-secondary' 
-                        : 'text-gray-600 hover:bg-gray-50'
+                        ? 'text-accent' 
+                        : 'text-white hover:text-accent'
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -234,7 +215,7 @@ export default function Header() {
                   </Link>
                   <button 
                     onClick={handleSignOut}
-                    className="px-4 py-3 rounded-lg font-medium text-left text-red-600 hover:bg-red-50 transition-all duration-200"
+                    className="px-4 py-2 rounded font-medium text-left text-white hover:text-accent transition-all duration-200"
                   >
                     Sign Out
                   </button>
@@ -243,14 +224,14 @@ export default function Header() {
                 <>
                   <Link 
                     href="/auth/login" 
-                    className="px-4 py-3 rounded-lg font-medium text-gray-600 hover:bg-gray-50 transition-all duration-200"
+                    className="px-4 py-2 rounded font-medium text-white hover:text-accent transition-all duration-200"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Sign In
                   </Link>
                   <Link 
                     href="/auth/register" 
-                    className="px-4 py-3 bg-gradient-to-r from-primary to-blue-600 text-white rounded-lg font-medium text-center hover:from-blue-600 hover:to-primary transition-all duration-300"
+                    className="px-4 py-2 bg-action text-white rounded-lg font-medium text-center hover:bg-action/90 transition-all duration-300"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Get Started
