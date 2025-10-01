@@ -2,147 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom CSS without @apply to avoid build errors */
-:root {
-  --color-primary: #3B82F6;
-  --color-primary-light: #60A5FA;
-  --color-primary-dark: #2563EB;
-  --color-secondary: #10B981;
-  --color-secondary-light: #34D399;
-  --color-secondary-dark: #059669;
-  --color-accent: #FACC15;
-  --color-accent-light: #FDE047;
-  --color-accent-dark: #EAB308;
-  --color-action: #F97316;
-  --color-action-light: #FB923C;
-  --color-action-dark: #EA580C;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
 
-body {
-  background-color: #F9FAFB;
-  color: #111827;
-}
-
-/* Button styles */
-.btn-primary {
-  padding: 0.75rem 1.5rem;
-  background-color: var(--color-primary);
-  color: white;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  transition: all 0.2s;
-  display: inline-block;
-}
-
-.btn-primary:hover {
-  background-color: var(--color-primary-dark);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  transform: scale(1.05);
-}
-
-.btn-secondary {
-  padding: 0.75rem 1.5rem;
-  background-color: var(--color-secondary);
-  color: white;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  transition: all 0.2s;
-  display: inline-block;
-}
-
-.btn-secondary:hover {
-  background-color: var(--color-secondary-dark);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  transform: scale(1.05);
-}
-
-.btn-accent {
-  padding: 0.75rem 1.5rem;
-  background-color: var(--color-accent);
-  color: #111827;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  transition: all 0.2s;
-  display: inline-block;
-}
-
-.btn-accent:hover {
-  background-color: var(--color-accent-dark);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  transform: scale(1.05);
-}
-
-.btn-action {
-  padding: 0.75rem 1.5rem;
-  background-color: var(--color-action);
-  color: white;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  transition: all 0.2s;
-  display: inline-block;
-}
-
-.btn-action:hover {
-  background-color: var(--color-action-dark);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  transform: scale(1.05);
-}
-
-/* Card styles */
-.card {
-  background-color: white;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  transition: box-shadow 0.2s;
-}
-
-.card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-/* Input styles */
-.input {
-  width: 100%;
-  padding: 0.5rem 1rem;
-  border: 1px solid #D1D5DB;
-  border-radius: 0.5rem;
-  transition: all 0.2s;
-}
-
-.input:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Navigation */
-.nav-link {
-  color: #6B7280;
-  transition: color 0.2s;
-}
-
-.nav-link:hover {
-  color: var(--color-primary);
-}
-
-.nav-link-active {
-  color: var(--color-primary);
-  font-weight: 600;
-}
-
-/* Animation */
-@keyframes fadeIn {
-  from { 
-    opacity: 0; 
-    transform: translateY(10px); 
+@layer base {
+  :root {
+    --font-inter: 'Inter', system-ui, sans-serif;
+    --font-poppins: 'Poppins', system-ui, sans-serif;
   }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
+
+  html {
+    font-family: var(--font-inter);
+  }
+
+  body {
+    @apply bg-white text-gray-900 antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-poppins);
+    @apply font-semibold;
   }
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.5s ease-out;
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-[#10B981] hover:bg-[#059669] text-white font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg;
+  }
+
+  .btn-action {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-[#FACC15] hover:bg-[#EAB308] text-gray-900 font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg;
+  }
+
+  .gradient-hero {
+    background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(255,255,255,1) 50%, rgba(16,185,129,0.1) 100%);
+  }
+
+  .gradient-cta {
+    background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+  }
 }
