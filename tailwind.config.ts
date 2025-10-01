@@ -6,21 +6,6 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  safelist: [
-    'bg-primary', 'bg-primary-light', 'bg-primary-dark',
-    'bg-secondary', 'bg-secondary-light', 'bg-secondary-dark',
-    'bg-accent', 'bg-accent-light', 'bg-accent-dark',
-    'bg-action', 'bg-action-light', 'bg-action-dark',
-    'bg-background', 'bg-background-light', 'bg-background-secondary',
-    'text-primary', 'text-secondary', 'text-accent', 'text-action',
-    'text-text-primary', 'text-text-secondary', 'text-text-light',
-    'text-white', 'text-white/90', 'text-white/75',
-    'hover:bg-action/90', 'hover:text-accent', 'hover:bg-accent-light',
-    'hover:text-primary-dark', 'hover:text-secondary-dark',
-    'from-primary', 'to-primary-dark', 'to-secondary',
-    'bg-gradient-to-br', 'bg-gradient-to-r',
-    'border-primary-dark'
-  ],
   theme: {
     extend: {
       colors: {
