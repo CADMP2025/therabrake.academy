@@ -8,7 +8,7 @@ import { supabase } from '@/lib/supabase/client'
 import { User } from '@supabase/supabase-js'
 import { Menu, X, LogOut, User as UserIcon, BookOpen, GraduationCap, Home, Info, Phone } from 'lucide-react'
 
-export function Header() {
+export default function Header() {
   const pathname = usePathname()
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
