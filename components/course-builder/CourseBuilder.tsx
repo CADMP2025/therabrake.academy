@@ -127,7 +127,7 @@ export function CourseBuilder({
   // Module Management Functions
   const addModule = () => {
     const newModule: CourseModule = {
-      id: `module-${Date.now()}`,
+      id: `courseModule-${Date.now()}`,
       title: `Module ${modules.length + 1}`,
       description: '',
       order_index: modules.length,
@@ -155,40 +155,40 @@ export function CourseBuilder({
 
   // Lesson Management Functions
   const addLesson = (moduleId: string) => {
-    const module = modules.find(m => m.id === moduleId)
-    if (!module) return
+    const courseModule = modules.find(m => m.id === moduleId)
+    if (!courseModule) return
 
     const newLesson: Lesson = {
       id: `lesson-${Date.now()}`,
-      title: `Lesson ${module.lessons.length + 1}`,
+      title: `Lesson ${courseModule.lessons.length + 1}`,
       content_type: 'text',
       content: '',
       duration: 0,
-      order_index: module.lessons.length,
+      order_index: courseModule.lessons.length,
       is_free: false
     }
 
     updateModule(moduleId, {
-      lessons: [...module.lessons, newLesson]
+      lessons: [...courseModule.lessons, newLesson]
     })
     setSelectedLessonId(newLesson.id)
   }
 
   const updateLessonContent = (lessonId: string, content: string) => {
-    setModules(modules.map(module => ({
-      ...module,
-      lessons: module.lessons.map(lesson =>
+    setModules(modules.map(courseModule => ({
+      ...courseModule,
+      lessons: courseModule.lessons.map(lesson =>
         lesson.id === lessonId ? { ...lesson, content } : lesson
       )
     })))
   }
 
   const deleteLesson = (moduleId: string, lessonId: string) => {
-    const module = modules.find(m => m.id === moduleId)
-    if (!module) return
+    const courseModule = modules.find(m => m.id === moduleId)
+    if (!courseModule) return
 
     updateModule(moduleId, {
-      lessons: module.lessons.filter(l => l.id !== lessonId)
+      lessons: courseModule.lessons.filter(l => l.id !== lessonId)
     })
 
     if (selectedLessonId === lessonId) {
