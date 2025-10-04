@@ -160,8 +160,8 @@ function RegisterPage() {
     
     try {
       // Dynamic import to avoid build-time errors
-      const { createSupabaseClient } = await import('@/lib/supabase/client')
-      const supabase = createSupabaseClient()
+      const { createClient } = await import('@/lib/supabase/client')
+      const supabase = createClient()
       
       // Create auth user
       const { data: authData, error: authError } = await supabase.auth.signUp({
