@@ -137,14 +137,14 @@ export default function CoursesPage() {
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Link
-              href="/auth/signup"
-              className="btn-primary text-lg px-8 py-3"
+              href="/auth/register"
+              className="inline-flex items-center justify-center bg-primary hover:bg-primary-hover text-white font-semibold text-lg px-8 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
             >
               Get Started Today
             </Link>
             <Link
               href="/contact"
-              className="btn-outline text-lg px-8 py-3"
+              className="inline-flex items-center justify-center border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold text-lg px-8 py-3 rounded-lg transition-all duration-200"
             >
               Contact Us
             </Link>

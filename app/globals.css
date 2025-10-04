@@ -20,3 +20,14 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #60A5FA;
 }
+
+/* TheraBrake Custom Utilities */
+@layer components {
+  .container-therabrake {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md border border-gray-100;
+  }
+}
