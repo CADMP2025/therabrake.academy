@@ -101,7 +101,7 @@ export function CourseBuilder({
     if (editor && selectedLesson) {
       editor.commands.setContent(selectedLesson.content || '')
     }
-  }, [selectedLessonId, editor])
+  }, [selectedLessonId, editor, selectedLesson]) // FIXED: Added selectedLesson
 
   // Auto-save functionality
   const debouncedSave = useDebouncedCallback(
@@ -122,7 +122,7 @@ export function CourseBuilder({
   // Trigger auto-save on changes
   useEffect(() => {
     debouncedSave()
-  }, [modules, courseTitle, courseDescription])
+  }, [modules, courseTitle, courseDescription, debouncedSave]) // FIXED: Added debouncedSave
 
   // Module Management Functions
   const addModule = () => {
