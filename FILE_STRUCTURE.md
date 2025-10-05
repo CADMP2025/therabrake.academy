@@ -1,0 +1,155 @@
+# therabrake.academy
+
+```
+fix-register.sh
+middleware.config.ts
+next-env.d.ts
+next.config.js
+package.json
+package.json.backup
+playwright.config.ts
+pnpm-workspace.yaml
+postcss.config.js
+README.md
+tailwind.config.ts
+tailwind.config.ts.backup
+test.css
+tsconfig.json
+tsconfig.tsbuildinfo
+vercel.json
+app/
+  globals.css
+  icon.svg
+  layout.tsx
+  page.tsx
+  (dashboard)/
+    instructor/
+      course-builder/
+        page.tsx
+  (public)/
+  about/
+    page.tsx
+  admin/
+    page.tsx
+  api/
+    auth/
+    certificates/
+    courses/
+      route.ts
+    stripe/
+  auth/
+    layout.tsx
+    forgot-password/
+      page.tsx
+    login/
+      page.tsx
+    register/
+      page.tsx
+  become-instructor/
+    page.tsx
+  checkout/
+    leap-launch/
+      page.tsx
+  contact/
+    page.tsx
+  courses/
+    page.tsx
+    [id]/
+      page.tsx
+    leap-launch/
+      page.tsx
+    personal/
+      page.tsx
+    premium/
+      page.tsx
+      leap-launch/
+        page.tsx
+      so-what/
+    professional/
+      page.tsx
+    so-what-mindset/
+      page.tsx
+  dashboard/
+    page.tsx
+  enrollment/
+    page.tsx
+  instructor/
+    page.tsx
+  pricing/
+    page.tsx
+  privacy/
+    page.tsx
+  refund-policy/
+    page.tsx
+  support/
+    page.tsx
+  terms/
+    page.tsx
+  test-course-builder/
+    page.tsx
+  tx-lpc-approved/
+    page.tsx
+components/
+  admin/
+  auth/
+  course/
+    CERequirements.tsx
+    CourseBuilder.tsx
+    CourseCard.tsx
+    EnhancedQuizBuilder.tsx
+    IntegratedCourseBuilder.tsx
+    TipTapEditor.tsx
+  course-builder/
+    ContentParser.tsx
+    CourseBuilder.tsx
+    index.ts
+    LessonEditor.tsx
+    ModuleOrganizer.tsx
+    PreviewPanel.tsx
+  courses/
+  dashboard/
+  instructor/
+  layout/
+    Footer.tsx
+    Header.tsx
+  shared/
+  ui/
+hooks/
+lib/
+  certificates/
+  parsers/
+    content-parser.ts
+  resources/
+  stripe/
+  supabase/
+    client.ts
+  utils/
+packages/
+  api/
+  shared/
+public/
+  file.svg
+  globe.svg
+  window.svg
+  assets/
+    icons/
+    images/
+  certificate-templates/
+  images/
+    logo/
+      favicon.ico
+      logo-white.png
+      logo.png
+      therabrake-icon.png
+      therabrake-icon.svg
+      therabrake-logo.png
+      therabrake-logo.svg
+styles/
+supabase/
+  migrations/
+    001_course_builder.sql
+types/
+  course-builder/
+    index.ts
+utils/
+```

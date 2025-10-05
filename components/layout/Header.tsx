@@ -1,99 +1,244 @@
-"use client"
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { supabase } from '@/lib/supabase/client'
+import { User } from '@supabase/supabase-js'
+import { Menu, X, LogOut, User as UserIcon, BookOpen, GraduationCap, Home, Info, Phone } from 'lucide-react'
 
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const pathname = usePathname()
+  const router = useRouter()
+  const [user, setUser] = useState<User | null>(null)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+    }
+    getUser()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    router.push('/auth/login')
+  }
 
   return (
-    <header className="bg-primary text-white sticky top-0 z-50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo and Brand */}
-          <Link href="/" className="flex items-center space-x-3">
-            <Image 
-              src="/images/logo/logo.png" 
-              alt="TheraBrake Academy Logo" 
-              width={40} 
+    <header className="bg-primary text-white sticky top-0 z-50 shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo and Brand Name */}
+          <Link href="/" className="flex items-center space-x-2 group">
+            <Image
+              src="/images/logo/logo.png"
+              alt="TheraBrake Academy"
+              width={40}
               height={40}
-              className="rounded-lg"
+              className="h-10 w-10 transition-transform group-hover:scale-110"
               priority
             />
-            <span className="text-2xl font-bold">
-              TheraBrake Academy<sup className="text-sm align-super">™</sup>
-            </span>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-white">
+                TheraBrake Academy<sup className="text-xs ml-0.5">™</sup>
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="hover:text-accent transition">
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link 
+              href="/" 
+              className={`font-medium transition-all duration-200 ${
+                pathname === '/' 
+                  ? 'text-accent' 
+                  : 'text-white hover:text-accent'
+              }`}
+            >
               Home
             </Link>
-            <Link href="/courses" className="hover:text-accent transition">
+            
+            <Link 
+              href="/courses" 
+              className={`font-medium transition-all duration-200 ${
+                pathname.startsWith('/courses') 
+                  ? 'text-accent' 
+                  : 'text-white hover:text-accent'
+              }`}
+            >
               Courses
             </Link>
-            <Link href="/pricing" className="hover:text-accent transition">
-              Pricing
-            </Link>
-            <Link href="/about" className="hover:text-accent transition">
+
+            <Link 
+              href="/about" 
+              className={`font-medium transition-all duration-200 ${
+                pathname === '/about' 
+                  ? 'text-accent' 
+                  : 'text-white hover:text-accent'
+              }`}
+            >
               About
             </Link>
-            <Link href="/contact" className="hover:text-accent transition">
+
+            <Link 
+              href="/contact" 
+              className={`font-medium transition-all duration-200 ${
+                pathname === '/contact' 
+                  ? 'text-accent' 
+                  : 'text-white hover:text-accent'
+              }`}
+            >
               Contact
             </Link>
-            <Link href="/auth/login" className="hover:text-accent transition">
-              Login
-            </Link>
-            <Link 
-              href="/auth/register"
-              className="bg-action text-white px-4 py-2 rounded-lg hover:bg-action/90 transition"
-            >
-              Get Started
-            </Link>
+            
+            {user ? (
+              <>
+                <Link 
+                  href="/dashboard" 
+                  className={`font-medium transition-all duration-200 ${
+                    pathname === '/dashboard' 
+                      ? 'text-accent' 
+                      : 'text-white hover:text-accent'
+                  }`}
+                >
+                  Dashboard
+                </Link>
+                <button 
+                  onClick={handleSignOut}
+                  className="font-medium text-white hover:text-accent transition-all duration-200"
+                >
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link 
+                  href="/auth/login" 
+                  className="font-medium text-white hover:text-accent transition-all duration-200"
+                >
+                  Sign In
+                </Link>
+                <Link 
+                  href="/auth/register" 
+                  className="px-4 py-2 bg-action text-white rounded-lg font-medium hover:bg-action/90 transition-all duration-300"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </nav>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile menu button */}
           <button
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 text-white hover:text-accent transition-colors"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
         {/* Mobile Navigation */}
-        {mobileMenuOpen && (
+        {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-primary-dark">
-            <nav className="flex flex-col space-y-2">
-              <Link href="/" className="py-2 hover:text-accent transition">
+            <div className="flex flex-col space-y-2">
+              <Link 
+                href="/" 
+                className={`px-4 py-2 rounded font-medium transition-all duration-200 ${
+                  pathname === '/' 
+                    ? 'text-accent' 
+                    : 'text-white hover:text-accent'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Home
               </Link>
-              <Link href="/courses" className="py-2 hover:text-accent transition">
+              
+              <Link 
+                href="/courses" 
+                className={`px-4 py-2 rounded font-medium transition-all duration-200 ${
+                  pathname.startsWith('/courses') 
+                    ? 'text-accent' 
+                    : 'text-white hover:text-accent'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Courses
               </Link>
-              <Link href="/pricing" className="py-2 hover:text-accent transition">
-                Pricing
-              </Link>
-              <Link href="/about" className="py-2 hover:text-accent transition">
+
+              <Link 
+                href="/about" 
+                className={`px-4 py-2 rounded font-medium transition-all duration-200 ${
+                  pathname === '/about' 
+                    ? 'text-accent' 
+                    : 'text-white hover:text-accent'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
                 About
               </Link>
-              <Link href="/contact" className="py-2 hover:text-accent transition">
+
+              <Link 
+                href="/contact" 
+                className={`px-4 py-2 rounded font-medium transition-all duration-200 ${
+                  pathname === '/contact' 
+                    ? 'text-accent' 
+                    : 'text-white hover:text-accent'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Contact
               </Link>
-              <div className="pt-4 border-t border-primary-dark">
-                <Link href="/auth/login" className="block py-2 hover:text-accent transition">
-                  Login
-                </Link>
-                <Link 
-                  href="/auth/register"
-                  className="block bg-action text-white px-4 py-2 rounded-lg hover:bg-action/90 transition text-center mt-2"
-                >
-                  Get Started
-                </Link>
-              </div>
-            </nav>
+              
+              <hr className="my-2 border-primary-dark" />
+              
+              {user ? (
+                <>
+                  <Link 
+                    href="/dashboard" 
+                    className={`px-4 py-2 rounded font-medium transition-all duration-200 ${
+                      pathname === '/dashboard' 
+                        ? 'text-accent' 
+                        : 'text-white hover:text-accent'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <button 
+                    onClick={handleSignOut}
+                    className="px-4 py-2 rounded font-medium text-left text-white hover:text-accent transition-all duration-200"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link 
+                    href="/auth/login" 
+                    className="px-4 py-2 rounded font-medium text-white hover:text-accent transition-all duration-200"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Sign In
+                  </Link>
+                  <Link 
+                    href="/auth/register" 
+                    className="px-4 py-2 bg-action text-white rounded-lg font-medium text-center hover:bg-action/90 transition-all duration-300"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         )}
       </div>

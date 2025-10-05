@@ -33,7 +33,7 @@ export default function SoWhatMindsetPage() {
                 <span className="text-3xl font-bold">$499.00</span>
                 <span className="text-lg ml-2">Complete Program</span>
               </div>
-              <Link href="/checkout/so-what-mindset" className="bg-accent hover:bg-yellow-500 text-neutral-dark px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2">
+              <Link href="/enrollment?type=premium&plan=so-what-mindset&price=499" className="bg-accent hover:bg-yellow-500 text-neutral-dark px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2">
                 Start Your Transformation <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
@@ -174,14 +174,13 @@ export default function SoWhatMindsetPage() {
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-neutral-dark">Ready to Say "So What" to Everything Holding You Back?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto text-neutral-medium">Join thousands who have transformed their setbacks into comebacks. Your breakthrough is just two words away.</p>
           <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-            <Link href="/checkout/so-what-mindset" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2 shadow-lg">
+            <Link href="/enrollment?type=premium&plan=so-what-mindset&price=499" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2 shadow-lg">
               Enroll Today for $499.00 <ArrowRight className="w-5 h-5" />
             </Link>
             <Link href="/courses" className="bg-transparent border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all">
               Explore Other Programs
             </Link>
           </div>
-          <p className="mt-6 text-sm text-neutral-medium">Lifetime access • Instant download • 30-day money-back guarantee</p>
         </div>
       </section>
     </div>

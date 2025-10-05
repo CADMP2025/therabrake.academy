@@ -420,8 +420,6 @@ function EnrollmentContent() {
                     <span>Instant access</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-neutral-medium">
-                    <CheckCircle className="w-4 h-4 text-secondary" />
-                    <span>30-day guarantee</span>
                   </div>
                 </div>
               </div>
