@@ -1,152 +1,78 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { emailService } from '@/lib/email/email-service';
-import { searchService } from '@/lib/search/search-service';
-import { createClient } from '@supabase/supabase-js';
+// app/api/webhooks/enrollment-created/route.ts
+import { createClient } from '@/lib/supabase/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    // Verify webhook secret
-    const webhookSecret = req.headers.get('x-webhook-secret');
-    if (webhookSecret !== process.env.WEBHOOK_SECRET_ENROLLMENT) {
-      console.error('Webhook authentication failed');
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const body = await request.json()
+    const { enrollment_id } = body
+
+    if (!enrollment_id) {
+      return NextResponse.json(
+        { error: 'Enrollment ID is required' },
+        { status: 400 }
+      )
     }
 
-    const payload = await req.json();
-    const enrollmentId = payload.record.id;
+    const supabase = await createClient()
 
-    // Fetch full enrollment data with related user and course
+    // Fetch enrollment with user and course data
     const { data: enrollment, error } = await supabase
       .from('enrollments')
       .select(`
-        id,
-        user_id,
-        course_id,
-        enrolled_at,
-        user:users(email, full_name),
-        course:courses(
+        *,
+        user:profiles!enrollments_user_id_fkey (
+          id,
+          email,
+          full_name
+        ),
+        course:courses!enrollments_course_id_fkey (
+          id,
           title,
           description,
-          thumbnail_url,
-          ce_hours,
-          instructor_id,
-          instructor:users!courses_instructor_id_fkey(email, full_name)
+          instructor_id
         )
       `)
-      .eq('id', enrollmentId)
-      .single();
+      .eq('id', enrollment_id)
+      .single()
 
-    if (error) {
-      console.error('Failed to fetch enrollment data:', error);
+    if (error || !enrollment) {
+      console.error('Enrollment fetch error:', error)
       return NextResponse.json(
-        { error: 'Failed to fetch enrollment', details: error.message },
-        { status: 500 }
-      );
+        { error: 'Enrollment not found' },
+        { status: 404 }
+      )
     }
 
-    if (!enrollment || !enrollment.user || !enrollment.course) {
-      console.error('Incomplete enrollment data');
+    if (!enrollment.user || !enrollment.course) {
       return NextResponse.json(
-        { error: 'Incomplete enrollment data' },
+        { error: 'Invalid enrollment data' },
         { status: 400 }
-      );
+      )
     }
 
-    // Send enrollment confirmation email to student
-    try {
-      const courseUrl = `${process.env.NEXT_PUBLIC_APP_URL}/courses/${enrollment.course_id}`;
-      
-      await emailService.sendEmail({
-        to: enrollment.user.email,
-        subject: `Enrollment Confirmed: ${enrollment.course.title}`,
-        template: 'enrollment-confirmation',
-        data: {
-          studentName: enrollment.user.full_name,
-          courseTitle: enrollment.course.title,
-          courseDescription: enrollment.course.description,
-          courseThumbnail: enrollment.course.thumbnail_url,
-          ceHours: enrollment.course.ce_hours,
-          courseUrl,
-          enrolledDate: new Date(enrollment.enrolled_at).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          })
-        }
-      });
+    // TODO: Send enrollment confirmation email
+    // Once email service is fully implemented, uncomment:
+    // const courseUrl = `${process.env.NEXT_PUBLIC_APP_URL}/courses/${enrollment.course_id}`
+    // await emailService.sendEnrollmentConfirmation(
+    //   enrollment.user.email,
+    //   enrollment.user.full_name,
+    //   enrollment.course.title,
+    //   courseUrl
+    // )
 
-      console.log(`Enrollment confirmation sent to ${enrollment.user.email}`);
-    } catch (emailError) {
-      console.error('Failed to send enrollment confirmation:', emailError);
-      // Don't fail the webhook if email fails
-    }
+    console.log('Enrollment created:', {
+      user: enrollment.user.email,
+      course: enrollment.course.title,
+      enrollment_id
+    })
 
-    // Send notification email to instructor
-    try {
-      if (enrollment.course.instructor?.email) {
-        await emailService.sendEmail({
-          to: enrollment.course.instructor.email,
-          subject: `New Enrollment: ${enrollment.course.title}`,
-          template: 'instructor-new-enrollment',
-          data: {
-            instructorName: enrollment.course.instructor.full_name,
-            studentName: enrollment.user.full_name,
-            courseTitle: enrollment.course.title,
-            enrolledDate: new Date(enrollment.enrolled_at).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            }),
-            dashboardUrl: `${process.env.NEXT_PUBLIC_APP_URL}/instructor/dashboard`
-          }
-        });
-
-        console.log(`Instructor notification sent to ${enrollment.course.instructor.email}`);
-      }
-    } catch (emailError) {
-      console.error('Failed to send instructor notification:', emailError);
-      // Don't fail the webhook if email fails
-    }
-
-    // Update course enrollment count in Meilisearch
-    try {
-      // Get current enrollment count
-      const { count } = await supabase
-        .from('enrollments')
-        .select('*', { count: 'exact', head: true })
-        .eq('course_id', enrollment.course_id);
-
-      // Update the course document in Meilisearch
-      await searchService.updateDocument('courses', enrollment.course_id, {
-        enrollment_count: count || 0,
-        last_enrolled_at: enrollment.enrolled_at
-      });
-
-      console.log(`Updated course ${enrollment.course_id} enrollment count to ${count}`);
-    } catch (searchError) {
-      console.error('Failed to update Meilisearch:', searchError);
-      // Don't fail the webhook if search update fails
-    }
-
-    return NextResponse.json({
-      success: true,
-      enrollmentId,
-      message: 'Enrollment processed successfully'
-    });
-
+    return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Enrollment webhook error:', error);
+    console.error('Enrollment webhook error:', error)
     return NextResponse.json(
-      {
-        error: 'Internal server error',
-        details: error instanceof Error ? error.message : 'Unknown error'
-      },
+      { error: 'Internal server error' },
       { status: 500 }
-    );
+    )
   }
 }
