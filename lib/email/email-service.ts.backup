@@ -1,3 +1,6 @@
+// lib/email/email-service.ts
+// FIXED VERSION - Ensures 'from' is always a string
+
 import { resend } from './resend-client';
 import { emailTemplates } from './templates';
 import { createClient } from '@supabase/supabase-js';
@@ -7,6 +10,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+// Default sender email - ADDED
 const DEFAULT_FROM = process.env.RESEND_FROM_EMAIL || 'noreply@therabrake.academy';
 
 interface EmailLog {
@@ -35,11 +39,12 @@ export const emailService = {
     try {
       const template = emailTemplates.welcome({ name, verificationLink });
       const { data, error } = await resend.emails.send({
-        from: template.from || DEFAULT_FROM,
+        from: template.from || DEFAULT_FROM, // FIXED: Always provide a string
         subject: template.subject,
         html: template.html,
         to: email,
       });
+
       await logEmail({
         email_type: 'welcome',
         recipient_email: email,
@@ -49,6 +54,7 @@ export const emailService = {
         error_message: error?.message,
         user_id: userId,
       });
+
       if (error) throw error;
       return { success: true, data };
     } catch (error: any) {
@@ -66,13 +72,19 @@ export const emailService = {
     userId?: string
   ) {
     try {
-      const template = emailTemplates.enrollmentConfirmation({ studentName, courseName, courseUrl, ceHours });
+      const template = emailTemplates.enrollmentConfirmation({
+        studentName,
+        courseName,
+        courseUrl,
+        ceHours,
+      });
       const { data, error } = await resend.emails.send({
-        from: template.from || DEFAULT_FROM,
+        from: template.from || DEFAULT_FROM, // FIXED
         subject: template.subject,
         html: template.html,
         to: email,
       });
+
       await logEmail({
         email_type: 'enrollment_confirmation',
         recipient_email: email,
@@ -82,6 +94,7 @@ export const emailService = {
         error_message: error?.message,
         user_id: userId,
       });
+
       if (error) throw error;
       return { success: true, data };
     } catch (error: any) {
@@ -102,14 +115,20 @@ export const emailService = {
   ) {
     try {
       const template = emailTemplates.certificateDelivery({
-        studentName, courseName, ceHours, completionDate, certificateUrl, verificationCode,
+        studentName,
+        courseName,
+        ceHours,
+        completionDate,
+        certificateUrl,
+        verificationCode,
       });
       const { data, error } = await resend.emails.send({
-        from: template.from || DEFAULT_FROM,
+        from: template.from || DEFAULT_FROM, // FIXED
         subject: template.subject,
         html: template.html,
         to: email,
       });
+
       await logEmail({
         email_type: 'certificate_delivery',
         recipient_email: email,
@@ -119,6 +138,7 @@ export const emailService = {
         error_message: error?.message,
         user_id: userId,
       });
+
       if (error) throw error;
       return { success: true, data };
     } catch (error: any) {
@@ -131,11 +151,12 @@ export const emailService = {
     try {
       const template = emailTemplates.mfaCode({ name, code });
       const { data, error } = await resend.emails.send({
-        from: template.from || DEFAULT_FROM,
+        from: template.from || DEFAULT_FROM, // FIXED
         subject: template.subject,
         html: template.html,
         to: email,
       });
+
       await logEmail({
         email_type: 'mfa_code',
         recipient_email: email,
@@ -145,6 +166,7 @@ export const emailService = {
         error_message: error?.message,
         user_id: userId,
       });
+
       if (error) throw error;
       return { success: true, data };
     } catch (error: any) {
@@ -157,11 +179,12 @@ export const emailService = {
     try {
       const template = emailTemplates.passwordReset({ name, resetLink });
       const { data, error } = await resend.emails.send({
-        from: template.from || DEFAULT_FROM,
+        from: template.from || DEFAULT_FROM, // FIXED
         subject: template.subject,
         html: template.html,
         to: email,
       });
+
       await logEmail({
         email_type: 'password_reset',
         recipient_email: email,
@@ -171,6 +194,7 @@ export const emailService = {
         error_message: error?.message,
         user_id: userId,
       });
+
       if (error) throw error;
       return { success: true, data };
     } catch (error: any) {
@@ -190,14 +214,19 @@ export const emailService = {
   ) {
     try {
       const template = emailTemplates.paymentReceipt({
-        studentName, amount, courseName, paymentDate, invoiceNumber,
+        studentName,
+        amount,
+        courseName,
+        paymentDate,
+        invoiceNumber,
       });
       const { data, error } = await resend.emails.send({
-        from: template.from || DEFAULT_FROM,
+        from: template.from || DEFAULT_FROM, // FIXED
         subject: template.subject,
         html: template.html,
         to: email,
       });
+
       await logEmail({
         email_type: 'payment_receipt',
         recipient_email: email,
@@ -207,6 +236,7 @@ export const emailService = {
         error_message: error?.message,
         user_id: userId,
       });
+
       if (error) throw error;
       return { success: true, data };
     } catch (error: any) {
