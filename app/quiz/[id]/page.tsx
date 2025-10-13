@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClientComponentClient } from '@/lib/supabase/server';
 import QuizPlayer from '@/components/quiz/QuizPlayer';
 import QuizResults from '@/components/quiz/QuizResults';
 
@@ -11,7 +11,7 @@ export default function QuizPage({ params }: { params: { id: string } }) {
   const [results, setResults] = useState<any>(null);
   const [quizData, setQuizData] = useState<any>(null);
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = await createClientComponentClient();
 
   useEffect(() => {
     loadQuizData();
