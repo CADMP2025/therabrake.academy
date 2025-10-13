@@ -17,7 +17,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 max-w-4xl">
           <p className="text-lg text-text-primary mb-8">
             At <strong>TheraBrake Academy™</strong>, we believe growth happens when you take a moment to pause, 
-            process, and progress. That's why we've built a learning platform that serves both <strong>mental health 
+            process, and progress. That&apos;s why we&apos;ve built a learning platform that serves both <strong>mental health 
             professionals</strong> and <strong>individuals seeking personal transformation</strong>.
           </p>
 
@@ -97,7 +97,7 @@ export default function AboutPage() {
               careers, relationships, health, and personal fulfillment.
             </p>
             <p className="text-xl font-semibold text-accent">
-              At TheraBrake Academy™, you don't just complete courses. <strong>You unlock progress.</strong>
+              At TheraBrake Academy™, you don&apos;t just complete courses. <strong>You unlock progress.</strong>
             </p>
           </div>
 
