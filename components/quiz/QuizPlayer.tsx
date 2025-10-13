@@ -21,238 +21,206 @@ interface Question {
   order_index: number;
 }
 
-interface QuizPlayerProps {
-  quizId: string;
-  courseId: string;
-  onComplete: (score: number, passed: boolean) => void;
+interface Quiz {
+  id: string;
+  title: string;
+  description: string;
+  passing_score: number;
+  time_limit?: number;
+  questions: Question[];
 }
 
-export default function QuizPlayer({ quizId, courseId, onComplete }: QuizPlayerProps) {
-  const [questions, setQuestions] = useState<Question[]>([]);
+export interface QuizPlayerProps {
+  quiz: Quiz;
+}
+
+export default function QuizPlayer({ quiz }: QuizPlayerProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, any>>({});
-  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [quizMetadata, setQuizMetadata] = useState<any>(null);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [timeRemaining, setTimeRemaining] = useState<number | null>(
+    quiz.time_limit ? quiz.time_limit * 60 : null
+  );
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [score, setScore] = useState<number | null>(null);
   const supabase = createClient();
 
-  useEffect(() => {
-    loadQuiz();
-  }, [quizId]);
+  const currentQuestion = quiz.questions[currentQuestionIndex];
+  const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
 
   useEffect(() => {
-    if (timeRemaining !== null && timeRemaining > 0) {
-      const timer = setInterval(() => {
-        setTimeRemaining(prev => {
-          if (prev === null || prev <= 1) {
-            handleSubmit();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-      return () => clearInterval(timer);
-    }
+    if (timeRemaining === null || timeRemaining <= 0) return;
+
+    const timer = setInterval(() => {
+      setTimeRemaining((prev) => {
+        if (prev === null || prev <= 1) {
+          handleSubmit();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
   }, [timeRemaining]);
 
-  const loadQuiz = async () => {
-    const { data: quiz } = await supabase
-      .from('quizzes')
-      .select('*')
-      .eq('id', quizId)
-      .single();
+  const handleAnswerChange = (questionId: string, answer: string) => {
+    setAnswers((prev) => ({ ...prev, [questionId]: answer }));
+  };
 
-    if (quiz) {
-      setQuizMetadata(quiz);
-      if (quiz.time_limit) {
-        setTimeRemaining(quiz.time_limit * 60);
-      }
-    }
-
-    const { data } = await supabase
-      .from('quiz_questions')
-      .select('*')
-      .eq('quiz_id', quizId)
-      .order('order_index', { ascending: true });
-
-    if (data) {
-      const shuffled = quiz?.randomize_questions 
-        ? data.sort(() => Math.random() - 0.5)
-        : data;
-      setQuestions(shuffled);
+  const handleNext = () => {
+    if (currentQuestionIndex < quiz.questions.length - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
     }
   };
 
-  const handleAnswer = (questionId: string, answer: any) => {
-    setAnswers(prev => ({ ...prev, [questionId]: answer }));
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prev) => prev - 1);
+    }
   };
 
   const handleSubmit = async () => {
-    setIsSubmitting(true);
-
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-
-    // Grade the quiz
-    let totalPoints = 0;
-    let earnedPoints = 0;
-
-    questions.forEach(q => {
-      totalPoints += q.points;
-      const userAnswer = answers[q.id];
-      
-      if (q.question_type === 'multiple_choice' || q.question_type === 'true_false') {
-        if (userAnswer === q.correct_answer) {
-          earnedPoints += q.points;
-        }
-      } else if (q.question_type === 'short_answer') {
-        if (userAnswer?.toLowerCase().trim() === (q.correct_answer as string).toLowerCase().trim()) {
-          earnedPoints += q.points;
-        }
+    // Calculate score
+    let correctAnswers = 0;
+    quiz.questions.forEach((question) => {
+      const userAnswer = answers[question.id];
+      if (userAnswer === question.correct_answer) {
+        correctAnswers++;
       }
     });
 
-    const score = (earnedPoints / totalPoints) * 100;
-    const passed = score >= (quizMetadata?.passing_score || 70);
+    const calculatedScore = (correctAnswers / quiz.questions.length) * 100;
+    setScore(calculatedScore);
+    setIsSubmitted(true);
 
-    // Save attempt
-    await supabase
-      .from('quiz_attempts')
-      .insert({
-        quiz_id: quizId,
-        user_id: user.id,
-        score,
-        passed,
-        answers,
-        time_taken: quizMetadata?.time_limit 
-          ? (quizMetadata.time_limit * 60) - (timeRemaining || 0)
-          : null
-      });
-
-    onComplete(score, passed);
+    // Save quiz attempt to database
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await supabase.from('quiz_attempts').insert({
+          quiz_id: quiz.id,
+          user_id: user.id,
+          score: calculatedScore,
+          passed: calculatedScore >= quiz.passing_score,
+          answers: answers,
+        });
+      }
+    } catch (error) {
+      console.error('Error saving quiz attempt:', error);
+    }
   };
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  if (questions.length === 0) {
-    return <div>Loading quiz...</div>;
-  }
-
-  const currentQuestion = questions[currentQuestionIndex];
-  const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
-
-  return (
-    <div className="max-w-4xl mx-auto p-6">
-      <Card className="p-8">
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold">
-              Question {currentQuestionIndex + 1} of {questions.length}
-            </h2>
-            {timeRemaining !== null && (
-              <div className="flex items-center gap-2 text-lg font-semibold">
-                <Clock className="w-5 h-5" />
-                <span className={timeRemaining < 300 ? 'text-red-500' : ''}>
-                  {formatTime(timeRemaining)}
-                </span>
-              </div>
+  if (isSubmitted && score !== null) {
+    const passed = score >= quiz.passing_score;
+    return (
+      <div className="max-w-2xl mx-auto p-6">
+        <Card className="p-8 text-center">
+          <h2 className="text-3xl font-bold mb-4">
+            {passed ? '🎉 Congratulations!' : '📚 Keep Learning'}
+          </h2>
+          <p className="text-6xl font-bold mb-4 text-primary">{score.toFixed(0)}%</p>
+          <p className="text-lg mb-6">
+            {passed
+              ? `You passed! You need ${quiz.passing_score}% to pass.`
+              : `You need ${quiz.passing_score}% to pass. Try again!`}
+          </p>
+          <div className="space-y-3">
+            <p>Correct Answers: {Math.round((score / 100) * quiz.questions.length)} / {quiz.questions.length}</p>
+            {!passed && (
+              <Button onClick={() => window.location.reload()}>
+                Retake Quiz
+              </Button>
             )}
           </div>
-          <Progress value={progress} className="h-2" />
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-2xl mx-auto p-6">
+      <div className="mb-6">
+        <div className="flex justify-between items-center mb-2">
+          <h1 className="text-2xl font-bold">{quiz.title}</h1>
+          {timeRemaining !== null && (
+            <div className="flex items-center gap-2 text-lg font-semibold">
+              <Clock className="w-5 h-5" />
+              {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
+            </div>
+          )}
         </div>
+        <Progress value={progress} />
+        <p className="text-sm text-gray-600 mt-2">
+          Question {currentQuestionIndex + 1} of {quiz.questions.length}
+        </p>
+      </div>
 
-        <div className="mb-8">
-          <h3 className="text-xl mb-6">{currentQuestion.question_text}</h3>
+      <Card className="p-6 mb-6">
+        <h2 className="text-xl font-semibold mb-4">{currentQuestion.question_text}</h2>
 
-          {currentQuestion.question_type === 'multiple_choice' && (
-            <RadioGroup
-              value={answers[currentQuestion.id]}
-              onValueChange={(value) => handleAnswer(currentQuestion.id, value)}
-            >
-              {currentQuestion.options.map((option, idx) => (
-                <div key={idx} className="flex items-center space-x-2 mb-3">
-                  <RadioGroupItem value={option} id={`option-${idx}`} />
-                  <Label htmlFor={`option-${idx}`} className="cursor-pointer">
-                    {option}
-                  </Label>
+        {currentQuestion.question_type === 'multiple_choice' && (
+          <RadioGroup
+            value={answers[currentQuestion.id] || ''}
+            onValueChange={(value) => handleAnswerChange(currentQuestion.id, value)}
+          >
+            <div className="space-y-3">
+              {currentQuestion.options.map((option, index) => (
+                <div key={index} className="flex items-center space-x-2">
+                  <RadioGroupItem value={option} id={`option-${index}`} />
+                  <Label htmlFor={`option-${index}`}>{option}</Label>
                 </div>
               ))}
-            </RadioGroup>
-          )}
+            </div>
+          </RadioGroup>
+        )}
 
-          {currentQuestion.question_type === 'true_false' && (
-            <RadioGroup
-              value={answers[currentQuestion.id]}
-              onValueChange={(value) => handleAnswer(currentQuestion.id, value)}
-            >
-              <div className="flex items-center space-x-2 mb-3">
-                <RadioGroupItem value="True" id="true" />
-                <Label htmlFor="true" className="cursor-pointer">True</Label>
+        {currentQuestion.question_type === 'true_false' && (
+          <RadioGroup
+            value={answers[currentQuestion.id] || ''}
+            onValueChange={(value) => handleAnswerChange(currentQuestion.id, value)}
+          >
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="true" id="true" />
+                <Label htmlFor="true">True</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="False" id="false" />
-                <Label htmlFor="false" className="cursor-pointer">False</Label>
+                <RadioGroupItem value="false" id="false" />
+                <Label htmlFor="false">False</Label>
               </div>
-            </RadioGroup>
-          )}
+            </div>
+          </RadioGroup>
+        )}
 
-          {currentQuestion.question_type === 'short_answer' && (
-            <Textarea
-              value={answers[currentQuestion.id] || ''}
-              onChange={(e) => handleAnswer(currentQuestion.id, e.target.value)}
-              placeholder="Type your answer here..."
-              className="min-h-[120px]"
-            />
-          )}
-        </div>
-
-        <div className="flex justify-between">
-          <Button
-            variant="outline"
-            onClick={() => setCurrentQuestionIndex(prev => Math.max(0, prev - 1))}
-            disabled={currentQuestionIndex === 0}
-          >
-            Previous
-          </Button>
-
-          {currentQuestionIndex < questions.length - 1 ? (
-            <Button
-              onClick={() => setCurrentQuestionIndex(prev => prev + 1)}
-              disabled={!answers[currentQuestion.id]}
-            >
-              Next
-            </Button>
-          ) : (
-            <Button
-              onClick={handleSubmit}
-              disabled={isSubmitting || Object.keys(answers).length < questions.length}
-              className="bg-[#3B82F6]"
-            >
-              {isSubmitting ? 'Submitting...' : 'Submit Quiz'}
-            </Button>
-          )}
-        </div>
-
-        <div className="mt-6 flex gap-2 flex-wrap">
-          {questions.map((q, idx) => (
-            <button
-              key={q.id}
-              onClick={() => setCurrentQuestionIndex(idx)}
-              className={`w-10 h-10 rounded-full border-2 flex items-center justify-center text-sm font-semibold ${
-                answers[q.id]
-                  ? 'bg-[#10B981] text-white border-[#10B981]'
-                  : 'border-gray-300 hover:border-[#3B82F6]'
-              }`}
-            >
-              {idx + 1}
-            </button>
-          ))}
-        </div>
+        {currentQuestion.question_type === 'short_answer' && (
+          <Textarea
+            value={answers[currentQuestion.id] || ''}
+            onChange={(e) => handleAnswerChange(currentQuestion.id, e.target.value)}
+            placeholder="Type your answer here..."
+            rows={4}
+          />
+        )}
       </Card>
+
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
+          onClick={handlePrevious}
+          disabled={currentQuestionIndex === 0}
+        >
+          Previous
+        </Button>
+
+        {currentQuestionIndex === quiz.questions.length - 1 ? (
+          <Button onClick={handleSubmit} variant="primary">
+            Submit Quiz
+          </Button>
+        ) : (
+          <Button onClick={handleNext} variant="primary">
+            Next
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
