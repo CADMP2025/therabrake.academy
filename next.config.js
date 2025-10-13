@@ -1,29 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'zjoncglqxfcmmljwmoma.supabase.co',
-        port: '',
-        pathname: '/storage/v1/object/public/**',
+        pathname: '/storage/v1/object/**',
       },
       {
         protocol: 'https',
-        hostname: '*.googleusercontent.com',
-        port: '',
-        pathname: '**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '**',
+        hostname: '*.supabase.co',
+        pathname: '/storage/v1/object/**',
       },
     ],
+    formats: ['image/avif', 'image/webp'],
   },
-  // Server Actions are now stable in Next.js 14+, no experimental flag needed
-  // Removed experimental.serverActions as it's no longer required
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
