@@ -49,3 +49,5 @@ playwright-report/
 test-results/
 .env.test
 .env.test.local
+.env.local
+.env*.local
