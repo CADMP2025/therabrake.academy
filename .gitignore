@@ -40,3 +40,9 @@ playwright-report/
 test-results/
 yarn-debug.log*
 yarn-error.log*
+
+# Sentry
+.sentryclirc
+sentry.properties
+.sentry
+*.log
