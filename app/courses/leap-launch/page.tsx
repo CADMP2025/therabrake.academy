@@ -28,13 +28,14 @@ export default function LeapAndLaunchPage() {
                 <span className="text-3xl font-bold">$299.00</span>
                 <span className="text-lg ml-2">One-Time Payment</span>
               </div>
-              <Link href="/checkout/leap-launch" className="bg-action hover:bg-orange-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2">
+              <Link href="/enrollment?type=premium&plan=leap-launch&price=299" className="bg-action hover:bg-orange-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2">
                 Enroll Now <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
           </div>
         </div>
       </section>
+
       <section className="py-16">
         <div className="container-therabrake">
           <h2 className="text-3xl font-bold text-center mb-12 text-neutral-dark">What's Included in Your Success Toolkit</h2>
@@ -63,6 +64,7 @@ export default function LeapAndLaunchPage() {
           </div>
         </div>
       </section>
+
       <section className="py-16 bg-gray-50">
         <div className="container-therabrake">
           <h2 className="text-3xl font-bold text-center mb-4 text-neutral-dark">What You'll Learn</h2>
@@ -127,6 +129,7 @@ export default function LeapAndLaunchPage() {
           </div>
         </div>
       </section>
+
       <section className="py-16">
         <div className="container-therabrake">
           <div className="max-w-4xl mx-auto">
@@ -151,6 +154,7 @@ export default function LeapAndLaunchPage() {
           </div>
         </div>
       </section>
+
       <section className="py-16 bg-gray-50">
         <div className="container-therabrake">
           <h2 className="text-3xl font-bold text-center mb-12 text-neutral-dark">Who It's For</h2>
@@ -179,6 +183,7 @@ export default function LeapAndLaunchPage() {
           </div>
         </div>
       </section>
+
       <section className="py-20 bg-gradient-to-r from-action to-orange-600 text-white">
         <div className="container-therabrake text-center">
           <div className="flex items-center justify-center gap-3 mb-6">
@@ -187,7 +192,7 @@ export default function LeapAndLaunchPage() {
           </div>
           <p className="text-xl mb-8 max-w-2xl mx-auto">Get instant access to the workbook, video modules, and downloadable practice resources that will transform your career.</p>
           <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-            <Link href="/checkout/leap-launch" className="bg-white text-action hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2">
+            <Link href="/enrollment?type=premium&plan=leap-launch&price=299" className="bg-white text-action hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2">
               Enroll Today for $299.00 <ArrowRight className="w-5 h-5" />
             </Link>
             <Link href="/courses" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-action px-8 py-4 rounded-lg font-semibold text-lg transition-all">
