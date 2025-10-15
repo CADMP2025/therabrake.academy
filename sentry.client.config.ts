@@ -1,27 +1,14 @@
-import * as Sentry from '@sentry/nextjs';
+import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN,
-  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  
+  // Adjust this value in production, or use tracesSampler for greater control
+  tracesSampleRate: 1.0,
+
+  // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
-  replaysOnErrorSampleRate: 1.0,
-  replaysSessionSampleRate: 0.1,
-  
-  integrations: [
-    new Sentry.Replay({
-      maskAllText: true,
-      blockAllMedia: true,
-    }),
-  ],
-  
-  environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT || process.env.NODE_ENV || 'development',
-  
-  beforeSend(event) {
-    // Remove sensitive headers
-    if (event.request?.headers) {
-      delete event.request.headers['authorization'];
-      delete event.request.headers['cookie'];
-    }
-    return event;
-  },
+
+  // Only enable in production
+  enabled: process.env.NODE_ENV === 'production',
 });

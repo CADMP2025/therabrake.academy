@@ -1,76 +1,81 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
 
-export async function POST(request: Request) {
-  const supabase = createRouteHandlerClient({ cookies });
-  const { lessonId, percentage } = await request.json();
+export async function POST(req: NextRequest) {
+  try {
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const body = await req.json();
+    const { lessonId, courseId, completed, timeSpent } = body;
+
+    // Update or create progress record
+    const { data, error } = await supabase
+      .from('lesson_progress')
+      .upsert({
+        user_id: user.id,
+        lesson_id: lessonId,
+        course_id: courseId,
+        completed: completed || false,
+        time_spent: timeSpent || 0,
+        last_position: 0,
+        updated_at: new Date().toISOString(),
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    console.error('Progress update error:', error);
+    return NextResponse.json(
+      { error: 'Failed to update progress' },
+      { status: 500 }
+    );
   }
-
-  const { data, error } = await supabase
-    .from('lesson_progress')
-    .upsert({
-      user_id: user.id,
-      lesson_id: lessonId,
-      progress_percentage: percentage,
-      completed: percentage >= 90,
-      last_position: 0,
-      updated_at: new Date().toISOString()
-    }, {
-      onConflict: 'user_id,lesson_id'
-    })
-    .select()
-    .single();
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
-  return NextResponse.json({ data });
 }
 
-export async function GET(request: Request) {
-  const supabase = createRouteHandlerClient({ cookies });
-  const { searchParams } = new URL(request.url);
-  const courseId = searchParams.get('courseId');
+export async function GET(req: NextRequest) {
+  try {
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const courseId = searchParams.get('courseId');
+    const lessonId = searchParams.get('lessonId');
+
+    let query = supabase
+      .from('lesson_progress')
+      .select('*')
+      .eq('user_id', user.id);
+
+    if (courseId) {
+      query = query.eq('course_id', courseId);
+    }
+
+    if (lessonId) {
+      query = query.eq('lesson_id', lessonId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    console.error('Progress fetch error:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch progress' },
+      { status: 500 }
+    );
   }
-
-  // Get all lessons in course
-  const { data: lessons } = await supabase
-    .from('lessons')
-    .select('id, modules!inner(course_id)')
-    .eq('modules.course_id', courseId);
-
-  if (!lessons) {
-    return NextResponse.json({ progress: [] });
-  }
-
-  const lessonIds = lessons.map(l => l.id);
-
-  // Get progress for all lessons
-  const { data: progress } = await supabase
-    .from('lesson_progress')
-    .select('*')
-    .eq('user_id', user.id)
-    .in('lesson_id', lessonIds);
-
-  // Calculate overall progress
-  const totalLessons = lessons.length;
-  const completedLessons = progress?.filter(p => p.completed).length || 0;
-  const overallProgress = totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
-
-  return NextResponse.json({ 
-    progress: progress || [],
-    overall: overallProgress,
-    completed: completedLessons,
-    total: totalLessons
-  });
 }
