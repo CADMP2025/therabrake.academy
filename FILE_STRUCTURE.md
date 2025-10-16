@@ -1,31 +1,54 @@
-TheraBrake Academy — Workspace file tree (snapshot)
+# TheraBrake Academy — Workspace File Structure
 
-Root
-├── .env.*
-├── .git/
-├── .next/
-├── .vercel/
+**Updated:** October 16, 2025  
+**Branch:** feature/course-builder
+
+```
+Root/
+├── .env.*                          # environment configuration files
+├── .git/                           # git repository data
+├── .next/                          # Next.js build output
+├── .vercel/                        # Vercel deployment config
 ├── FILE_STRUCTURE.md               # this file
 ├── README.md
-├── app/                            # Next.js app routes, layouts, pages
+├── package.json
+├── tsconfig.json
+├── next.config.js
+├── middleware.ts
+├── tailwind.config.ts
+├── playwright.config.ts
+├── vercel.json
+├── app/                            # Next.js App Router pages & layouts
 │   ├── globals.css
 │   ├── layout.tsx
 │   ├── page.tsx
+│   ├── icon.svg
 │   ├── (dashboard)/
 │   │   └── instructor/
 │   │       └── course-builder/
-│   │           └── page.tsx
 │   ├── (public)/
 │   ├── about/
 │   │   └── page.tsx
 │   ├── admin/
 │   │   └── page.tsx
-│   ├── api/
+│   ├── api/                        # API routes
 │   │   ├── auth/
+│   │   │   └── log-event/
 │   │   ├── certificates/
 │   │   ├── courses/
+│   │   │   ├── route.ts
+│   │   │   ├── featured/
+│   │   │   └── popular/
+│   │   ├── health/
 │   │   │   └── route.ts
-│   │   └── stripe/
+│   │   ├── progress/
+│   │   │   └── route.ts
+│   │   ├── search/
+│   │   │   └── courses/
+│   │   ├── stripe/
+│   │   └── webhooks/
+│   │       ├── certificate-generated/
+│   │       └── enrollment-created/
 │   ├── auth/
 │   │   ├── layout.tsx
 │   │   ├── forgot-password/
@@ -49,7 +72,15 @@ Root
 │   │   │   └── page.tsx
 │   │   ├── personal/
 │   │   │   └── page.tsx
-│   │   └── premium/
+│   │   ├── premium/
+│   │   │   ├── page.tsx
+│   │   │   ├── leap-launch/
+│   │   │   └── so-what/
+│   │   ├── professional/
+│   │   │   └── page.tsx
+│   │   ├── search/
+│   │   │   └── page.tsx
+│   │   └── so-what-mindset/
 │   │       └── page.tsx
 │   ├── dashboard/
 │   │   └── page.tsx
@@ -57,17 +88,27 @@ Root
 │   │   └── page.tsx
 │   ├── instructor/
 │   │   └── page.tsx
+│   ├── learn/                      # course learning interface
+│   │   └── [courseId]/
+│   │       └── [lessonId]/
 │   ├── pricing/
 │   │   └── page.tsx
 │   ├── privacy/
 │   │   └── page.tsx
+│   ├── quiz/
+│   │   └── [id]/
+│   │       └── page.tsx
 │   ├── refund-policy/
 │   │   └── page.tsx
 │   ├── support/
 │   │   └── page.tsx
-│   └── terms/
+│   ├── terms/
+│   │   └── page.tsx
+│   ├── test-course-builder/
+│   │   └── page.tsx
+│   └── tx-lpc-approved/
 │       └── page.tsx
-├── components/                     # UI components grouped by feature
+├── components/                     # React components by feature
 │   ├── admin/
 │   ├── auth/
 │   ├── course/
@@ -75,54 +116,131 @@ Root
 │   │   ├── CourseBuilder.tsx
 │   │   ├── CourseCard.tsx
 │   │   ├── EnhancedQuizBuilder.tsx
+│   │   ├── IntegratedCourseBuilder.tsx
 │   │   └── TipTapEditor.tsx
 │   ├── course-builder/
 │   │   ├── ContentParser.tsx
 │   │   ├── CourseBuilder.tsx
 │   │   ├── LessonEditor.tsx
 │   │   ├── ModuleOrganizer.tsx
-│   │   └── PreviewPanel.tsx
-│   ├── quiz/
-│   │   ├── QuizPlayer.tsx
-│   │   └── QuizResults.tsx
+│   │   ├── PreviewPanel.tsx
+│   │   └── index.ts
+│   ├── courses/
+│   ├── dashboard/
+│   │   └── ProgressWidget.tsx
+│   ├── instructor/
 │   ├── layout/
 │   │   ├── Header.tsx
 │   │   └── Footer.tsx
-│   └── ui/
+│   ├── learn/
+│   │   └── VideoPlayer.tsx
+│   ├── quiz/
+│   │   ├── QuizPlayer.tsx
+│   │   └── QuizResults.tsx
+│   ├── shared/
+│   └── ui/                         # shadcn/ui components
 │       ├── button.tsx
 │       ├── card.tsx
-│       └── radio-group.tsx
-├── lib/                             # backend helpers and services
+│       ├── label.tsx
+│       ├── progress.tsx
+│       ├── radio-group.tsx
+│       └── textarea.tsx
+├── hooks/                          # React custom hooks
+│   └── useSearch.ts
+├── lib/                            # backend utilities & services
+│   ├── certificates/
+│   ├── compliance/
+│   │   └── gdpr-functions.ts
 │   ├── email/
 │   │   ├── email-service.ts
-│   │   └── resend-client.ts
+│   │   ├── resend-client.ts
+│   │   └── templates.ts
+│   ├── monitoring/
+│   ├── parsers/
+│   │   └── content-parser.ts
+│   ├── quiz/
+│   │   └── grading.ts
+│   ├── resources/
+│   ├── search/
+│   │   ├── meilisearch-client.ts
+│   │   ├── search-service.ts
+│   │   ├── setup-index.ts
+│   │   └── types.ts
+│   ├── security/
+│   │   ├── incident-response.ts
+│   │   ├── input-sanitization.ts
+│   │   └── validation.ts
+│   ├── stripe/
 │   ├── supabase/
 │   │   ├── client.ts
 │   │   └── server.ts
-│   ├── quiz/
-│   │   └── grading.ts
-│   ├── parsers/
-│   │   └── content-parser.ts
-│   ├── search/
-│   │   └── search-service.ts
-│   └── security/
-│       └── incident-response.ts
-├── public/                          # static assets
+│   └── utils/
+│       └── cn.ts
+├── public/                         # static assets
 │   ├── assets/
-│   └── images/
+│   │   ├── icons/
+│   │   └── images/
+│   ├── certificate-templates/
+│   ├── images/
+│   │   └── logo/
+│   │       ├── favicon.ico
+│   │       ├── logo.png
+│   │       ├── logo-white.png
+│   │       ├── therabrake-icon.png
+│   │       ├── therabrake-icon.svg
+│   │       ├── therabrake-logo.png
+│   │       └── therabrake-logo.svg
+│   ├── file.svg
+│   ├── globe.svg
+│   └── window.svg
+├── scripts/                        # deployment & utility scripts
+│   ├── phase2-security-setup.sh
+│   ├── security/
+│   ├── test-course-player.sh
+│   ├── upload-stripe-products.ts
+│   └── upload-stripe-products.ts.old
 ├── styles/
-├── supabase/
+├── supabase/                       # database configuration
 │   └── migrations/
 │       ├── 001_course_builder.sql
+│       ├── 20250106_001_complete_audit_system.sql
+│       ├── 20250106_002_data_retention.sql
+│       ├── 20250106_003_security_incidents.sql
 │       └── 20251009175842_create_certificate_audit_log.sql
-├── test-results/
-│   └── .last-run.json
+├── tests/                          # test files
+│   ├── e2e/
+│   │   ├── security/
+│   │   └── smoke.spec.ts
+│   ├── fixtures/
+│   │   └── test-users.ts
+│   └── setup/
+│       └── seed-test-data.ts
+├── types/                          # TypeScript definitions
+│   └── course-builder/
+│       └── index.ts
 ├── utils/
-├── package.json
-├── tsconfig.json
-├── next.config.js
-└── other config files
+├── deploy-production.sh
+├── fix-register.sh
+├── quick-fix.sh
+└── update-packages.sh
+```
 
-Notes
-- This is a shallow snapshot (max depth 4) and excludes large folders like node_modules.
-- If you want a deeper tree, JSON output, or a graphical SVG/PNG, tell me which format and I will generate it.
+## Key Features
+
+- **Next.js 14+** with App Router
+- **API Routes** for courses, progress tracking, webhooks
+- **Course Builder** with integrated quiz system
+- **Learning Platform** with video player and progress tracking
+- **Search** powered by MeiliSearch
+- **Email** service with Resend
+- **Database** with Supabase (PostgreSQL)
+- **Security** monitoring and incident response
+- **Testing** with Playwright E2E tests
+- **Compliance** GDPR functions
+
+## Notes
+
+- Excludes build artifacts (`.next/`, `node_modules/`) from detailed view
+- Environment files contain sensitive keys - ensure proper `.gitignore` configuration
+- Migration files handle database schema and security setup
+- Test suite covers E2E scenarios and security validation
