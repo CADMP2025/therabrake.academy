@@ -1,6 +1,6 @@
 # TheraBrake Academy — Workspace File Structure
 
-**Updated:** October 16, 2025  
+**Updated:** October 18, 2025  
 **Branch:** feature/course-builder
 
 ```
@@ -18,6 +18,7 @@ Root/
 ├── tailwind.config.ts
 ├── playwright.config.ts
 ├── vercel.json
+├── sentry.*.config.ts              # Sentry error monitoring configs
 ├── app/                            # Next.js App Router pages & layouts
 │   ├── globals.css
 │   ├── layout.tsx
@@ -26,6 +27,7 @@ Root/
 │   ├── (dashboard)/
 │   │   └── instructor/
 │   │       └── course-builder/
+│   │           └── page.tsx
 │   ├── (public)/
 │   ├── about/
 │   │   └── page.tsx
@@ -34,21 +36,30 @@ Root/
 │   ├── api/                        # API routes
 │   │   ├── auth/
 │   │   │   └── log-event/
-│   │   ├── certificates/
+│   │   │       └── route.ts
 │   │   ├── courses/
 │   │   │   ├── route.ts
 │   │   │   ├── featured/
+│   │   │   │   └── route.ts
 │   │   │   └── popular/
+│   │   │       └── route.ts
 │   │   ├── health/
 │   │   │   └── route.ts
 │   │   ├── progress/
 │   │   │   └── route.ts
 │   │   ├── search/
 │   │   │   └── courses/
+│   │   │       └── route.ts
 │   │   ├── stripe/
+│   │   │   ├── create-checkout/
+│   │   │   │   └── route.ts
+│   │   │   └── webhook/
+│   │   │       └── route.ts
 │   │   └── webhooks/
 │   │       ├── certificate-generated/
+│   │       │   └── route.ts
 │   │       └── enrollment-created/
+│   │           └── route.ts
 │   ├── auth/
 │   │   ├── layout.tsx
 │   │   ├── forgot-password/
@@ -75,7 +86,9 @@ Root/
 │   │   ├── premium/
 │   │   │   ├── page.tsx
 │   │   │   ├── leap-launch/
+│   │   │   │   └── page.tsx
 │   │   │   └── so-what/
+│   │   │       └── page.tsx
 │   │   ├── professional/
 │   │   │   └── page.tsx
 │   │   ├── search/
@@ -85,12 +98,15 @@ Root/
 │   ├── dashboard/
 │   │   └── page.tsx
 │   ├── enrollment/
-│   │   └── page.tsx
+│   │   ├── page.tsx
+│   │   └── success/
+│   │       └── page.tsx
 │   ├── instructor/
 │   │   └── page.tsx
 │   ├── learn/                      # course learning interface
 │   │   └── [courseId]/
 │   │       └── [lessonId]/
+│   │           └── page.tsx
 │   ├── pricing/
 │   │   └── page.tsx
 │   ├── privacy/
@@ -109,8 +125,6 @@ Root/
 │   └── tx-lpc-approved/
 │       └── page.tsx
 ├── components/                     # React components by feature
-│   ├── admin/
-│   ├── auth/
 │   ├── course/
 │   │   ├── CERequirements.tsx
 │   │   ├── CourseBuilder.tsx
@@ -126,9 +140,9 @@ Root/
 │   │   ├── PreviewPanel.tsx
 │   │   └── index.ts
 │   ├── courses/
+│   │   └── CourseEnrollButton.tsx
 │   ├── dashboard/
 │   │   └── ProgressWidget.tsx
-│   ├── instructor/
 │   ├── layout/
 │   │   ├── Header.tsx
 │   │   └── Footer.tsx
@@ -137,7 +151,6 @@ Root/
 │   ├── quiz/
 │   │   ├── QuizPlayer.tsx
 │   │   └── QuizResults.tsx
-│   ├── shared/
 │   └── ui/                         # shadcn/ui components
 │       ├── button.tsx
 │       ├── card.tsx
@@ -146,21 +159,19 @@ Root/
 │       ├── radio-group.tsx
 │       └── textarea.tsx
 ├── hooks/                          # React custom hooks
+│   ├── useEnrollmentIntent.ts
 │   └── useSearch.ts
 ├── lib/                            # backend utilities & services
-│   ├── certificates/
 │   ├── compliance/
 │   │   └── gdpr-functions.ts
 │   ├── email/
 │   │   ├── email-service.ts
 │   │   ├── resend-client.ts
 │   │   └── templates.ts
-│   ├── monitoring/
 │   ├── parsers/
 │   │   └── content-parser.ts
 │   ├── quiz/
 │   │   └── grading.ts
-│   ├── resources/
 │   ├── search/
 │   │   ├── meilisearch-client.ts
 │   │   ├── search-service.ts
@@ -170,17 +181,12 @@ Root/
 │   │   ├── incident-response.ts
 │   │   ├── input-sanitization.ts
 │   │   └── validation.ts
-│   ├── stripe/
 │   ├── supabase/
 │   │   ├── client.ts
 │   │   └── server.ts
 │   └── utils/
 │       └── cn.ts
 ├── public/                         # static assets
-│   ├── assets/
-│   │   ├── icons/
-│   │   └── images/
-│   ├── certificate-templates/
 │   ├── images/
 │   │   └── logo/
 │   │       ├── favicon.ico
@@ -195,11 +201,9 @@ Root/
 │   └── window.svg
 ├── scripts/                        # deployment & utility scripts
 │   ├── phase2-security-setup.sh
-│   ├── security/
 │   ├── test-course-player.sh
 │   ├── upload-stripe-products.ts
 │   └── upload-stripe-products.ts.old
-├── styles/
 ├── supabase/                       # database configuration
 │   └── migrations/
 │       ├── 001_course_builder.sql
@@ -209,7 +213,6 @@ Root/
 │       └── 20251009175842_create_certificate_audit_log.sql
 ├── tests/                          # test files
 │   ├── e2e/
-│   │   ├── security/
 │   │   └── smoke.spec.ts
 │   ├── fixtures/
 │   │   └── test-users.ts
@@ -218,7 +221,6 @@ Root/
 ├── types/                          # TypeScript definitions
 │   └── course-builder/
 │       └── index.ts
-├── utils/
 ├── deploy-production.sh
 ├── fix-register.sh
 ├── quick-fix.sh
@@ -228,7 +230,7 @@ Root/
 ## Key Features
 
 - **Next.js 14+** with App Router
-- **API Routes** for courses, progress tracking, webhooks
+- **API Routes** for courses, progress tracking, webhooks, and Stripe integration
 - **Course Builder** with integrated quiz system
 - **Learning Platform** with video player and progress tracking
 - **Search** powered by MeiliSearch
@@ -237,6 +239,17 @@ Root/
 - **Security** monitoring and incident response
 - **Testing** with Playwright E2E tests
 - **Compliance** GDPR functions
+- **Error Monitoring** with Sentry integration
+- **Enrollment** success flow and payment processing
+
+## Recent Additions
+
+- Added Sentry configuration files for error monitoring
+- Enrollment success page (`app/enrollment/success/page.tsx`)
+- Course enrollment button component (`components/courses/CourseEnrollButton.tsx`)
+- Enhanced API routes with proper file structure
+- Additional React hooks (`useEnrollmentIntent.ts`)
+- Stripe checkout integration
 
 ## Notes
 
