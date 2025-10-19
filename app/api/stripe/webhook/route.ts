@@ -1,22 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { headers } from 'next/headers'
 import Stripe from 'stripe'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@supabase/supabase-js'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-11-20.acacia'
+  apiVersion: '2025-08-27.basil'
 })
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
 
-export async function POST(req: NextRequest) {
-  const body = await req.text()
-  const signature = req.headers.get('stripe-signature')
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
+
+export async function POST(request: NextRequest) {
+  const body = await request.text()
+  const signature = headers().get('stripe-signature')
 
   if (!signature) {
-    return NextResponse.json(
-      { error: 'Missing stripe signature' },
-      { status: 400 }
-    )
+    return NextResponse.json({ error: 'No signature' }, { status: 400 })
   }
 
   let event: Stripe.Event
@@ -25,95 +28,31 @@ export async function POST(req: NextRequest) {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
   } catch (err: any) {
     console.error('Webhook signature verification failed:', err.message)
-    return NextResponse.json(
-      { error: `Webhook Error: ${err.message}` },
-      { status: 400 }
-    )
+    return NextResponse.json({ error: err.message }, { status: 400 })
   }
-
-  const supabase = createClient()
 
   try {
     switch (event.type) {
-      case 'checkout.session.completed': {
-        const session = event.data.object as Stripe.Checkout.Session
-        const { courseId, userId, courseTitle, ceHours } = session.metadata || {}
-
-        if (!courseId || !userId) {
-          throw new Error('Missing metadata in checkout session')
-        }
-
-        const { data: payment, error: paymentError } = await supabase
-          .from('payments')
-          .update({
-            status: 'completed',
-            stripe_payment_id: session.payment_intent as string,
-            completed_at: new Date().toISOString()
-          })
-          .eq('stripe_session_id', session.id)
-          .select()
-          .single()
-
-        if (paymentError) {
-          console.error('Payment update error:', paymentError)
-          throw paymentError
-        }
-
-        const { error: enrollmentError } = await supabase
-          .from('enrollments')
-          .insert({
-            user_id: userId,
-            course_id: courseId,
-            payment_id: payment.id,
-            status: 'active',
-            enrolled_at: new Date().toISOString(),
-            progress: 0
-          })
-
-        if (enrollmentError) {
-          console.error('Enrollment creation error:', enrollmentError)
-          throw enrollmentError
-        }
-
-        await supabase.from('audit_logs').insert({
-          user_id: userId,
-          action: 'enrollment_created',
-          resource_type: 'enrollment',
-          resource_id: courseId,
-          details: {
-            course_title: courseTitle,
-            ce_hours: ceHours,
-            payment_id: payment.id,
-            amount: session.amount_total ? session.amount_total / 100 : 0
-          }
-        })
-
+      case 'checkout.session.completed':
+        await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session)
         break
-      }
 
-      case 'checkout.session.expired': {
-        const session = event.data.object as Stripe.Checkout.Session
-        await supabase
-          .from('payments')
-          .update({
-            status: 'expired',
-            updated_at: new Date().toISOString()
-          })
-          .eq('stripe_session_id', session.id)
+      case 'customer.subscription.created':
+      case 'customer.subscription.updated':
+        await handleSubscriptionUpdate(event.data.object as Stripe.Subscription)
         break
-      }
 
-      case 'payment_intent.payment_failed': {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent
-        await supabase
-          .from('payments')
-          .update({
-            status: 'failed',
-            updated_at: new Date().toISOString()
-          })
-          .eq('stripe_payment_id', paymentIntent.id)
+      case 'customer.subscription.deleted':
+        await handleSubscriptionDeleted(event.data.object as Stripe.Subscription)
         break
-      }
+
+      case 'invoice.payment_succeeded':
+        await handleInvoicePaymentSucceeded(event.data.object as Stripe.Invoice)
+        break
+
+      case 'invoice.payment_failed':
+        await handleInvoicePaymentFailed(event.data.object as Stripe.Invoice)
+        break
 
       default:
         console.log(`Unhandled event type: ${event.type}`)
@@ -121,10 +60,133 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ received: true })
   } catch (error: any) {
-    console.error('Webhook processing error:', error)
-    return NextResponse.json(
-      { error: error.message || 'Webhook processing failed' },
-      { status: 500 }
-    )
+    console.error('Webhook handler error:', error)
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+}
+
+async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
+  const userId = session.metadata?.userId
+  const courseId = session.metadata?.courseId
+
+  if (!userId) {
+    console.error('Missing userId in checkout session metadata')
+    return
+  }
+
+  // Handle course enrollment
+  if (courseId) {
+    const { error: enrollmentError } = await supabaseAdmin
+      .from('enrollments')
+      .insert({
+        user_id: userId,
+        course_id: courseId,
+        enrollment_status: 'active',
+        enrolled_at: new Date().toISOString(),
+      })
+
+    if (enrollmentError) {
+      console.error('Error creating enrollment:', enrollmentError)
+    }
+
+    // Create payment record
+    const { error: paymentError } = await supabaseAdmin
+      .from('payments')
+      .insert({
+        user_id: userId,
+        course_id: courseId,
+        amount: (session.amount_total || 0) / 100,
+        currency: session.currency || 'usd',
+        stripe_payment_intent_id: session.payment_intent as string,
+        status: 'completed',
+      })
+
+    if (paymentError) {
+      console.error('Error creating payment record:', paymentError)
+    }
+  }
+
+  // Handle subscription (membership)
+  if (session.mode === 'subscription' && session.subscription) {
+    const { error: subError } = await supabaseAdmin
+      .from('subscriptions')
+      .insert({
+        user_id: userId,
+        stripe_subscription_id: session.subscription as string,
+        stripe_customer_id: session.customer as string,
+        status: 'active',
+        plan_id: session.metadata?.priceId || '',
+      })
+
+    if (subError) {
+      console.error('Error creating subscription:', subError)
+    }
+  }
+}
+
+async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
+  const userId = subscription.metadata?.userId
+
+  if (!userId) {
+    console.error('Missing userId in subscription metadata')
+    return
+  }
+
+  const { error } = await supabaseAdmin
+    .from('subscriptions')
+    .upsert({
+      user_id: userId,
+      stripe_subscription_id: subscription.id,
+      stripe_customer_id: subscription.customer as string,
+      status: subscription.status,
+      plan_id: subscription.items.data[0].price.id,
+      current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
+      current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+    })
+
+  if (error) {
+    console.error('Error updating subscription:', error)
+  }
+}
+
+async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
+  const { error } = await supabaseAdmin
+    .from('subscriptions')
+    .update({ 
+      status: 'canceled', 
+      canceled_at: new Date().toISOString() 
+    })
+    .eq('stripe_subscription_id', subscription.id)
+
+  if (error) {
+    console.error('Error deleting subscription:', error)
+  }
+}
+
+async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
+  const subscriptionId = invoice.subscription as string
+  if (!subscriptionId) return
+
+  const { error } = await supabaseAdmin
+    .from('subscriptions')
+    .update({ status: 'active' })
+    .eq('stripe_subscription_id', subscriptionId)
+
+  if (error) {
+    console.error('Error updating subscription status:', error)
+  }
+}
+
+async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
+  const subscriptionId = invoice.subscription as string
+  if (!subscriptionId) return
+
+  const { error } = await supabaseAdmin
+    .from('subscriptions')
+    .update({ status: 'past_due' })
+    .eq('stripe_subscription_id', subscriptionId)
+
+  if (error) {
+    console.error('Error updating subscription status:', error)
   }
 }
