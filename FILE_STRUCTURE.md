@@ -161,6 +161,45 @@ Root/
 │       ├── progress.tsx
 │       ├── radio-group.tsx
 │       └── textarea.tsx
+├── courses/                        # Legacy course import system
+│   ├── import/                     # 36 Word documents for CE courses
+│   │   ├── Addiction Counseling Fundamentals 8 hours CEU.docx
+│   │   ├── Advanced Ethics in Digital Age Counseling 4 hour CEU.docx
+│   │   ├── Advanced Private Practice Management.docx
+│   │   ├── Art and Expressive Therapies Techniques.docx
+│   │   ├── Building a Trauma Informed Practice and Telehealth.docx
+│   │   ├── Business Ethics for Mental Health Professionals.docx
+│   │   ├── Chronic Pain and Medical Psychology.docx
+│   │   ├── Clinical Supervision Skills for New Supervisors.docx
+│   │   ├── Co_Occurring Disorders Mental Health and Substance Use 6 Hours CEU.docx
+│   │   ├── Complex PTSD and Developmental Trauma 8 Hour CEU.docx
+│   │   ├── Crisis Intervention and De escalation Techniques.docx
+│   │   ├── Cultural Competency Specific Populations.docx
+│   │   ├── Cultural Diversity in Texas Counseling Practice CEU.docx
+│   │   ├── Digital Mental Health Tools and Apps.docx
+│   │   ├── EMDR Level 1 Training 15 CEU hours.docx
+│   │   ├── Eating Disorders Assessment and Treatment.docx
+│   │   ├── Ethics for Professional Counselors.docx
+│   │   ├── Family Systems and Structural Family Therapy.docx
+│   │   ├── GROUP THERAPY FACILITATION AND DEVELOPMENT.docx
+│   │   ├── Gottman Method Couples Therapy Level One 12 hour CEU.docx
+│   │   ├── Grief and Bereavement Counseling.docx
+│   │   ├── Integrative and Holistic Treatment Approaches.docx
+│   │   ├── Leadership in Mental Health Organizations.docx
+│   │   ├── Leap and Launch How To Build Your Private Practice for Mental Health Professionals course.docx
+│   │   ├── Legal Issues and Documentation for Counselors 4 hour CEU.docx
+│   │   ├── Motivational Interviewing for Addiction Recovery.docx
+│   │   ├── Neurofeedback and Brain.docx
+│   │   ├── Play Therapy Fundamentals Parts 1 and 2 12 hour CEU.docx
+│   │   ├── Regulating the Storm Trauma Anger and the Brain CEU Course.docx
+│   │   ├── Risk Management in Counseling CEU.docx
+│   │   ├── Somatic Approaches to Trauma Recovery 6 hours CEU.docx
+│   │   ├── Suicide Risk Assessment and Prevention 3 hour CEU.docx
+│   │   ├── Telehealth in Counseling CEU.docx
+│   │   ├── The So What Mindset Comprehensive Course.docx
+│   │   ├── Working with LGBTQ.docx
+│   │   └── Working with Military Veterans and PTSD.docx
+│   └── metadata.csv                # Course metadata for import script
 ├── hooks/                          # React custom hooks
 │   ├── useEnrollmentIntent.ts
 │   └── useSearch.ts
@@ -205,7 +244,9 @@ Root/
 │   ├── globe.svg
 │   └── window.svg
 ├── scripts/                        # deployment & utility scripts
+│   ├── import-legacy-courses.ts    # Legacy course import from Word docs
 │   ├── phase2-security-setup.sh
+│   ├── security/                   # Security setup scripts
 │   ├── test-course-player.sh
 │   ├── upload-stripe-products.ts
 │   └── upload-stripe-products.ts.old
@@ -235,6 +276,7 @@ Root/
 ## Key Features
 
 - **Next.js 14+** with App Router
+- **Legacy Course Import** system with Word document parsing via mammoth
 - **API Routes** for courses, progress tracking, webhooks, and Stripe integration
 - **Course Builder** with integrated quiz system
 - **Learning Platform** with video player and progress tracking
@@ -249,6 +291,10 @@ Root/
 
 ## Recent Additions
 
+- Added legacy course import system with 36 CE courses:
+  - `courses/import/` - 36 Word documents containing CE course content
+  - `courses/metadata.csv` - Course metadata configuration
+  - `scripts/import-legacy-courses.ts` - Automated import script with mammoth parsing
 - Added Sentry configuration files for error monitoring
 - Enhanced enrollment flow with dedicated content components:
   - `app/enrollment/EnrollmentContent.tsx`
@@ -267,3 +313,6 @@ Root/
 - Environment files contain sensitive keys - ensure proper `.gitignore` configuration
 - Migration files handle database schema and security setup
 - Test suite covers E2E scenarios and security validation
+- Legacy course import system includes 36 professional CE courses ranging from 3-15 hours
+- Import script uses mammoth library to parse Word documents into HTML content
+- All courses are Texas LPC approved and cover various specializations
