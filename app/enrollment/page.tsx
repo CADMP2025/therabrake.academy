@@ -2,6 +2,10 @@ import { Suspense } from 'react'
 import EnrollmentContent from './EnrollmentContent'
 import { Loader2 } from 'lucide-react'
 
+// Force dynamic rendering - prevent static generation timeout
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const metadata = {
   title: 'Enrollment | TheraBrake Academy',
   description: 'Complete your course enrollment',
@@ -13,7 +17,7 @@ export default function EnrollmentPage() {
       fallback={
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
-            <Loader2 className="w-12 w-12 animate-spin text-primary mx-auto mb-4" />
+            <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
             <p className="text-gray-600">Loading enrollment details...</p>
           </div>
         </div>
