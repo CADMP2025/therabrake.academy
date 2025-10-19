@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Loader2, Lock } from 'lucide-react'
 
 interface EnrollButtonProps {
@@ -29,14 +29,14 @@ export default function AuthenticatedEnrollButton({
   const [isLoading, setIsLoading] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-  useEffect(() => {
-    checkAuth()
-  }, [])
-
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     const { data: { session } } = await supabase.auth.getSession()
     setIsAuthenticated(!!session)
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
 
   const handleEnrollClick = async () => {
     setIsLoading(true)
