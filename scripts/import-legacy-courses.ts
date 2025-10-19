@@ -82,21 +82,48 @@ interface ParsedQuestion {
   order_index: number;
 }
 
-// Get instructor ID
+// Get instructor ID with better debugging
 async function getInstructorId(instructorEmail: string = 'instructor@therabrake.academy'): Promise<string> {
+  console.log(`\n🔍 Looking for instructor: ${instructorEmail}`);
+  
+  // Try to query profiles table
   const { data: profile, error } = await supabase
     .from('profiles')
-    .select('id')
+    .select('id, email, role, full_name')
     .eq('email', instructorEmail)
     .single();
 
-  if (error || !profile) {
+  console.log('📊 Query result:');
+  console.log('   Data:', profile);
+  console.log('   Error:', error);
+
+  if (error) {
+    console.log('❌ Database error:', error.message);
+    console.log('   Code:', error.code);
+    console.log('   Details:', error.details);
+    console.log('   Hint:', error.hint);
+  }
+
+  if (!profile) {
+    // Let's check if ANY profiles exist
+    const { data: allProfiles, error: allError } = await supabase
+      .from('profiles')
+      .select('email, role')
+      .limit(5);
+    
+    console.log('\n📋 All profiles in database (first 5):');
+    console.log(allProfiles);
+    console.log('Error:', allError);
+    
     throw new Error(
       `Instructor account not found. Please create a user with email: ${instructorEmail}\n` +
-      'Go to Supabase Dashboard → Authentication → Users → Add User'
+      'Go to Supabase Dashboard → Authentication → Users → Add User\n' +
+      'Then run this SQL:\n' +
+      `INSERT INTO profiles (id, email, role, full_name) VALUES ('[user-id]', '${instructorEmail}', 'instructor', 'TheraBrake Academy');`
     );
   }
 
+  console.log('✅ Found instructor:', profile.full_name, `(${profile.role})`);
   return profile.id;
 }
 
@@ -438,16 +465,15 @@ async function main() {
   console.log('='.repeat(60));
   
   // Get instructor ID
+  let instructorId: string;
   try {
-    const instructorId = await getInstructorId();
+    instructorId = await getInstructorId();
     console.log(`👤 Using instructor ID: ${instructorId}\n`);
     console.log('='.repeat(60));
   } catch (error) {
     console.error('❌', error);
     process.exit(1);
   }
-  
-  const instructorId = await getInstructorId();
   
   // Import each course
   let successCount = 0;
