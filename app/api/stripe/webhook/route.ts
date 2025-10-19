@@ -47,11 +47,8 @@ export async function POST(request: NextRequest) {
         break
 
       case 'invoice.payment_succeeded':
-        await handleInvoicePaymentSucceeded(event.data.object as Stripe.Invoice)
-        break
-
       case 'invoice.payment_failed':
-        await handleInvoicePaymentFailed(event.data.object as Stripe.Invoice)
+        console.log(`Invoice event: ${event.type}`)
         break
 
       default:
@@ -157,33 +154,5 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 
   if (error) {
     console.error('Error deleting subscription:', error)
-  }
-}
-
-async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
-  const subscriptionId = invoice.subscription as string
-  if (!subscriptionId) return
-
-  const { error } = await supabaseAdmin
-    .from('subscriptions')
-    .update({ status: 'active' })
-    .eq('stripe_subscription_id', subscriptionId)
-
-  if (error) {
-    console.error('Error updating subscription status:', error)
-  }
-}
-
-async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
-  const subscriptionId = invoice.subscription as string
-  if (!subscriptionId) return
-
-  const { error } = await supabaseAdmin
-    .from('subscriptions')
-    .update({ status: 'past_due' })
-    .eq('stripe_subscription_id', subscriptionId)
-
-  if (error) {
-    console.error('Error updating subscription status:', error)
   }
 }
