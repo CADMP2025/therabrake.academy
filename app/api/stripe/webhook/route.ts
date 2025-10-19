@@ -89,7 +89,6 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       console.error('Error creating enrollment:', enrollmentError)
     }
 
-    // Create payment record
     const { error: paymentError } = await supabaseAdmin
       .from('payments')
       .insert({
@@ -106,20 +105,28 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     }
   }
 
-  // Handle subscription (membership)
+  // Handle subscription - fetch full object for period data
   if (session.mode === 'subscription' && session.subscription) {
-    const { error: subError } = await supabaseAdmin
-      .from('subscriptions')
-      .insert({
-        user_id: userId,
-        stripe_subscription_id: session.subscription as string,
-        stripe_customer_id: session.customer as string,
-        status: 'active',
-        plan_id: session.metadata?.priceId || '',
-      })
+    try {
+      const subscription = await stripe.subscriptions.retrieve(session.subscription as string)
+      
+      const { error: subError } = await supabaseAdmin
+        .from('subscriptions')
+        .insert({
+          user_id: userId,
+          stripe_subscription_id: subscription.id,
+          stripe_customer_id: subscription.customer as string,
+          status: subscription.status,
+          plan_id: session.metadata?.priceId || subscription.items.data[0].price.id,
+          current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
+          current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+        })
 
-    if (subError) {
-      console.error('Error creating subscription:', subError)
+      if (subError) {
+        console.error('Error creating subscription:', subError)
+      }
+    } catch (err) {
+      console.error('Error retrieving subscription:', err)
     }
   }
 }
