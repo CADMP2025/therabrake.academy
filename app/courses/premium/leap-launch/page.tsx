@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Rocket, CheckCircle, Zap, Heart } from 'lucide-react'
+import AuthenticatedEnrollButton from '@/components/enrollment/AuthenticatedEnrollButton'
 
 export default function LeapAndLaunchPage() {
   return (
