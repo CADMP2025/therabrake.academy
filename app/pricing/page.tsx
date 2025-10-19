@@ -36,9 +36,9 @@ interface PricingCardProps {
   whatYouGet?: string[]
   bestFor?: string
   value?: string[]
-  planName: string
   productType: 'course' | 'premium' | 'membership'
   programType?: 'LEAP_AND_LAUNCH' | 'SO_WHAT_MINDSET'
+  courseId?: string
 }
 
 function PricingCard({ 
@@ -53,9 +53,9 @@ function PricingCard({
   whatYouGet,
   bestFor,
   value,
-  planName,
   productType,
-  programType
+  programType,
+  courseId
 }: PricingCardProps) {
   const colorClasses = {
     primary: 'bg-primary',
@@ -136,10 +136,10 @@ function PricingCard({
         )}
         
         <AuthenticatedEnrollButton
-          productType={productType}
+          courseId={courseId}
           programType={programType}
+          productType={productType}
           price={price}
-          planName={planName}
           className={`w-full text-center py-3 px-6 rounded-lg font-semibold text-white transition-colors ${buttonColorClasses[color]} mt-auto flex items-center justify-center gap-2 group`}
         >
           <span>{buttonText}</span>
@@ -256,7 +256,6 @@ export default function PricingPage() {
               title="🎓 1-Year CE Membership"
               price={199}
               color="primary"
-              planName="CE_1_YEAR"
               productType="membership"
               whatYouGet={[
                 "Full access to <strong>all CEU courses</strong> (currently 31+ credit hours, with more added regularly)",
@@ -279,7 +278,6 @@ export default function PricingPage() {
               price={299}
               color="action"
               popular={true}
-              planName="CE_2_YEAR"
               productType="membership"
               whatYouGet={[
                 "All benefits of the 1-Year Membership, extended to <strong>24 months</strong>",
@@ -300,7 +298,6 @@ export default function PricingPage() {
               title="🎓 5-Year CE + Personal"
               price={699}
               color="secondary"
-              planName="CE_5_YEAR"
               productType="membership"
               whatYouGet={[
                 "<strong>Complete professional access</strong>: every CEU course (200+ hours when fully developed)",
@@ -342,7 +339,6 @@ export default function PricingPage() {
               title="🌱 1-Year Personal"
               price={299}
               color="primary"
-              planName="PERSONAL_1_YEAR"
               productType="membership"
               whatYouGet={[
                 "Access to <strong>all personal growth courses</strong>",
@@ -365,7 +361,6 @@ export default function PricingPage() {
               title="🌱 2-Year Personal"
               price={399}
               color="action"
-              planName="PERSONAL_2_YEAR"
               productType="membership"
               whatYouGet={[
                 "Everything in 1-Year membership",
@@ -388,7 +383,6 @@ export default function PricingPage() {
               title="🌱 5-Year Personal"
               price={699}
               color="secondary"
-              planName="PERSONAL_5_YEAR"
               productType="membership"
               whatYouGet={[
                 "All personal growth content",
@@ -425,7 +419,6 @@ export default function PricingPage() {
               title="🧠 So What Mindset"
               price={499}
               color="primary"
-              planName="SO_WHAT_MINDSET"
               productType="premium"
               programType="SO_WHAT_MINDSET"
               features={[
@@ -444,7 +437,6 @@ export default function PricingPage() {
               title="🚀 Leap & Launch"
               price={299}
               color="action"
-              planName="LEAP_AND_LAUNCH"
               productType="premium"
               programType="LEAP_AND_LAUNCH"
               features={[
