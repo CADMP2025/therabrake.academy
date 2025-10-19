@@ -16,6 +16,7 @@ import {
   Award,
   TrendingUp
 } from 'lucide-react'
+import AuthenticatedEnrollButton from '@/components/enrollment/AuthenticatedEnrollButton'
 
 export const metadata: Metadata = {
   title: 'Pricing - TheraBrake Academy™',
@@ -25,17 +26,19 @@ export const metadata: Metadata = {
 
 interface PricingCardProps {
   title: string
-  price: string
+  price: number
   popular?: boolean
   color: 'primary' | 'action' | 'secondary'
   features?: string[]
   bonus?: string
   description?: string
   buttonText?: string
-  buttonLink?: string
   whatYouGet?: string[]
   bestFor?: string
   value?: string[]
+  planName: string
+  productType: 'course' | 'premium' | 'membership'
+  programType?: 'LEAP_AND_LAUNCH' | 'SO_WHAT_MINDSET'
 }
 
 function PricingCard({ 
@@ -47,10 +50,12 @@ function PricingCard({
   bonus, 
   description,
   buttonText = "Get Started",
-  buttonLink = "/register",
   whatYouGet,
   bestFor,
-  value
+  value,
+  planName,
+  productType,
+  programType
 }: PricingCardProps) {
   const colorClasses = {
     primary: 'bg-primary',
@@ -73,7 +78,7 @@ function PricingCard({
           </div>
         )}
         <h3 className="text-2xl font-bold mb-2">{title}</h3>
-        <div className="text-4xl font-bold">{price}</div>
+        <div className="text-4xl font-bold">${price}</div>
         {description && <p className="text-sm mt-2 opacity-90">{description}</p>}
       </div>
       <div className="p-6 flex flex-col flex-grow">
@@ -130,13 +135,16 @@ function PricingCard({
           </div>
         )}
         
-        <Link 
-          href={buttonLink}
+        <AuthenticatedEnrollButton
+          productType={productType}
+          programType={programType}
+          price={price}
+          planName={planName}
           className={`w-full text-center py-3 px-6 rounded-lg font-semibold text-white transition-colors ${buttonColorClasses[color]} mt-auto flex items-center justify-center gap-2 group`}
         >
           <span>{buttonText}</span>
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </Link>
+        </AuthenticatedEnrollButton>
       </div>
     </div>
   )
@@ -246,8 +254,10 @@ export default function PricingPage() {
           <div className="grid lg:grid-cols-3 gap-8 mb-12">
             <PricingCard
               title="🎓 1-Year CE Membership"
-              price="$199"
+              price={199}
               color="primary"
+              planName="CE_1_YEAR"
+              productType="membership"
               whatYouGet={[
                 "Full access to <strong>all CEU courses</strong> (currently 31+ credit hours, with more added regularly)",
                 "Complete your <strong>annual CE requirement</strong> with just one purchase",
@@ -262,14 +272,15 @@ export default function PricingPage() {
                 "Save over $100"
               ]}
               buttonText="Enroll Now - Save $100"
-              buttonLink="/enrollment?type=ce&plan=ce-1year&price=199"
             />
 
             <PricingCard
               title="🎓 2-Year CE Membership"
-              price="$299"
+              price={299}
               color="action"
               popular={true}
+              planName="CE_2_YEAR"
+              productType="membership"
               whatYouGet={[
                 "All benefits of the 1-Year Membership, extended to <strong>24 months</strong>",
                 "Access to every CEU course released during your membership",
@@ -283,13 +294,14 @@ export default function PricingPage() {
                 "Plus bonus discounts worth $200 savings"
               ]}
               buttonText="Most Popular - Enroll Now"
-              buttonLink="/enrollment?type=ce&plan=ce-2year&price=299"
             />
 
             <PricingCard
               title="🎓 5-Year CE + Personal"
-              price="$699"
+              price={699}
               color="secondary"
+              planName="CE_5_YEAR"
+              productType="membership"
               whatYouGet={[
                 "<strong>Complete professional access</strong>: every CEU course (200+ hours when fully developed)",
                 "<strong>Complete personal growth access</strong>: all courses for healing, resilience, relationships",
@@ -307,7 +319,6 @@ export default function PricingPage() {
               ]}
               bonus="Ultimate value—grow your practice and yourself for less than $12/month"
               buttonText="Best Value - Enroll Now"
-              buttonLink="/enrollment?type=ce&plan=ce-lifetime&price=699"
             />
           </div>
         </div>
@@ -329,8 +340,10 @@ export default function PricingPage() {
           <div className="grid md:grid-cols-3 gap-6">
             <PricingCard
               title="🌱 1-Year Personal"
-              price="$299"
+              price={299}
               color="primary"
+              planName="PERSONAL_1_YEAR"
+              productType="membership"
               whatYouGet={[
                 "Access to <strong>all personal growth courses</strong>",
                 "Tools for relationships, resilience, health, and finance",
@@ -346,13 +359,14 @@ export default function PricingPage() {
                 "Save over $200"
               ]}
               buttonText="Start Your Journey"
-              buttonLink="/enrollment?type=personal&plan=personal-1year&price=299"
             />
 
             <PricingCard
               title="🌱 2-Year Personal"
-              price="$399"
+              price={399}
               color="action"
+              planName="PERSONAL_2_YEAR"
+              productType="membership"
               whatYouGet={[
                 "Everything in 1-Year membership",
                 "Extended <strong>24-month access</strong>",
@@ -368,13 +382,14 @@ export default function PricingPage() {
                 "Save almost $200"
               ]}
               buttonText="Enroll for 2 Years"
-              buttonLink="/enrollment?type=personal&plan=personal-2year&price=399"
             />
 
             <PricingCard
               title="🌱 5-Year Personal"
-              price="$699"
+              price={699}
               color="secondary"
+              planName="PERSONAL_5_YEAR"
+              productType="membership"
               whatYouGet={[
                 "All personal growth content",
                 "Valid for <strong>60 months (5 years)</strong>",
@@ -390,7 +405,6 @@ export default function PricingPage() {
                 "Save over $800"
               ]}
               buttonText="Best Value - Enroll"
-              buttonLink="/enrollment?type=personal&plan=personal-5year&price=699"
             />
           </div>
         </div>
@@ -409,8 +423,11 @@ export default function PricingPage() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <PricingCard
               title="🧠 So What Mindset"
-              price="$499"
+              price={499}
               color="primary"
+              planName="SO_WHAT_MINDSET"
+              productType="premium"
+              programType="SO_WHAT_MINDSET"
               features={[
                 "12 transformative modules",
                 "Live monthly Q&A sessions",
@@ -421,13 +438,15 @@ export default function PricingPage() {
               ]}
               description="Transform your thinking, transform your life"
               buttonText="Enroll in Program"
-              buttonLink="/enrollment?type=premium&plan=so-what-mindset&price=499"
             />
 
             <PricingCard
               title="🚀 Leap & Launch"
-              price="$299"
+              price={299}
               color="action"
+              planName="LEAP_AND_LAUNCH"
+              productType="premium"
+              programType="LEAP_AND_LAUNCH"
               features={[
                 "8-week transformation program",
                 "Weekly live sessions",
@@ -438,7 +457,6 @@ export default function PricingPage() {
               ]}
               description="Build your dream practice with confidence"
               buttonText="Start Your Launch"
-              buttonLink="/enrollment?type=premium&plan=leap-and-launch&price=299"
             />
           </div>
         </div>
@@ -509,7 +527,7 @@ export default function PricingPage() {
               Browse Individual Courses
             </Link>
             <Link 
-              href="/enrollment?type=ce" 
+              href="/auth/register" 
               className="px-8 py-4 bg-action text-white rounded-lg font-bold hover:bg-orange-600 transition-all transform hover:scale-105 inline-flex items-center justify-center gap-2"
             >
               <Rocket className="w-5 h-5" />
