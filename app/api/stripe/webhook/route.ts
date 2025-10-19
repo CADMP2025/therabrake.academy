@@ -137,8 +137,8 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
       stripe_customer_id: subscription.customer as string,
       status: subscription.status,
       plan_id: subscription.items.data[0].price.id,
-      current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-      current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+    }, {
+      onConflict: 'stripe_subscription_id'
     })
 
   if (error) {
