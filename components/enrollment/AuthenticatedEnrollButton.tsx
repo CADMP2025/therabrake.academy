@@ -6,7 +6,8 @@ import { Loader2 } from 'lucide-react'
 import { useState, ReactNode } from 'react'
 
 interface AuthenticatedEnrollButtonProps {
-  programType: string
+  programType?: string
+  courseId?: string
   productType?: string
   price: number
   priceId?: string
@@ -16,6 +17,7 @@ interface AuthenticatedEnrollButtonProps {
 
 export default function AuthenticatedEnrollButton({
   programType,
+  courseId,
   productType = 'premium',
   price,
   priceId,
@@ -35,18 +37,37 @@ export default function AuthenticatedEnrollButton({
       if (authError || !user) {
         const enrollmentIntent = {
           type: productType,
-          programType,
+          programType: programType || courseId,
+          courseId: courseId,
           price,
-          priceId: priceId || `STRIPE_PRICE_PREMIUM_${programType}`,
+          priceId: priceId || (programType ? `STRIPE_PRICE_PREMIUM_${programType}` : undefined),
           timestamp: Date.now()
         }
         
         localStorage.setItem('enrollmentIntent', JSON.stringify(enrollmentIntent))
-        router.push(`/auth/login?redirect=/enrollment?type=${productType}&plan=${programType}&price=${price}`)
+        
+        let redirectUrl = '/enrollment?'
+        if (courseId) {
+          redirectUrl += `course=${courseId}&price=${price}`
+        } else if (programType) {
+          redirectUrl += `type=${productType}&plan=${programType}&price=${price}`
+        }
+        
+        router.push(`/auth/login?redirect=${encodeURIComponent(redirectUrl)}`)
         return
       }
 
-      router.push(`/enrollment?type=${productType}&plan=${programType}&price=${price}${priceId ? `&priceId=${priceId}` : ''}`)
+      let enrollmentUrl = '/enrollment?'
+      if (courseId) {
+        enrollmentUrl += `course=${courseId}&price=${price}`
+      } else if (programType) {
+        enrollmentUrl += `type=${productType}&plan=${programType}&price=${price}`
+      }
+      if (priceId) {
+        enrollmentUrl += `&priceId=${priceId}`
+      }
+      
+      router.push(enrollmentUrl)
     } catch (error) {
       console.error('Enrollment error:', error)
       setIsLoading(false)
