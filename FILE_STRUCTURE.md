@@ -1,7 +1,7 @@
 # TheraBrake Academy — Workspace File Structure
 
-**Updated:** October 18, 2025  
-**Branch:** feature/course-builder
+**Updated:** October 19, 2025  
+**Branch:** main
 
 ```
 Root/
@@ -98,9 +98,10 @@ Root/
 │   ├── dashboard/
 │   │   └── page.tsx
 │   ├── enrollment/
+│   │   ├── EnrollmentContent.tsx
 │   │   ├── page.tsx
 │   │   └── success/
-│   │       └── page.tsx
+│   │       └── EnrollmentSuccessContent.tsx
 │   ├── instructor/
 │   │   └── page.tsx
 │   ├── learn/                      # course learning interface
@@ -141,6 +142,8 @@ Root/
 │   │   └── index.ts
 │   ├── courses/
 │   │   └── CourseEnrollButton.tsx
+│   ├── enrollment/
+│   │   └── AuthenticatedEnrollButton.tsx
 │   ├── dashboard/
 │   │   └── ProgressWidget.tsx
 │   ├── layout/
@@ -181,6 +184,8 @@ Root/
 │   │   ├── incident-response.ts
 │   │   ├── input-sanitization.ts
 │   │   └── validation.ts
+│   ├── stripe/
+│   │   └── config.ts
 │   ├── supabase/
 │   │   ├── client.ts
 │   │   └── server.ts
@@ -245,11 +250,16 @@ Root/
 ## Recent Additions
 
 - Added Sentry configuration files for error monitoring
-- Enrollment success page (`app/enrollment/success/page.tsx`)
+- Enhanced enrollment flow with dedicated content components:
+  - `app/enrollment/EnrollmentContent.tsx`
+  - `app/enrollment/success/EnrollmentSuccessContent.tsx`
+  - `components/enrollment/AuthenticatedEnrollButton.tsx`
+- Improved Stripe integration:
+  - `app/api/stripe/create-checkout-session/route.ts`
+  - `lib/stripe/config.ts`
 - Course enrollment button component (`components/courses/CourseEnrollButton.tsx`)
 - Enhanced API routes with proper file structure
 - Additional React hooks (`useEnrollmentIntent.ts`)
-- Stripe checkout integration
 
 ## Notes
 
