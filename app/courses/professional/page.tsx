@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Clock, Award, DollarSign } from 'lucide-react'
+import AuthenticatedEnrollButton from '@/components/enrollment/AuthenticatedEnrollButton'
 
 const currentCourses = [
   {
@@ -172,7 +173,6 @@ export default function ProfessionalCoursesPage() {
           $9.99 per CE credit hour
         </p>
         
-        {/* Current CE Catalog */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold mb-6 text-center">Current CE Catalog (31 Credit Hours)</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -200,19 +200,29 @@ export default function ProfessionalCoursesPage() {
                     </div>
                   </div>
                   
-                  <Link 
-                    href={`/courses/${course.id}`}
-                    className="block bg-primary text-white text-center py-2 rounded-lg hover:bg-primary-dark transition font-medium"
-                  >
-                    View Course Details
-                  </Link>
+                  <div className="space-y-2">
+                    <Link 
+                      href={`/courses/${course.id}`}
+                      className="block bg-gray-100 text-primary text-center py-2 rounded-lg hover:bg-gray-200 transition font-medium"
+                    >
+                      View Course Details
+                    </Link>
+                    
+                    <AuthenticatedEnrollButton
+                      courseId={course.id}
+                      productType="course"
+                      price={course.price}
+                      className="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition font-medium"
+                    >
+                      Enroll Now
+                    </AuthenticatedEnrollButton>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Expanded Catalog Preview */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold mb-6 text-center">Expanded CE Catalog (169+ Additional Hours)</h2>
           {expandedCourses.map((category) => (
@@ -240,10 +250,9 @@ export default function ProfessionalCoursesPage() {
           ))}
         </section>
 
-        {/* Membership CTA */}
         <div className="text-center my-12">
           <Link 
-            href="/memberships"
+            href="/pricing"
             className="bg-action text-white px-8 py-3 rounded-lg hover:bg-action/90 transition inline-block font-semibold text-lg"
           >
             View All Courses & Membership Options

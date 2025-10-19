@@ -33,7 +33,7 @@ export default function BecomeInstructorPage() {
           </p>
           <p className="text-lg text-white max-w-3xl mx-auto mb-10">
             At TheraBrake Academy™, we believe that education transforms both the learner and the teacher. 
-            If you're a mental health professional, educator, or subject matter expert ready to make an impact, 
+            If you&apos;re a mental health professional, educator, or subject matter expert ready to make an impact, 
             we invite you to join our growing community of instructors.
           </p>
           <p className="text-lg text-blue-100 max-w-3xl mx-auto mb-10">
@@ -121,7 +121,7 @@ export default function BecomeInstructorPage() {
           <div className="text-center mt-12 p-8 bg-blue-50 rounded-lg max-w-3xl mx-auto">
             <p className="text-xl text-gray-800">
               If you have <strong className="text-blue-600">expertise + passion to teach</strong>, 
-              we'll help you turn it into a course that inspires and earns.
+              we&apos;ll help you turn it into a course that inspires and earns.
             </p>
           </div>
         </div>
@@ -153,7 +153,7 @@ export default function BecomeInstructorPage() {
               {
                 step: "4",
                 title: "Launch & Earn",
-                description: "Once live, you'll start earning every time a student enrolls."
+                description: "Once live, you&apos;ll start earning every time a student enrolls."
               }
             ].map((item, index) => (
               <div key={index} className="flex items-start mb-8">
@@ -203,7 +203,7 @@ export default function BecomeInstructorPage() {
                 icon: <BarChart3 className="w-8 h-8 text-purple-600" />,
                 emoji: "📊",
                 title: "Analytics & Reports",
-                description: "See what's working and how your students are engaging."
+                description: "See what&apos;s working and how your students are engaging."
               }
             ].map((resource, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow">
