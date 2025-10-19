@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { CheckCircle, Book, Video, FileText, Rocket, Target, DollarSign, Users, Clock, Award, Star, ArrowRight } from 'lucide-react'
+import AuthenticatedEnrollButton from '@/components/enrollment/AuthenticatedEnrollButton'
 
 export const metadata: Metadata = {
   title: 'Leap & Launch - Build Your Private Practice | TheraBrake Academy',
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 export default function LeapAndLaunchPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      {/* Hero Section */}
       <section className="bg-gradient-to-r from-primary to-secondary text-white py-20">
         <div className="container-therabrake">
           <div className="max-w-4xl mx-auto text-center">
@@ -22,20 +24,31 @@ export default function LeapAndLaunchPage() {
               <h1 className="text-4xl md:text-5xl font-bold">Leap & Launch!</h1>
             </div>
             <h2 className="text-2xl md:text-3xl mb-6">Build Your Private Practice with Confidence</h2>
-            <p className="text-xl mb-8">Are you ready to transform your clinical skills into a thriving, sustainable private practice? <strong>Leap & Launch!</strong> is a comprehensive step-by-step program designed exclusively for mental health professionals who want to take control of their careers, serve their clients with excellence, and achieve financial independence.</p>
+            <p className="text-xl mb-8">
+              Are you ready to transform your clinical skills into a thriving, sustainable private practice? 
+              <strong> Leap & Launch!</strong> is a comprehensive step-by-step program designed exclusively 
+              for mental health professionals who want to take control of their careers, serve their clients 
+              with excellence, and achieve financial independence.
+            </p>
             <div className="flex flex-col md:flex-row items-center justify-center gap-4">
               <div className="bg-white/20 px-6 py-3 rounded-lg">
                 <span className="text-3xl font-bold">$299.00</span>
                 <span className="text-lg ml-2">One-Time Payment</span>
               </div>
-              <Link href="/enrollment?type=premium&plan=LEAP_AND_LAUNCH&price=299" className="bg-action hover:bg-orange-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2">
+              <AuthenticatedEnrollButton
+                programType="LEAP_AND_LAUNCH"
+                productType="premium"
+                price={299}
+                className="bg-action hover:bg-orange-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2"
+              >
                 Enroll Now <ArrowRight className="w-5 h-5" />
-              </Link>
+              </AuthenticatedEnrollButton>
             </div>
           </div>
         </div>
       </section>
 
+      {/* What's Included Section */}
       <section className="py-16">
         <div className="container-therabrake">
           <h2 className="text-3xl font-bold text-center mb-12 text-neutral-dark">What's Included in Your Success Toolkit</h2>
@@ -65,6 +78,7 @@ export default function LeapAndLaunchPage() {
         </div>
       </section>
 
+      {/* What You'll Learn Section */}
       <section className="py-16 bg-gray-50">
         <div className="container-therabrake">
           <h2 className="text-3xl font-bold text-center mb-4 text-neutral-dark">What You'll Learn</h2>
@@ -130,12 +144,17 @@ export default function LeapAndLaunchPage() {
         </div>
       </section>
 
+      {/* Why This Course Section */}
       <section className="py-16">
         <div className="container-therabrake">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-8 text-neutral-dark">Why Take This Course?</h2>
             <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-8 rounded-xl">
-              <p className="text-lg text-neutral-dark mb-6">Most graduate programs teach you to be a great clinician, but not how to be a confident business owner. This course closes that gap—combining <strong>clinical ethics with practical business strategies</strong> so you can launch with less stress and more certainty.</p>
+              <p className="text-lg text-neutral-dark mb-6">
+                Most graduate programs teach you to be a great clinician, but not how to be a confident business owner. 
+                This course closes that gap—combining <strong>clinical ethics with practical business strategies</strong> so 
+                you can launch with less stress and more certainty.
+              </p>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-secondary flex-shrink-0 mt-0.5" />
@@ -147,7 +166,9 @@ export default function LeapAndLaunchPage() {
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-secondary flex-shrink-0 mt-0.5" />
-                  <p className="text-neutral-dark">Confidence in building a practice that reflects both your <strong>professional purpose</strong> and <strong>personal freedom</strong></p>
+                  <p className="text-neutral-dark">
+                    Confidence in building a practice that reflects both your <strong>professional purpose</strong> and <strong>personal freedom</strong>
+                  </p>
                 </div>
               </div>
             </div>
@@ -155,6 +176,7 @@ export default function LeapAndLaunchPage() {
         </div>
       </section>
 
+      {/* Who It's For Section */}
       <section className="py-16 bg-gray-50">
         <div className="container-therabrake">
           <h2 className="text-3xl font-bold text-center mb-12 text-neutral-dark">Who It's For</h2>
@@ -184,18 +206,29 @@ export default function LeapAndLaunchPage() {
         </div>
       </section>
 
+      {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-action to-orange-600 text-white">
         <div className="container-therabrake text-center">
           <div className="flex items-center justify-center gap-3 mb-6">
             <Star className="w-10 h-10 text-accent" />
             <h2 className="text-3xl md:text-4xl font-bold">Your clients are waiting. Your practice is possible. Your leap starts here.</h2>
           </div>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">Get instant access to the workbook, video modules, and downloadable practice resources that will transform your career.</p>
+          <p className="text-xl mb-8 max-w-2xl mx-auto">
+            Get instant access to the workbook, video modules, and downloadable practice resources that will transform your career.
+          </p>
           <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-            <Link href="/enrollment?type=premium&plan=LEAP_AND_LAUNCH&price=299" className="bg-white text-action hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2">
+            <AuthenticatedEnrollButton
+              programType="LEAP_AND_LAUNCH"
+              productType="premium"
+              price={299}
+              className="bg-white text-action hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2"
+            >
               Enroll Today for $299.00 <ArrowRight className="w-5 h-5" />
-            </Link>
-            <Link href="/courses" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-action px-8 py-4 rounded-lg font-semibold text-lg transition-all">
+            </AuthenticatedEnrollButton>
+            <Link 
+              href="/courses" 
+              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-action px-8 py-4 rounded-lg font-semibold text-lg transition-all"
+            >
               Browse All Courses
             </Link>
           </div>
