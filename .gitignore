@@ -47,3 +47,5 @@ sentry.properties
 .sentry
 *.log
 .env.local
+.env.local
+.env*.local
