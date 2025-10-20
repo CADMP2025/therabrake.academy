@@ -3,12 +3,34 @@
 
 import { useState, useEffect } from 'react';
 
+// TypeScript interfaces
+interface AffiliateStats {
+  totalClicks: number;
+  totalConversions: number;
+  conversionRate: number;
+  totalCommissions: number;
+  pendingCommissions: number;
+  paidCommissions: number;
+}
+
+interface AffiliateLink {
+  id: string;
+  unique_code: string;
+  link_url: string;
+  qr_code_url: string;
+  click_count: number;
+  conversion_count: number;
+  is_active: boolean;
+  created_at: string;
+  last_used_at: string | null;
+}
+
 export default function AffiliateLinksManager() {
-  const [stats, setStats] = useState(null);
-  const [links, setLinks] = useState([]);
+  const [stats, setStats] = useState<AffiliateStats | null>(null);
+  const [links, setLinks] = useState<AffiliateLink[]>([]);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadAffiliateDashboard();
@@ -63,7 +85,7 @@ export default function AffiliateLinksManager() {
     }
   };
 
-  const handleCopyLink = (url, event) => {
+  const handleCopyLink = (url: string, event: React.MouseEvent<HTMLButtonElement>) => {
     navigator.clipboard.writeText(url);
     
     const button = event.currentTarget;
@@ -77,7 +99,7 @@ export default function AffiliateLinksManager() {
     }, 2000);
   };
 
-  const handleDownloadQR = (qrUrl, code) => {
+  const handleDownloadQR = (qrUrl: string, code: string) => {
     const link = document.createElement('a');
     link.href = qrUrl;
     link.download = `affiliate-qr-${code}.png`;
@@ -85,7 +107,7 @@ export default function AffiliateLinksManager() {
     link.click();
   };
 
-  const handleToggleStatus = async (linkId, currentStatus) => {
+  const handleToggleStatus = async (linkId: string, currentStatus: boolean) => {
     try {
       const response = await fetch(`/api/instructor/affiliate-links/${linkId}`, {
         method: 'PATCH',
