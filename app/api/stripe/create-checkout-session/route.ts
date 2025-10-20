@@ -1,3 +1,4 @@
+// app/api/stripe/create-checkout-session/route.ts
 import { NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
@@ -36,10 +37,22 @@ export async function POST(request: Request) {
       .eq('id', userId)
       .single()
 
+    // ========================================
+    // NEW: GET AFFILIATE CLICK ID FROM COOKIE
+    // ========================================
+    const cookieStore = cookies()
+    const affiliateClickId = cookieStore.get('affiliate_click_id')?.value
+    const affiliateRef = cookieStore.get('affiliate_ref')?.value
+    
+    console.log('Affiliate tracking:', { affiliateClickId, affiliateRef })
+    // ========================================
+
     const metadata: any = {
       userId,
       productType,
-      email: profile?.email || session.user.email
+      email: profile?.email || session.user.email,
+      affiliate_click_id: affiliateClickId || '', // NEW: Add to metadata
+      affiliateCode: affiliateRef || '' // NEW: Add ref code for your existing system
     }
 
     let priceId: string
@@ -112,6 +125,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Price ID not configured' }, { status: 500 })
     }
 
+    // ========================================
+    // CREATE STRIPE CHECKOUT SESSION
+    // Now includes affiliate tracking in metadata
+    // ========================================
     const checkoutSession = await stripe.checkout.sessions.create({
       customer_email: profile?.email || session.user.email,
       client_reference_id: userId,
@@ -119,10 +136,20 @@ export async function POST(request: Request) {
       mode: productType === 'membership' && planName?.includes('1y') ? 'subscription' : 'payment',
       success_url: `${successUrl}?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses`,
-      metadata,
+      metadata, // This now includes affiliate_click_id and affiliateCode
       payment_intent_data: productType !== 'membership' ? { metadata } : undefined,
       subscription_data: productType === 'membership' ? { metadata } : undefined
     })
+
+    // Log successful checkout session creation with affiliate info
+    if (affiliateClickId) {
+      console.log(`✅ Checkout session created with affiliate tracking:`, {
+        sessionId: checkoutSession.id,
+        affiliateClickId,
+        userId,
+        productType
+      })
+    }
 
     return NextResponse.json({
       sessionId: checkoutSession.id,

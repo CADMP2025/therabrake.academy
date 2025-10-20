@@ -1,3 +1,4 @@
+// app/api/stripe/webhook/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import Stripe from 'stripe'
@@ -66,6 +67,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const userId = session.metadata?.userId
   const courseId = session.metadata?.courseId
   const affiliateCode = session.metadata?.affiliateCode || null
+  const affiliateClickId = session.metadata?.affiliate_click_id || null // NEW: Get click ID
 
   if (!userId) {
     console.error('Missing userId in checkout session metadata')
@@ -75,7 +77,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   // Handle course purchase
   if (courseId) {
     // Create enrollment
-    const { error: enrollmentError } = await supabaseAdmin
+    const { data: enrollmentData, error: enrollmentError } = await supabaseAdmin
       .from('enrollments')
       .insert({
         user_id: userId,
@@ -83,9 +85,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         enrollment_status: 'active',
         enrolled_at: new Date().toISOString(),
       })
+      .select()
+      .single()
 
     if (enrollmentError) {
       console.error('Error creating enrollment:', enrollmentError)
+      return // Exit early if enrollment fails
     }
 
     // Record payment
@@ -107,6 +112,34 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       console.error('Error creating payment record:', paymentError)
       return
     }
+
+    // ========================================
+    // NEW: AFFILIATE CONVERSION TRACKING
+    // ========================================
+    if (affiliateClickId) {
+      try {
+        // Record the affiliate conversion using the database function
+        const { error: conversionError } = await supabaseAdmin
+          .rpc('record_affiliate_conversion', {
+            p_click_id: affiliateClickId,
+            p_enrollment_id: enrollmentData.id,
+            p_payment_id: payment.id,
+            p_sale_amount: (session.amount_total || 0) / 100,
+            p_commission_rate: 10.0 // 10% commission rate
+          })
+
+        if (conversionError) {
+          console.error('Affiliate conversion error:', conversionError)
+        } else {
+          console.log(`✅ Affiliate conversion recorded: Click ${affiliateClickId} -> Payment ${payment.id}`)
+        }
+      } catch (error) {
+        console.error('Failed to record affiliate conversion:', error)
+      }
+    }
+    // ========================================
+    // END AFFILIATE CONVERSION TRACKING
+    // ========================================
 
     // ========================================
     // REVENUE SPLIT CALCULATION
