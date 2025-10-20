@@ -37,7 +37,7 @@ export default function BecomeInstructorPage() {
             we invite you to join our growing community of instructors.
           </p>
           <p className="text-lg text-blue-100 max-w-3xl mx-auto mb-10">
-            Whether you want to teach <strong className="text-white">accredited CEU courses for clinicians</strong> or{' '}
+            Whether you want to teach <strong className="text-white">accredited CE courses for clinicians</strong> or{' '}
             <strong className="text-white">personal development programs for the public</strong>, 
             we provide the platform, tools, and support to help you succeed.
           </p>

@@ -483,7 +483,7 @@ function RegisterPage() {
                     disabled={isLoading}
                   />
                   <label className="text-sm text-gray-600">
-                    I understand that CE credits require passing quizzes with 70% or higher and completing all course materials
+                    I understand that CE credits require passing quizzes with 80% or higher and completing all course materials
                   </label>
                 </div>
                 {errors.agreeToCERequirements && (
