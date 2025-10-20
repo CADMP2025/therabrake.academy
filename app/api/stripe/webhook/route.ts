@@ -65,13 +65,16 @@ export async function POST(request: NextRequest) {
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const userId = session.metadata?.userId
   const courseId = session.metadata?.courseId
+  const affiliateCode = session.metadata?.affiliateCode || null
 
   if (!userId) {
     console.error('Missing userId in checkout session metadata')
     return
   }
 
+  // Handle course purchase
   if (courseId) {
+    // Create enrollment
     const { error: enrollmentError } = await supabaseAdmin
       .from('enrollments')
       .insert({
@@ -85,7 +88,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       console.error('Error creating enrollment:', enrollmentError)
     }
 
-    const { error: paymentError } = await supabaseAdmin
+    // Record payment
+    const { data: payment, error: paymentError } = await supabaseAdmin
       .from('payments')
       .insert({
         user_id: userId,
@@ -93,14 +97,30 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         amount: (session.amount_total || 0) / 100,
         currency: session.currency || 'usd',
         stripe_payment_intent_id: session.payment_intent as string,
+        stripe_checkout_session_id: session.id,
         status: 'completed',
       })
+      .select()
+      .single()
 
     if (paymentError) {
       console.error('Error creating payment record:', paymentError)
+      return
     }
+
+    // ========================================
+    // REVENUE SPLIT CALCULATION
+    // ========================================
+    await calculateAndRecordRevenueSplit(
+      courseId, 
+      userId, 
+      payment.id, 
+      session, 
+      affiliateCode
+    )
   }
 
+  // Handle subscription purchase
   if (session.mode === 'subscription' && session.subscription) {
     const { error: subError } = await supabaseAdmin
       .from('subscriptions')
@@ -115,6 +135,153 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     if (subError) {
       console.error('Error creating subscription:', subError)
     }
+  }
+}
+
+/**
+ * Calculate and record revenue splits for course purchases
+ * Handles instructor earnings and affiliate commissions
+ */
+async function calculateAndRecordRevenueSplit(
+  courseId: string,
+  studentId: string,
+  paymentId: string,
+  session: Stripe.Checkout.Session,
+  affiliateCode: string | null
+) {
+  try {
+    // Fetch course and instructor details
+    const { data: course, error: courseError } = await supabaseAdmin
+      .from('courses')
+      .select(`
+        id,
+        title,
+        price,
+        instructor_id,
+        is_premium_program
+      `)
+      .eq('id', courseId)
+      .single()
+
+    if (courseError || !course) {
+      console.error('Course not found for revenue split:', courseError)
+      return
+    }
+
+    // Get instructor payment settings
+    const { data: paymentSettings } = await supabaseAdmin
+      .from('instructor_payment_settings')
+      .select('*')
+      .eq('instructor_id', course.instructor_id)
+      .single()
+
+    // Calculate amounts
+    const grossAmount = (session.amount_total || 0) / 100 // Convert from cents to dollars
+    const stripeFee = (grossAmount * 0.029) + 0.30 // Stripe's standard fee: 2.9% + $0.30
+    const netAmount = grossAmount - stripeFee
+
+    // Determine instructor revenue percentage
+    const instructorPercentage = course.is_premium_program
+      ? (paymentSettings?.program_revenue_percentage || 60) / 100  // 60% for premium programs
+      : (paymentSettings?.course_revenue_percentage || 70) / 100   // 70% for standard courses
+
+    // Handle affiliate commission
+    let affiliateInstructorId: string | null = null
+    let affiliateCommission = 0
+
+    if (affiliateCode) {
+      const { data: affiliateLink } = await supabaseAdmin
+        .from('instructor_affiliate_links')
+        .select('instructor_id, is_active')
+        .eq('unique_code', affiliateCode)
+        .eq('is_active', true)
+        .single()
+
+      // Only pay affiliate commission if it's a different instructor than the course creator
+      if (affiliateLink && affiliateLink.instructor_id !== course.instructor_id) {
+        affiliateInstructorId = affiliateLink.instructor_id
+
+        // Get affiliate commission percentage (default 15%)
+        const affiliatePercentage = (paymentSettings?.affiliate_commission_percentage || 15) / 100
+        affiliateCommission = netAmount * affiliatePercentage
+      }
+    }
+
+    // Calculate final splits
+    const instructorEarnings = (netAmount - affiliateCommission) * instructorPercentage
+    const platformRevenue = netAmount - instructorEarnings - affiliateCommission
+
+    console.log('Revenue Split Breakdown:', {
+      gross: grossAmount,
+      stripeFee: stripeFee,
+      net: netAmount,
+      instructor: instructorEarnings,
+      affiliate: affiliateCommission,
+      platform: platformRevenue,
+      courseTitle: course.title
+    })
+
+    // Record course creator earnings
+    const { error: earningsError } = await supabaseAdmin
+      .from('instructor_earnings')
+      .insert({
+        instructor_id: course.instructor_id,
+        payment_id: paymentId,
+        course_id: courseId,
+        student_id: studentId,
+        gross_sale_amount: grossAmount,
+        platform_fee: platformRevenue,
+        instructor_earnings: instructorEarnings,
+        earnings_type: 'direct_sale',
+        referred_by: affiliateInstructorId,
+        payout_status: 'pending',
+        earned_at: new Date().toISOString()
+      })
+
+    if (earningsError) {
+      console.error('Failed to record instructor earnings:', earningsError)
+    } else {
+      console.log(`✅ Recorded earnings for instructor ${course.instructor_id}: $${instructorEarnings.toFixed(2)}`)
+    }
+
+    // Record affiliate commission if applicable
+    if (affiliateInstructorId && affiliateCommission > 0) {
+      const { error: affiliateError } = await supabaseAdmin
+        .from('instructor_earnings')
+        .insert({
+          instructor_id: affiliateInstructorId,
+          payment_id: paymentId,
+          course_id: courseId,
+          student_id: studentId,
+          gross_sale_amount: grossAmount,
+          platform_fee: 0,
+          instructor_earnings: affiliateCommission,
+          earnings_type: 'affiliate_commission',
+          referred_by: null,
+          payout_status: 'pending',
+          earned_at: new Date().toISOString()
+        })
+
+      if (affiliateError) {
+        console.error('Failed to record affiliate commission:', affiliateError)
+      } else {
+        console.log(`✅ Recorded affiliate commission for instructor ${affiliateInstructorId}: $${affiliateCommission.toFixed(2)}`)
+      }
+
+      // Update affiliate link statistics
+      const { error: statsError } = await supabaseAdmin.rpc('increment_affiliate_stats', {
+        link_code: affiliateCode,
+        revenue_amount: grossAmount,
+        commission_amount: affiliateCommission
+      })
+
+      if (statsError) {
+        console.error('Failed to update affiliate stats:', statsError)
+      }
+    }
+
+  } catch (error) {
+    console.error('Error in revenue split calculation:', error)
   }
 }
 

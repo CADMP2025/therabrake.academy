@@ -1,7 +1,7 @@
 # TheraBrake Academy — Workspace File Structure
 
-**Updated:** October 19, 2025  
-**Branch:** main
+**Updated:** October 20, 2025  
+**Branch:** feature/course-builder
 
 ```
 Root/
@@ -37,11 +37,16 @@ Root/
 │   │   ├── auth/
 │   │   │   └── log-event/
 │   │   │       └── route.ts
+│   │   ├── certificates/
+│   │   │   └── route.ts
 │   │   ├── courses/
 │   │   │   ├── route.ts
 │   │   │   ├── featured/
 │   │   │   │   └── route.ts
 │   │   │   └── popular/
+│   │   │       └── route.ts
+│   │   ├── email/
+│   │   │   └── test/
 │   │   │       └── route.ts
 │   │   ├── health/
 │   │   │   └── route.ts
@@ -51,7 +56,7 @@ Root/
 │   │   │   └── courses/
 │   │   │       └── route.ts
 │   │   ├── stripe/
-│   │   │   ├── create-checkout/
+│   │   │   ├── create-checkout-session/
 │   │   │   │   └── route.ts
 │   │   │   └── webhook/
 │   │   │       └── route.ts
@@ -162,28 +167,35 @@ Root/
 │       ├── radio-group.tsx
 │       └── textarea.tsx
 ├── courses/                        # Legacy course import system
-│   ├── import/                     # 36 Word documents for CE courses
+│   ├── import/                     # 44 Word documents for CE & PD courses
 │   │   ├── Addiction Counseling Fundamentals 8 hours CEU.docx
 │   │   ├── Advanced Ethics in Digital Age Counseling 4 hour CEU.docx
 │   │   ├── Advanced Private Practice Management.docx
 │   │   ├── Art and Expressive Therapies Techniques.docx
 │   │   ├── Building a Trauma Informed Practice and Telehealth.docx
 │   │   ├── Business Ethics for Mental Health Professionals.docx
+│   │   ├── Cancer Diagnosis Its not the end its just the beginning.docx
 │   │   ├── Chronic Pain and Medical Psychology.docx
 │   │   ├── Clinical Supervision Skills for New Supervisors.docx
 │   │   ├── Co_Occurring Disorders Mental Health and Substance Use 6 Hours CEU.docx
 │   │   ├── Complex PTSD and Developmental Trauma 8 Hour CEU.docx
+│   │   ├── Credit Building and Debt Management Full Course.docx
 │   │   ├── Crisis Intervention and De escalation Techniques.docx
 │   │   ├── Cultural Competency Specific Populations.docx
 │   │   ├── Cultural Diversity in Texas Counseling Practice CEU.docx
 │   │   ├── Digital Mental Health Tools and Apps.docx
-│   │   ├── EMDR Level 1 Training 15 CEU hours.docx
+│   │   ├── Discovering the You after the We Comprehensive Course.docx
+│   │   ├── EMDR Level 1 Training Part One 7.5 CEU hours.docx
+│   │   ├── EMDR Level 1 Training Part Two 7.5 CEU hours.docx
 │   │   ├── Eating Disorders Assessment and Treatment.docx
 │   │   ├── Ethics for Professional Counselors.docx
 │   │   ├── Family Systems and Structural Family Therapy.docx
+│   │   ├── Financial Literacy Full Course.docx
+│   │   ├── Finding the Perfect Match Course.docx
 │   │   ├── GROUP THERAPY FACILITATION AND DEVELOPMENT.docx
 │   │   ├── Gottman Method Couples Therapy Level One 12 hour CEU.docx
 │   │   ├── Grief and Bereavement Counseling.docx
+│   │   ├── Healing Forward A Comprehensive Course in Relationship Recovery and Personal Reclamation.docx
 │   │   ├── Integrative and Holistic Treatment Approaches.docx
 │   │   ├── Leadership in Mental Health Organizations.docx
 │   │   ├── Leap and Launch How To Build Your Private Practice for Mental Health Professionals course.docx
@@ -191,6 +203,7 @@ Root/
 │   │   ├── Motivational Interviewing for Addiction Recovery.docx
 │   │   ├── Neurofeedback and Brain.docx
 │   │   ├── Play Therapy Fundamentals Parts 1 and 2 12 hour CEU.docx
+│   │   ├── Rebuilding After Betrayal Comprehensive Online Course.docx
 │   │   ├── Regulating the Storm Trauma Anger and the Brain CEU Course.docx
 │   │   ├── Risk Management in Counseling CEU.docx
 │   │   ├── Somatic Approaches to Trauma Recovery 6 hours CEU.docx
@@ -244,7 +257,9 @@ Root/
 │   ├── globe.svg
 │   └── window.svg
 ├── scripts/                        # deployment & utility scripts
+│   ├── check-email-logs.sql        # Email system verification queries
 │   ├── import-legacy-courses.ts    # Legacy course import from Word docs
+│   ├── import-remaining-courses.ts # Additional course import script
 │   ├── phase2-security-setup.sh
 │   ├── security/                   # Security setup scripts
 │   ├── test-course-player.sh
@@ -291,10 +306,17 @@ Root/
 
 ## Recent Additions
 
-- Added legacy course import system with 36 CE courses:
-  - `courses/import/` - 36 Word documents containing CE course content
-  - `courses/metadata.csv` - Course metadata configuration
-  - `scripts/import-legacy-courses.ts` - Automated import script with mammoth parsing
+- **Expanded Legacy Course Import System:** Now includes 44 complete courses:
+  - `courses/import/` - 44 Word documents (CE courses + Personal Development)
+  - `courses/metadata.csv` - Complete course metadata configuration
+  - `scripts/import-legacy-courses.ts` - Primary automated import script
+  - `scripts/import-remaining-courses.ts` - Additional course import script
+  - EMDR courses now split into Part 1 & 2 (7.5 CE hours each)
+  - Added 8 personal development courses including relationship recovery, financial literacy, and self-discovery
+- **Enhanced Email System:**
+  - `app/api/email/test/route.ts` - Email service testing and verification
+  - `scripts/check-email-logs.sql` - Email workflow verification queries
+  - `EMAIL_WORKFLOW_VERIFIED.md` - Complete email system documentation
 - Added Sentry configuration files for error monitoring
 - Enhanced enrollment flow with dedicated content components:
   - `app/enrollment/EnrollmentContent.tsx`
@@ -313,6 +335,10 @@ Root/
 - Environment files contain sensitive keys - ensure proper `.gitignore` configuration
 - Migration files handle database schema and security setup
 - Test suite covers E2E scenarios and security validation
-- Legacy course import system includes 36 professional CE courses ranging from 3-15 hours
-- Import script uses mammoth library to parse Word documents into HTML content
-- All courses are Texas LPC approved and cover various specializations
+- **Complete Course Library:** 44 total courses including:
+  - 36 professional CE courses (3-15 CE hours each)
+  - 8 personal development courses
+  - EMDR Level 1 split into two 7.5-hour parts
+  - All CE courses are Texas LPC approved
+- Import scripts use mammoth library to parse Word documents into HTML content
+- Email system includes comprehensive testing and verification workflows
