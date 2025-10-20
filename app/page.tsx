@@ -14,7 +14,7 @@ export default function HomePage() {
             Pause, Process, Progress.
           </p>
           <p className="text-lg mb-8 text-white/90 max-w-3xl mx-auto">
-            At <strong>TheraBrake Academy™</strong>, learning isn't just about earning credits or ticking boxes—it's about transformation. 
+            At <strong>TheraBrake Academy™</strong>, learning isn't just about earning credits or ticking boxes it's about transformation. 
             Whether you're a licensed professional ready to grow your practice or an individual ready to reclaim your life, 
             you'll find a course here designed for you.
           </p>
@@ -147,7 +147,7 @@ export default function HomePage() {
             </div>
           </div>
           <p className="text-xl mb-8 font-semibold">
-            ✨ TheraBrake Academy™ isn't just another online school—it's where education meets empowerment.
+            ✨ TheraBrake Academy™ isn't just another online school,it's where education meets empowerment.
           </p>
           <Link 
             href="/auth/register"
