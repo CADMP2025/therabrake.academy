@@ -207,7 +207,7 @@ export default function PricingPage() {
               <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
                 <CheckCircle className="w-6 h-6 text-secondary mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="font-semibold text-neutral-dark">CEU Courses</p>
+                  <p className="font-semibold text-neutral-dark">CE Courses</p>
                   <p className="text-neutral-medium">Starting at just <span className="font-bold text-primary text-xl">$19.99</span></p>
                 </div>
               </div>
@@ -258,7 +258,7 @@ export default function PricingPage() {
               color="primary"
               productType="membership"
               whatYouGet={[
-                "Full access to <strong>all CEU courses</strong> (currently 31+ credit hours, with more added regularly)",
+                "Full access to <strong>all CE courses</strong> (currently 31+ credit hours, with more added regularly)",
                 "Complete your <strong>annual CE requirement</strong> with just one purchase",
                 "Self-paced learning: videos, interactive quizzes, and downloadable workbooks",
                 "Earn <strong>instant digital certificates</strong> for completed courses",
@@ -281,7 +281,7 @@ export default function PricingPage() {
               productType="membership"
               whatYouGet={[
                 "All benefits of the 1-Year Membership, extended to <strong>24 months</strong>",
-                "Access to every CEU course released during your membership",
+                "Access to every CE course released during your membership",
                 "<strong>$100 discount</strong> on <em>The So What Mindset</em> program",
                 "<strong>$100 discount</strong> on <em>Leap & Launch!</em> program",
                 "Unlimited certificates and CE hours—submit anytime"
@@ -300,7 +300,7 @@ export default function PricingPage() {
               color="secondary"
               productType="membership"
               whatYouGet={[
-                "<strong>Complete professional access</strong>: every CEU course (200+ hours when fully developed)",
+                "<strong>Complete professional access</strong>: every CE course (200+ hours when fully developed)",
                 "<strong>Complete personal growth access</strong>: all courses for healing, resilience, relationships",
                 "Access valid for <strong>60 months (5 years)</strong>—no renewals, no stress",
                 "Bonus: <em>So What Mindset</em> for $399 (instead of $499)",
