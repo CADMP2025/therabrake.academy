@@ -26,6 +26,8 @@ Root/
 │   ├── icon.svg
 │   ├── (dashboard)/
 │   │   └── instructor/
+│   │       ├── affiliate/
+│   │       │   └── page.tsx
 │   │       └── course-builder/
 │   │           └── page.tsx
 │   ├── (public)/
@@ -149,6 +151,8 @@ Root/
 │   │   └── CourseEnrollButton.tsx
 │   ├── enrollment/
 │   │   └── AuthenticatedEnrollButton.tsx
+│   ├── instructor/
+│   │   └── AffiliateLinksManager.tsx
 │   ├── dashboard/
 │   │   └── ProgressWidget.tsx
 │   ├── layout/
