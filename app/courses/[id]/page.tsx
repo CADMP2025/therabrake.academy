@@ -92,7 +92,7 @@ export default async function CourseDetailPage({ params }: { params: { id: strin
                   <>
                     <div className="text-center mb-6">
                       <p className="text-sm text-gray-600 mb-2">Course Price</p>
-                      <p className="text-4xl font-bold">\${course.price.toFixed(2)}</p>
+                      <p className="text-4xl font-bold">${course.price.toFixed(2)}</p>
                     </div>
                     {user ? (
                       <form action="/api/stripe/create-checkout" method="POST">

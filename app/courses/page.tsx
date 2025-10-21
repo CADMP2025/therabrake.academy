@@ -112,7 +112,7 @@ export default async function CoursesPage() {
       <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white mt-12">
         <div className="max-w-7xl mx-auto px-4 py-12 text-center">
           <h2 className="text-3xl font-bold mb-4">Save with an Annual Membership</h2>
-          <p className="text-xl text-blue-100 mb-6">Unlimited access to all CE courses starting at \$199/year</p>
+          <p className="text-xl text-blue-100 mb-6">Unlimited access to all CE courses starting at $199/year</p>
           <Link href="/pricing" className="inline-block bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors">View Membership Plans</Link>
         </div>
       </div>
