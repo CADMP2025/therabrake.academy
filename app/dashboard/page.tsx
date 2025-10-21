@@ -1,81 +1,86 @@
-import Link from 'next/link'
-import { BookOpen, Award, Clock, TrendingUp } from 'lucide-react'
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
 
-export default function Dashboard() {
+export default async function DashboardPage() {
+  const supabase = await createClient()
+  
+  const { data: { user } } = await supabase.auth.getUser()
+  
+  if (!user) {
+    redirect('/auth/login')
+  }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('full_name, role, email')
+    .eq('id', user.id)
+    .single()
+
+  const { data: enrollments, count: enrollmentCount } = await supabase
+    .from('enrollments')
+    .select('*, courses(title, category, ce_hours)', { count: 'exact' })
+    .eq('user_id', user.id)
+    .eq('status', 'active')
+
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8">Welcome Back, Student!</h1>
-      
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-        <div className="bg-white p-6 rounded-lg shadow">
-          <div className="flex items-center justify-between mb-2">
-            <BookOpen className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold">3</span>
-          </div>
-          <p className="text-text-secondary">Active Courses</p>
+    <div className="min-h-screen bg-gray-50 p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Welcome, {profile?.full_name}!</h1>
+          <p className="text-gray-600 mt-2">Continue your learning journey</p>
         </div>
-        
-        <div className="bg-white p-6 rounded-lg shadow">
-          <div className="flex items-center justify-between mb-2">
-            <Award className="h-8 w-8 text-secondary" />
-            <span className="text-2xl font-bold">12</span>
-          </div>
-          <p className="text-text-secondary">CE Credits Earned</p>
-        </div>
-        
-        <div className="bg-white p-6 rounded-lg shadow">
-          <div className="flex items-center justify-between mb-2">
-            <Clock className="h-8 w-8 text-accent" />
-            <span className="text-2xl font-bold">24</span>
-          </div>
-          <p className="text-text-secondary">Hours Completed</p>
-        </div>
-        
-        <div className="bg-white p-6 rounded-lg shadow">
-          <div className="flex items-center justify-between mb-2">
-            <TrendingUp className="h-8 w-8 text-action" />
-            <span className="text-2xl font-bold">85%</span>
-          </div>
-          <p className="text-text-secondary">Avg. Quiz Score</p>
-        </div>
-      </div>
 
-      {/* Current Courses */}
-      <div className="bg-white rounded-lg shadow p-6 mb-8">
-        <h2 className="text-xl font-bold mb-4">Continue Learning</h2>
-        <div className="space-y-4">
-          <div className="border rounded-lg p-4">
-            <div className="flex justify-between items-start mb-2">
-              <h3 className="font-semibold">Ethics for Professional Counselors</h3>
-              <span className="text-sm text-text-secondary">65% Complete</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
-              <div className="bg-primary h-2 rounded-full" style={{width: '65%'}}></div>
-            </div>
-            <Link href="/dashboard/course/1" className="text-primary hover:text-primary-hover font-semibold">
-              Continue →
-            </Link>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-sm font-medium text-gray-500">Enrolled Courses</h3>
+            <p className="text-3xl font-bold text-blue-600 mt-2">{enrollmentCount || 0}</p>
+          </div>
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-sm font-medium text-gray-500">CE Hours Earned</h3>
+            <p className="text-3xl font-bold text-green-600 mt-2">0</p>
+          </div>
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-sm font-medium text-gray-500">Certificates</h3>
+            <p className="text-3xl font-bold text-purple-600 mt-2">0</p>
           </div>
         </div>
-      </div>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Link href="/courses" className="bg-primary text-white p-6 rounded-lg text-center hover:bg-primary-hover transition">
-          <BookOpen className="h-8 w-8 mx-auto mb-2" />
-          <p className="font-semibold">Browse Courses</p>
-        </Link>
-        
-        <Link href="/dashboard/certificates" className="bg-secondary text-white p-6 rounded-lg text-center hover:bg-secondary-hover transition">
-          <Award className="h-8 w-8 mx-auto mb-2" />
-          <p className="font-semibold">My Certificates</p>
-        </Link>
-        
-        <Link href="/dashboard/profile" className="bg-action text-white p-6 rounded-lg text-center hover:bg-action-hover transition">
-          <TrendingUp className="h-8 w-8 mx-auto mb-2" />
-          <p className="font-semibold">View Progress</p>
-        </Link>
+        {/* My Courses */}
+        <div className="bg-white rounded-lg shadow">
+          <div className="p-6 border-b">
+            <h2 className="text-xl font-bold">My Courses</h2>
+          </div>
+          <div className="p-6">
+            {enrollments && enrollments.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {enrollments.map((enrollment: any) => (
+                  <div key={enrollment.id} className="border rounded-lg p-4 hover:shadow-lg transition">
+                    <h3 className="font-semibold text-lg mb-2">{enrollment.courses?.title}</h3>
+                    <p className="text-sm text-gray-600 mb-2">Category: {enrollment.courses?.category}</p>
+                    {enrollment.courses?.ce_hours > 0 && (
+                      <p className="text-sm text-green-600 mb-4">CE Hours: {enrollment.courses?.ce_hours}</p>
+                    )}
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-blue-600 h-2 rounded-full" 
+                        style={{ width: `${enrollment.progress || 0}%` }}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">{enrollment.progress || 0}% Complete</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-500 mb-4">You haven&apos;t enrolled in any courses yet</p>
+                <a href="/courses" className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                  Browse Courses
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )
