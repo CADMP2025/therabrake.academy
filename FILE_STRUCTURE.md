@@ -1,6 +1,6 @@
 # TheraBrake Academy — Workspace File Structure
 
-**Updated:** October 20, 2025  
+**Updated:** October 21, 2025  
 **Branch:** feature/course-builder
 
 ```
@@ -296,6 +296,7 @@ Root/
 
 - **Next.js 14+** with App Router
 - **Legacy Course Import** system with Word document parsing via mammoth
+- **Instructor Affiliate System** with real-time tracking and commission management
 - **API Routes** for courses, progress tracking, webhooks, and Stripe integration
 - **Course Builder** with integrated quiz system
 - **Learning Platform** with video player and progress tracking
@@ -321,6 +322,11 @@ Root/
   - `app/api/email/test/route.ts` - Email service testing and verification
   - `scripts/check-email-logs.sql` - Email workflow verification queries
   - `EMAIL_WORKFLOW_VERIFIED.md` - Complete email system documentation
+- **Instructor Affiliate System:**
+  - `app/(dashboard)/instructor/affiliate/page.tsx` - Affiliate management dashboard
+  - `components/instructor/AffiliateLinksManager.tsx` - Comprehensive affiliate links interface
+  - `middleware.ts` - Enhanced with affiliate link tracking and cookie management
+  - Real-time click tracking, conversion analytics, and commission management
 - Added Sentry configuration files for error monitoring
 - Enhanced enrollment flow with dedicated content components:
   - `app/enrollment/EnrollmentContent.tsx`
