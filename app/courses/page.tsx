@@ -41,12 +41,12 @@ export default function CoursesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary to-secondary text-white py-20">
+      <section className="bg-gradient-to-br from-primary to-primary-light text-white py-20">
         <div className="container-therabrake text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
             Transform Your Practice & Your Life
           </h1>
-          <p className="text-xl max-w-3xl mx-auto">
+          <p className="text-xl max-w-3xl mx-auto text-white/95">
             Choose from Texas-approved CE courses, personal development programs, 
             and premium transformation packages designed for mental health professionals.
           </p>
@@ -56,8 +56,8 @@ export default function CoursesPage() {
       {/* Premium Programs Section */}
       <section className="py-16">
         <div className="container-therabrake">
-          <h2 className="text-3xl font-bold text-center mb-4">✨ Premium Programs</h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-4 text-primary">✨ Premium Programs</h2>
+          <p className="text-center text-text-primary mb-12 max-w-2xl mx-auto">
             Comprehensive transformation programs with workbooks, videos, and lifetime support
           </p>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -70,15 +70,15 @@ export default function CoursesPage() {
                       <program.icon className="w-10 h-10 text-primary" />
                       <span className="text-2xl font-bold text-action">{program.price}</span>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">{program.title}</h3>
-                    <p className="text-gray-600 mb-4">{program.description}</p>
+                    <h3 className="text-xl font-bold mb-2 text-text-primary">{program.title}</h3>
+                    <p className="text-text-primary mb-4">{program.description}</p>
                     <div className="flex items-center gap-1 mb-4">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-4 h-4 fill-accent text-accent" />
                       ))}
-                      <span className="text-sm text-gray-600 ml-2">5.0 (200+ reviews)</span>
+                      <span className="text-sm text-text-primary ml-2">5.0 (200+ reviews)</span>
                     </div>
-                    <span className="text-primary font-semibold hover:text-primary-600">
+                    <span className="text-primary font-semibold hover:text-primary-dark">
                       Learn More →
                     </span>
                   </div>
@@ -92,30 +92,30 @@ export default function CoursesPage() {
       {/* Course Categories Section */}
       <section className="py-16 bg-gray-50">
         <div className="container-therabrake">
-          <h2 className="text-3xl font-bold text-center mb-12">📚 Course Categories</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 text-primary">📚 Course Categories</h2>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {courseCategories.map((category, index) => (
               <Link key={index} href={category.link}>
                 <div className="card hover:shadow-xl transition-all cursor-pointer h-full">
                   <div className="p-6">
-                    <h3 className="text-xl font-bold mb-3">{category.title}</h3>
-                    <p className="text-gray-600 mb-4">{category.description}</p>
+                    <h3 className="text-xl font-bold mb-3 text-text-primary">{category.title}</h3>
+                    <p className="text-text-primary mb-4">{category.description}</p>
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center gap-2">
                         <Clock className="w-4 h-4 text-primary" />
-                        <span>{category.credits}</span>
+                        <span className="text-text-primary">{category.credits}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <DollarSign className="w-4 h-4 text-secondary" />
-                        <span>{category.price}</span>
+                        <span className="text-text-primary">{category.price}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Award className="w-4 h-4 text-accent" />
-                        <span>Texas LCSW/LPC Approved</span>
+                        <span className="text-text-primary">Texas LCSW/LPC Approved</span>
                       </div>
                     </div>
                     <div className="mt-4">
-                      <span className="text-primary font-semibold hover:text-primary-600">
+                      <span className="text-primary font-semibold hover:text-primary-dark">
                         Browse Courses →
                       </span>
                     </div>
@@ -130,15 +130,15 @@ export default function CoursesPage() {
       {/* CTA Section */}
       <section className="py-16">
         <div className="container-therabrake text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Start Your Journey?</h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold mb-6 text-primary">Ready to Start Your Journey?</h2>
+          <p className="text-lg text-text-primary mb-8 max-w-2xl mx-auto">
             Join thousands of mental health professionals who have transformed 
             their practices and lives with TheraBrake Academy.
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Link
               href="/auth/register"
-              className="inline-flex items-center justify-center bg-primary hover:bg-primary-hover text-white font-semibold text-lg px-8 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+              className="inline-flex items-center justify-center bg-primary hover:bg-primary-dark text-white font-semibold text-lg px-8 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
             >
               Get Started Today
             </Link>
