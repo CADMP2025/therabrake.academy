@@ -7,7 +7,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary to-primary-dark text-white py-20">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white">
             🌟 Welcome to TheraBrake Academy™
           </h1>
           <p className="text-2xl mb-4 text-accent font-semibold">
@@ -42,10 +42,10 @@ export default function HomePage() {
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center mb-6">
               <Award className="h-10 w-10 text-primary mr-4" />
-              <h2 className="text-3xl md:text-4xl font-bold">For Mental Health Professionals</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-primary">For Mental Health Professionals</h2>
             </div>
-            <p className="text-lg text-text-secondary mb-6">
-              Earn accredited <strong>Continuing Education Units (CEUs)</strong> while mastering real-world skills that elevate 
+            <p className="text-lg text-text-primary mb-6">
+              Earn accredited <strong>Continuing Education (CE) hours</strong> while mastering real-world skills that elevate 
               your career and protect your clients. From <strong>Ethics and HIPAA Compliance</strong> to <strong>Trauma-Informed 
               Care</strong> and <strong>Telehealth Mastery</strong>, our courses are built to keep you compliant, confident, and competitive.
             </p>
@@ -66,9 +66,9 @@ export default function HomePage() {
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center mb-6">
               <Heart className="h-10 w-10 text-secondary mr-4" />
-              <h2 className="text-3xl md:text-4xl font-bold">For Personal Growth & Healing</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-secondary">For Personal Growth & Healing</h2>
             </div>
-            <p className="text-lg text-text-secondary mb-6">
+            <p className="text-lg text-text-primary mb-6">
               Life happens. Betrayal, financial setbacks, relationship struggles, even health crises. But your story isn't over. 
               With courses like <strong>Healing Forward</strong>, <strong>Rebuilding After Betrayal</strong>, 
               <strong>Finding the Perfect Match</strong>, and <strong>Cancer Diagnosis: It's Not the End…</strong>, 
@@ -88,39 +88,39 @@ export default function HomePage() {
       {/* Why Choose Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary">
             🚀 Why Choose TheraBrake Academy™?
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="text-center p-6 rounded-lg hover:shadow-lg transition">
               <BookOpen className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Dual-Stream Learning</h3>
-              <p className="text-text-secondary">Professional CEUs + Personal Development</p>
+              <h3 className="text-xl font-semibold mb-2 text-text-primary">Dual-Stream Learning</h3>
+              <p className="text-text-primary">Professional CE Hours + Personal Development</p>
             </div>
             <div className="text-center p-6 rounded-lg hover:shadow-lg transition">
               <Award className="h-12 w-12 text-secondary mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Trusted & Accredited</h3>
-              <p className="text-text-secondary">Courses that meet state and national requirements</p>
+              <h3 className="text-xl font-semibold mb-2 text-text-primary">Trusted & Accredited</h3>
+              <p className="text-text-primary">Courses that meet state and national requirements</p>
             </div>
             <div className="text-center p-6 rounded-lg hover:shadow-lg transition">
               <Rocket className="h-12 w-12 text-action mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Practical & Transformational</h3>
-              <p className="text-text-secondary">Step-by-step guidance you can actually apply</p>
+              <h3 className="text-xl font-semibold mb-2 text-text-primary">Practical & Transformational</h3>
+              <p className="text-text-primary">Step-by-step guidance you can actually apply</p>
             </div>
             <div className="text-center p-6 rounded-lg hover:shadow-lg transition">
               <Clock className="h-12 w-12 text-accent mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Learn Your Way</h3>
-              <p className="text-text-secondary">Self-paced video lessons, interactive quizzes, and downloadable workbooks</p>
+              <h3 className="text-xl font-semibold mb-2 text-text-primary">Learn Your Way</h3>
+              <p className="text-text-primary">Self-paced video lessons, interactive quizzes, and downloadable workbooks</p>
             </div>
             <div className="text-center p-6 rounded-lg hover:shadow-lg transition">
               <Star className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Certificates You Can Share</h3>
-              <p className="text-text-secondary">Celebrate your progress and add credibility to your career</p>
+              <h3 className="text-xl font-semibold mb-2 text-text-primary">Certificates You Can Share</h3>
+              <p className="text-text-primary">Celebrate your progress and add credibility to your career</p>
             </div>
             <div className="text-center p-6 rounded-lg hover:shadow-lg transition">
               <Users className="h-12 w-12 text-secondary mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Expert Support</h3>
-              <p className="text-text-secondary">Learn from licensed professionals with years of experience</p>
+              <h3 className="text-xl font-semibold mb-2 text-text-primary">Expert Support</h3>
+              <p className="text-text-primary">Learn from licensed professionals with years of experience</p>
             </div>
           </div>
         </div>
@@ -129,24 +129,24 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="py-16 bg-gradient-to-r from-primary to-secondary text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
             🔑 Your Next Step Starts Here
           </h2>
           <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto mb-8">
             <div>
-              <p className="text-lg font-semibold mb-2">📚 Browse Our Courses</p>
+              <p className="text-lg font-semibold mb-2 text-white">📚 Browse Our Courses</p>
               <p className="text-white/90">Find the right program for your needs</p>
             </div>
             <div>
-              <p className="text-lg font-semibold mb-2">💻 Enroll Today</p>
+              <p className="text-lg font-semibold mb-2 text-white">💻 Enroll Today</p>
               <p className="text-white/90">Gain instant access to your learning dashboard</p>
             </div>
             <div>
-              <p className="text-lg font-semibold mb-2">🎉 Transform Tomorrow</p>
+              <p className="text-lg font-semibold mb-2 text-white">🎉 Transform Tomorrow</p>
               <p className="text-white/90">Apply what you learn for real, lasting change</p>
             </div>
           </div>
-          <p className="text-xl mb-8 font-semibold">
+          <p className="text-xl mb-8 font-semibold text-white">
             ✨ TheraBrake Academy™ isn't just another online school,it's where education meets empowerment.
           </p>
           <Link 
