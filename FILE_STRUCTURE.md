@@ -39,8 +39,6 @@ Root/
 │   │   ├── auth/
 │   │   │   └── log-event/
 │   │   │       └── route.ts
-│   │   ├── certificates/
-│   │   │   └── route.ts
 │   │   ├── courses/
 │   │   │   ├── route.ts
 │   │   │   ├── featured/
@@ -58,9 +56,13 @@ Root/
 │   │   │   └── courses/
 │   │   │       └── route.ts
 │   │   ├── stripe/
+│   │   │   ├── create-checkout/
+│   │   │   │   └── route.ts
 │   │   │   ├── create-checkout-session/
 │   │   │   │   └── route.ts
-│   │   │   └── webhook/
+│   │   │   ├── webhook/
+│   │   │   │   └── route.ts
+│   │   │   └── webhooks/
 │   │   │       └── route.ts
 │   │   └── webhooks/
 │   │       ├── certificate-generated/
@@ -110,6 +112,12 @@ Root/
 │   │   └── success/
 │   │       └── EnrollmentSuccessContent.tsx
 │   ├── instructor/
+│   │   ├── affiliate-links/
+│   │   │   ├── [id]/
+│   │   │   │   └── route.ts
+│   │   │   └── route.ts
+│   │   ├── earnings/
+│   │   │   └── page.tsx
 │   │   └── page.tsx
 │   ├── learn/                      # course learning interface
 │   │   └── [courseId]/
@@ -322,8 +330,11 @@ Root/
   - `app/api/email/test/route.ts` - Email service testing and verification
   - `scripts/check-email-logs.sql` - Email workflow verification queries
   - `EMAIL_WORKFLOW_VERIFIED.md` - Complete email system documentation
-- **Instructor Affiliate System:**
+- **Complete Instructor System:**
   - `app/(dashboard)/instructor/affiliate/page.tsx` - Affiliate management dashboard
+  - `app/instructor/affiliate-links/route.ts` - Affiliate links API endpoints
+  - `app/instructor/affiliate-links/[id]/route.ts` - Individual affiliate link management
+  - `app/instructor/earnings/page.tsx` - Earnings tracking and analytics
   - `components/instructor/AffiliateLinksManager.tsx` - Comprehensive affiliate links interface
   - `middleware.ts` - Enhanced with affiliate link tracking and cookie management
   - Real-time click tracking, conversion analytics, and commission management
@@ -332,9 +343,12 @@ Root/
   - `app/enrollment/EnrollmentContent.tsx`
   - `app/enrollment/success/EnrollmentSuccessContent.tsx`
   - `components/enrollment/AuthenticatedEnrollButton.tsx`
-- Improved Stripe integration:
-  - `app/api/stripe/create-checkout-session/route.ts`
-  - `lib/stripe/config.ts`
+- **Enhanced Stripe Integration:**
+  - `app/api/stripe/create-checkout/route.ts` - Alternative checkout endpoint
+  - `app/api/stripe/create-checkout-session/route.ts` - Primary checkout session creation
+  - `app/api/stripe/webhook/route.ts` - Stripe webhook handler
+  - `app/api/stripe/webhooks/route.ts` - Alternative webhook endpoint
+  - `lib/stripe/config.ts` - Stripe configuration and utilities
 - Course enrollment button component (`components/courses/CourseEnrollButton.tsx`)
 - Enhanced API routes with proper file structure
 - Additional React hooks (`useEnrollmentIntent.ts`)
