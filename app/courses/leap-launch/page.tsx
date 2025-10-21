@@ -207,7 +207,7 @@ export default function LeapAndLaunchPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-action to-action-dark text-white">
+      <section className="py-20 bg-gradient-to-r from-secondary to-secondary-dark text-white">
         <div className="container-therabrake text-center">
           <div className="flex items-center justify-center gap-3 mb-6">
             <Star className="w-10 h-10 text-accent" />
@@ -221,13 +221,13 @@ export default function LeapAndLaunchPage() {
               programType="LEAP_AND_LAUNCH"
               productType="premium"
               price={299}
-              className="bg-white text-action hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2"
+              className="bg-white text-secondary hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2"
             >
               Enroll Today for $299.00 <ArrowRight className="w-5 h-5" />
             </AuthenticatedEnrollButton>
             <Link 
               href="/courses" 
-              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-action px-8 py-4 rounded-lg font-semibold text-lg transition-all"
+              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-secondary px-8 py-4 rounded-lg font-semibold text-lg transition-all"
             >
               Browse All Courses
             </Link>
