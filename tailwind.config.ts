@@ -1,75 +1,75 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 const config: Config = {
-    darkMode: ['class'],
-    content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-  	extend: {
-  		colors: {
-  			primary: {
-  				'600': '#2563EB',
-  				DEFAULT: 'hsl(var(--primary))',
-  				hover: '#2563EB',
-  				foreground: 'hsl(var(--primary-foreground))'
-  			},
-  			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				hover: '#059669',
-  				foreground: 'hsl(var(--secondary-foreground))'
-  			},
-  			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
-  			},
-  			action: {
-  				DEFAULT: '#F97316',
-  				hover: '#EA580C'
-  			},
-  			background: 'hsl(var(--background))',
-  			text: {
-  				primary: '#111827',
-  				secondary: '#6B7280'
-  			},
-  			foreground: 'hsl(var(--foreground))',
-  			card: {
-  				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
-  			},
-  			popover: {
-  				DEFAULT: 'hsl(var(--popover))',
-  				foreground: 'hsl(var(--popover-foreground))'
-  			},
-  			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
-  				foreground: 'hsl(var(--muted-foreground))'
-  			},
-  			destructive: {
-  				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
-  			},
-  			border: 'hsl(var(--border))',
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
-  			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
-  			}
-  		},
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		}
-  	}
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: '#3B82F6',
+          light: '#60A5FA',
+          dark: '#2563EB',
+          600: '#2563EB', // Keep for compatibility
+        },
+        secondary: {
+          DEFAULT: '#10B981',
+          light: '#34D399',
+          dark: '#059669',
+        },
+        accent: {
+          DEFAULT: '#FACC15',
+          light: '#FDE047',
+          dark: '#EAB308',
+        },
+        action: {
+          DEFAULT: '#F97316',
+          light: '#FB923C',
+          dark: '#EA580C',
+        },
+        background: {
+          light: '#F9FAFB',
+          DEFAULT: '#FFFFFF',
+          secondary: '#F3F4F6',
+        },
+        text: {
+          primary: '#111827',
+          secondary: '#6B7280',
+          light: '#9CA3AF',
+        },
+        // Keep these for shadcn compatibility but map to our colors
+        border: '#E5E7EB',
+        input: '#E5E7EB',
+        ring: '#3B82F6',
+        foreground: '#111827',
+        muted: {
+          DEFAULT: '#F3F4F6',
+          foreground: '#6B7280',
+        },
+        destructive: {
+          DEFAULT: '#EF4444',
+          foreground: '#FFFFFF',
+        },
+        card: {
+          DEFAULT: '#FFFFFF',
+          foreground: '#111827',
+        },
+        popover: {
+          DEFAULT: '#FFFFFF',
+          foreground: '#111827',
+        },
+      },
+      borderRadius: {
+        lg: '0.5rem',
+        md: '0.375rem',
+        sm: '0.25rem',
+      },
+    },
   },
-  plugins: [require("tailwindcss-animate")],
-}
+  plugins: [],
+};
 
-export default config
+export default config;
