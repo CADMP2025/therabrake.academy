@@ -287,9 +287,9 @@ export default function RegisterPage() {
       // Handle STUDENT registration
       if (formData.role === 'student') {
         const { error: profileError } = await supabase
-          .from('user_profiles')
+          .from('profiles')
           .insert({
-            user_id: authData.user.id,
+            id: authData.user.id,
             email: formData.email,
             full_name: formData.fullName,
             role: 'student',
@@ -311,9 +311,9 @@ export default function RegisterPage() {
       else if (formData.role === 'instructor') {
         // Create user profile with 'pending' status
         const { error: profileError } = await supabase
-          .from('user_profiles')
+          .from('profiles')
           .insert({
-            user_id: authData.user.id,
+            id: authData.user.id,
             email: formData.email,
             full_name: formData.fullName,
             role: 'student', // Start as student until approved
@@ -340,7 +340,7 @@ export default function RegisterPage() {
         const { error: applicationError } = await supabase
           .from('instructor_applications')
           .insert({
-            user_id: authData.user.id,
+            id: authData.user.id,
             license_type: formData.instructorLicenseType,
             license_number: formData.instructorLicenseNumber,
             license_state: formData.instructorLicenseState,
