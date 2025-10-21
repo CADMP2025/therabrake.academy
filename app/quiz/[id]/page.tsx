@@ -1,60 +1,41 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
-import QuizPlayer from '@/components/quiz/QuizPlayer';
+import { useEffect, useState, useCallback } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import QuizPlayer from '@/components/quiz/QuizPlayer'
 
-export default function QuizPage({ params }: { params: { id: string } }) {
-  const [quizData, setQuizData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-  const supabase = createClient(); // NO await for client components
+export default function QuizPage() {
+  const params = useParams()
+  const router = useRouter()
+  const [quiz, setQuiz] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const supabase = createClientComponentClient()
 
-  useEffect(() => {
-    loadQuizData();
-  }, [params.id]);
-
-  async function loadQuizData() {
+  const loadQuizData = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('quizzes')
-        .select('*, questions(*)')
+        .select('*')
         .eq('id', params.id)
-        .single();
+        .single()
 
-      if (error) throw error;
-      setQuizData(data);
+      if (error) throw error
+      setQuiz(data)
     } catch (error) {
-      console.error('Error loading quiz:', error);
+      console.error('Error loading quiz:', error)
+      router.push('/404')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }
+  }, [params.id, supabase, router])
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    loadQuizData()
+  }, [loadQuizData])
 
-  if (!quizData) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Quiz Not Found</h1>
-          <button 
-            onClick={() => router.back()}
-            className="text-primary hover:underline"
-          >
-            Go Back
-          </button>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <div>Loading quiz...</div>
+  if (!quiz) return null
 
-  return <QuizPlayer quiz={quizData} />;
+  return <QuizPlayer quiz={quiz} />
 }

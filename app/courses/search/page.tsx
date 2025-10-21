@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useSearch } from '@/hooks/useSearch';
 import { Search, Filter, Loader2 } from 'lucide-react';
+import Image from 'next/image';
 
 export default function CourseSearchPage() {
   const [searchInput, setSearchInput] = useState('');
@@ -16,7 +17,6 @@ export default function CourseSearchPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-6xl mx-auto">
-        {/* Search Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-neutral-dark mb-2">
             Find Your Perfect Course
@@ -26,7 +26,6 @@ export default function CourseSearchPage() {
           </p>
         </div>
 
-        {/* Search Bar */}
         <form onSubmit={handleSearch} className="mb-6">
           <div className="flex gap-4">
             <div className="flex-1 relative">
@@ -48,7 +47,6 @@ export default function CourseSearchPage() {
           </div>
         </form>
 
-        {/* Filters */}
         <div className="mb-6 p-4 bg-white rounded-lg border border-neutral-light">
           <div className="flex items-center gap-2 mb-4">
             <Filter className="w-5 h-5 text-neutral-medium" />
@@ -117,7 +115,6 @@ export default function CourseSearchPage() {
           </div>
         </div>
 
-        {/* Results */}
         {loading ? (
           <div className="flex justify-center items-center py-12">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -131,12 +128,13 @@ export default function CourseSearchPage() {
               {results.results.map((course) => (
                 <div key={course.id} className="bg-white border border-neutral-light rounded-lg p-6 hover:shadow-lg transition-shadow">
                   <div className="flex gap-6">
-                    <div className="w-48 h-32 bg-gray-200 rounded-lg flex-shrink-0">
+                    <div className="w-48 h-32 bg-gray-200 rounded-lg flex-shrink-0 relative">
                       {course.thumbnail_url && (
-                        <img
+                        <Image
                           src={course.thumbnail_url}
                           alt={course.title}
-                          className="w-full h-full object-cover rounded-lg"
+                          fill
+                          className="object-cover rounded-lg"
                         />
                       )}
                     </div>
