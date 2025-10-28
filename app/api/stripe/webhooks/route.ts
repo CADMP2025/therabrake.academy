@@ -28,13 +28,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
-  // Handle the event
   try {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session
         
-        // Record payment
         await supabase.from('payments').insert({
           user_id: session.metadata?.userId,
           amount: session.amount_total! / 100,
@@ -42,8 +40,6 @@ export async function POST(request: Request) {
           stripe_payment_id: session.payment_intent as string,
           status: 'completed',
         })
-
-        // TODO: Enroll user in course or activate membership
         break
       }
 
