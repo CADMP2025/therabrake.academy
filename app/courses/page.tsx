@@ -26,7 +26,7 @@ export default async function CoursesPage() {
   
   const coursesWithRatings = courses?.map(course => ({
     ...course,
-    averageRating: course.course_reviews?.length ? course.course_reviews.reduce((sum, r) => sum + r.rating, 0) / course.course_reviews.length : 0,
+    averageRating: course.course_reviews?.length ? course.course_reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / course.course_reviews.length : 0,
     enrollmentCount: course.enrollments?.[0]?.count || 0,
     isEnrolled: userEnrollments.includes(course.id)
   }))
