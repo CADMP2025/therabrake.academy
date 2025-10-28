@@ -36,8 +36,8 @@ export default async function CourseDetailPage({ params }: { params: { id: strin
   }
   
   const isEnrolled = !!enrollment || hasActiveSubscription
-  const averageRating = course.course_reviews?.length ? course.course_reviews.reduce((sum: number, r) => sum + r.rating, 0) / course.course_reviews.length : 0
-  const totalLessons = course.modules?.reduce((sum: number, m) => sum + (m.lessons?.length || 0), 0) || 0
+  const averageRating = course.course_reviews?.length ? course.course_reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / course.course_reviews.length : 0
+  const totalLessons = course.modules?.reduce((sum: number, m: any) => sum + (m.lessons?.length || 0), 0) || 0
   
   return (
     <div className="min-h-screen bg-gray-50">
