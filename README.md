@@ -1,5 +1,7 @@
 # TheraBrake Academy - Course Builder
 
+**Last Updated:** October 30, 2025
+
 ## Features
 
 ✅ Cut & Paste course creation from Word/Google Docs
