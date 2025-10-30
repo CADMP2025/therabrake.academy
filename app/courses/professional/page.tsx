@@ -421,7 +421,7 @@ export default function ProfessionalCoursesPage() {
                   
                   <div className="space-y-2">
                     <Link 
-                      href={`/courses/${course.id}`}
+                      href={`/courses/professional/${course.id}`}
                       className="block bg-gray-100 text-primary text-center py-2 rounded-lg hover:bg-gray-200 transition font-medium"
                     >
                       View Course Details
@@ -475,7 +475,7 @@ export default function ProfessionalCoursesPage() {
                       
                       <div className="space-y-2">
                         <Link 
-                          href={`/courses/${course.id}`}
+                          href={`/courses/professional/${course.id}`}
                           className="block bg-gray-100 text-primary text-center py-2 rounded-lg hover:bg-gray-200 transition font-medium"
                         >
                           View Course Details

@@ -19,12 +19,14 @@ Sentry.init({
     
     // Remove sensitive request data
     if (event.request?.data) {
-      const data = event.request.data;
-      if (typeof data === 'object') {
-        delete data.password;
-        delete data.token;
-        delete data.apiKey;
-        delete data.secret;
+      const raw = event.request.data as unknown;
+      if (raw && typeof raw === 'object') {
+        const data = raw as Record<string, unknown>;
+        delete (data as any).password;
+        delete (data as any).token;
+        delete (data as any).apiKey;
+        delete (data as any).secret;
+        event.request.data = data as any;
       }
     }
     
