@@ -42,6 +42,42 @@ export default function QuizPlayer({ quiz, onComplete }: QuizPlayerProps) {
     setScore(finalScore)
     setShowResults(true)
     onComplete?.(finalScore)
+
+    // If passed, mark enrollment complete and trigger certificate generation
+    try {
+      if (finalScore >= (quiz.passing_score ?? 70)) {
+        if (!user) {
+          const res = await supabase.auth.getUser()
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const currentUser = res.data.user
+        }
+        const { data: { user: u } } = await supabase.auth.getUser()
+        if (u) {
+          // Find enrollment for this course
+          const { data: enr } = await supabase
+            .from('enrollments')
+            .select('id')
+            .eq('user_id', u.id)
+            .eq('course_id', quiz.course_id)
+            .maybeSingle()
+          if (enr?.id) {
+            await supabase
+              .from('enrollments')
+              .update({ status: 'completed', progress: 100, completed_at: new Date().toISOString() })
+              .eq('id', enr.id)
+            // Fire-and-forget certificate generation
+            fetch('/api/certificates/generate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ enrollmentId: enr.id }),
+            }).catch(() => {})
+          }
+        }
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error('Post-quiz completion handling failed', e)
+    }
   }, [quiz, answers, supabase, onComplete])
 
   useEffect(() => {

@@ -104,11 +104,25 @@ export const emailService = {
       const template = emailTemplates.certificateDelivery({
         studentName, courseName, ceHours, completionDate, certificateUrl, verificationCode,
       });
+      // Attempt to attach PDF
+      let attachments: any[] | undefined
+      try {
+        const resp = await fetch(certificateUrl)
+        if (resp.ok) {
+          const blob = await resp.arrayBuffer()
+          const base64 = Buffer.from(blob).toString('base64')
+          attachments = [{ filename: `${courseName}-certificate.pdf`, content: base64 }]
+        }
+      } catch (e) {
+        console.warn('Attachment fetch failed; sending without attachment')
+      }
+
       const { data, error } = await resend.emails.send({
         from: template.from || DEFAULT_FROM,
         subject: template.subject,
         html: template.html,
         to: email,
+        attachments,
       });
       await logEmail({
         email_type: 'certificate_delivery',
