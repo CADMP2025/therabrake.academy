@@ -1,11 +1,13 @@
 # Batch 3.1 - Course Builder Finalization Complete ✅
 
 ## Overview
+
 Successfully enhanced the TipTap course builder with improved paste functionality, automatic image uploads, corrected auto-save timing, and course duplication feature.
 
 ## Completed Features
 
 ### 1. ✅ Canonical Course Builder Finalized
+
 - **Component**: `components/course-builder/CourseBuilder.tsx`
 - **Status**: Enhanced with all required features
 - **Features**:
@@ -17,6 +19,7 @@ Successfully enhanced the TipTap course builder with improved paste functionalit
   - Course duplication
 
 ### 2. ✅ Word Document Paste Functionality
+
 - **Component**: `components/course-builder/ContentParser.tsx`
 - **Implementation**: Enhanced HTML parser with Word-specific cleaning
 - **Features**:
@@ -29,6 +32,7 @@ Successfully enhanced the TipTap course builder with improved paste functionalit
   - Preserves important formatting (bold, italic, links)
 
 ### 3. ✅ Google Docs Paste Functionality
+
 - **Component**: `components/course-builder/ContentParser.tsx`
 - **Implementation**: Google Docs-specific HTML cleaning
 - **Features**:
@@ -40,6 +44,7 @@ Successfully enhanced the TipTap course builder with improved paste functionalit
   - Preserves document structure
 
 ### 4. ✅ Image Paste with Automatic Upload
+
 - **Component**: `components/course-builder/EditorExtensions.ts`
 - **Service**: `lib/services/image-upload.ts`
 - **Implementation**: Custom TipTap extension with ProseMirror plugin
@@ -54,6 +59,7 @@ Successfully enhanced the TipTap course builder with improved paste functionalit
   - Error handling with user feedback
 
 ### 5. ✅ Table & List Formatting Preservation
+
 - **Component**: `components/course-builder/ContentParser.tsx`
 - **Implementation**: Specialized table and list parsing
 - **Features**:
@@ -65,6 +71,7 @@ Successfully enhanced the TipTap course builder with improved paste functionalit
   - Empty item removal
 
 ### 6. ✅ Auto-save Every 30 Seconds
+
 - **Component**: `components/course-builder/CourseBuilder.tsx`
 - **Change**: Updated debounce timer from 2 seconds to 30 seconds
 - **Implementation**: `useDebouncedCallback` with 30000ms delay
@@ -75,6 +82,7 @@ Successfully enhanced the TipTap course builder with improved paste functionalit
   - Saves title, description, and all modules/lessons
 
 ### 7. ✅ Course Preview Mode
+
 - **Component**: `components/course-builder/CourseBuilder.tsx`
 - **Status**: Already implemented, verified functionality
 - **Features**:
@@ -84,6 +92,7 @@ Successfully enhanced the TipTap course builder with improved paste functionalit
   - Lesson content rendering
 
 ### 8. ✅ Course Duplication Feature
+
 - **Component**: `components/course-builder/CourseBuilder.tsx`
 - **Implementation**: New `duplicateCourse()` function
 - **Features**:
@@ -97,15 +106,18 @@ Successfully enhanced the TipTap course builder with improved paste functionalit
 ## Files Created
 
 ### 1. EditorExtensions.ts (210 lines)
+
 **Path**: `components/course-builder/EditorExtensions.ts`
 
 **Purpose**: Custom TipTap extensions for enhanced editing
 
 **Exports**:
+
 - `ImagePasteExtension`: Handles image paste and drag-drop with automatic upload
 - `PreserveFormattingExtension`: Cleans Word/Google Docs formatting
 
 **Key Features**:
+
 - ProseMirror plugin integration
 - Clipboard event handling
 - Drag-and-drop event handling
@@ -114,15 +126,18 @@ Successfully enhanced the TipTap course builder with improved paste functionalit
 - Node insertion at correct positions
 
 ### 2. image-upload.ts (220 lines)
+
 **Path**: `lib/services/image-upload.ts`
 
 **Purpose**: Image upload service with Supabase Storage integration
 
 **Exports**:
+
 - `ImageUploadService` class
 - `imageUploadService` singleton instance
 
 **Methods**:
+
 ```typescript
 uploadImage(file: File, options?: ImageUploadOptions): Promise<ImageUploadResult>
 uploadFromDataURL(dataUrl: string, filename: string): Promise<ImageUploadResult>
@@ -131,6 +146,7 @@ validateDimensions(file: File, maxWidth?: number, maxHeight?: number): Promise<D
 ```
 
 **Features**:
+
 - Singleton pattern for consistent usage
 - File type validation
 - File size validation
@@ -144,10 +160,12 @@ validateDimensions(file: File, maxWidth?: number, maxHeight?: number): Promise<D
 ## Files Modified
 
 ### 1. ContentParser.tsx
+
 **Before**: 100 lines - Basic HTML parsing
 **After**: 340 lines - Advanced parsing with formatting preservation
 
 **Major Enhancements**:
+
 - Async `parse()` method with options
 - `cleanWordHTML()` method - 15 Word-specific cleanups
 - `cleanGoogleDocsHTML()` method - 7 Google Docs-specific cleanups
@@ -158,6 +176,7 @@ validateDimensions(file: File, maxWidth?: number, maxHeight?: number): Promise<D
 - `isLessonHeading()` method - Enhanced lesson detection
 
 **New Parameters**:
+
 ```typescript
 interface ParseOptions {
   onImageFound?: (src: string, element: HTMLImageElement) => Promise<string>
@@ -169,10 +188,12 @@ interface ParseOptions {
 ```
 
 ### 2. CourseBuilder.tsx
+
 **Before**: 433 lines
 **After**: 499 lines
 
 **Major Changes**:
+
 1. **Auto-save timing**: Changed from 2000ms to 30000ms (line ~107)
 2. **Image paste extension**: Added to TipTap editor configuration (line ~92)
 3. **Enhanced paste handler**: Now async with image upload support (line ~203)
@@ -180,6 +201,7 @@ interface ParseOptions {
 5. **Duplicate button**: Added to toolbar with purple styling (line ~293)
 
 **New Imports**:
+
 ```typescript
 import { ImagePasteExtension } from './EditorExtensions'
 import { imageUploadService } from '@/lib/services/image-upload'
@@ -188,6 +210,7 @@ import { imageUploadService } from '@/lib/services/image-upload'
 ## Technical Implementation Details
 
 ### Auto-save Mechanism
+
 ```typescript
 const debouncedSave = useDebouncedCallback(
   async () => {
@@ -206,6 +229,7 @@ const debouncedSave = useDebouncedCallback(
 ```
 
 ### Image Upload Integration
+
 ```typescript
 ImagePasteExtension.configure({
   onUpload: async (file: File) => {
@@ -221,6 +245,7 @@ ImagePasteExtension.configure({
 ```
 
 ### Enhanced Paste Handler
+
 ```typescript
 const handlePasteContent = async () => {
   const cleanContent = DOMPurify.sanitize(pastedContent)
@@ -247,6 +272,7 @@ const handlePasteContent = async () => {
 ```
 
 ### Course Duplication
+
 ```typescript
 const duplicateCourse = () => {
   const timestamp = Date.now()
@@ -273,6 +299,7 @@ const duplicateCourse = () => {
 ### Manual Testing Required
 
 #### Word Document Paste
+
 - [ ] Copy content from Word document
 - [ ] Paste into Course Builder
 - [ ] Verify headings detected as modules/lessons
@@ -282,6 +309,7 @@ const duplicateCourse = () => {
 - [ ] Verify no broken formatting
 
 #### Google Docs Paste
+
 - [ ] Copy content from Google Docs
 - [ ] Paste into Course Builder
 - [ ] Verify headings detected correctly
@@ -291,6 +319,7 @@ const duplicateCourse = () => {
 - [ ] Verify clean HTML output
 
 #### Image Paste & Upload
+
 - [ ] Copy image from clipboard
 - [ ] Paste into editor
 - [ ] Verify image uploads automatically
@@ -301,6 +330,7 @@ const duplicateCourse = () => {
 - [ ] Verify data URL images converted and uploaded
 
 #### Table Formatting
+
 - [ ] Paste table from Word
 - [ ] Verify table structure preserved
 - [ ] Verify thead/tbody created
@@ -309,6 +339,7 @@ const duplicateCourse = () => {
 - [ ] Verify table styling in preview mode
 
 #### List Formatting
+
 - [ ] Paste ordered list (numbered)
 - [ ] Paste unordered list (bullets)
 - [ ] Verify list structure preserved
@@ -317,6 +348,7 @@ const duplicateCourse = () => {
 - [ ] Verify empty items removed
 
 #### Auto-save (30 seconds)
+
 - [ ] Edit course content
 - [ ] Wait 30 seconds
 - [ ] Verify "Saving..." indicator appears
@@ -326,6 +358,7 @@ const duplicateCourse = () => {
 - [ ] Refresh page and verify content saved
 
 #### Preview Mode
+
 - [ ] Click "Preview" button
 - [ ] Verify edit mode disabled
 - [ ] Verify content renders correctly
@@ -333,7 +366,8 @@ const duplicateCourse = () => {
 - [ ] Click "Edit" to return
 - [ ] Verify editing re-enabled
 
-#### Course Duplication
+#### Course Duplication Testing
+
 - [ ] Create course with multiple modules/lessons
 - [ ] Click "Duplicate" button
 - [ ] Verify new course title has "(Copy)" appended
@@ -347,12 +381,14 @@ const duplicateCourse = () => {
 ## Code Quality
 
 ### TypeScript Compilation
+
 ```bash
 $ npm run type-check
 ✅ No errors found
 ```
 
 ### Type Safety
+
 - All new functions fully typed
 - Service responses use `ServiceResponse<T>` pattern
 - Image upload results use dedicated interface
@@ -360,6 +396,7 @@ $ npm run type-check
 - No `any` types in public APIs
 
 ### Error Handling
+
 - Try-catch blocks in all async operations
 - Logger integration for errors
 - User-friendly error messages
@@ -367,6 +404,7 @@ $ npm run type-check
 - Validation before processing
 
 ### Performance
+
 - Debounced auto-save (30s) reduces server load
 - Async image uploads don't block UI
 - DOMPurify sanitization for security
@@ -376,6 +414,7 @@ $ npm run type-check
 ## Dependencies
 
 ### Required Packages (Already Installed)
+
 - ✅ `@tiptap/react` - TipTap editor core
 - ✅ `@tiptap/starter-kit` - Basic extensions
 - ✅ `@tiptap/extension-*` - Additional extensions
@@ -386,22 +425,26 @@ $ npm run type-check
 - ✅ `lucide-react` - Icons
 
 ### No New Dependencies Required
+
 All functionality implemented using existing packages.
 
 ## Integration Points
 
 ### Supabase Storage
+
 - **Bucket**: `course-images`
 - **Folder**: `course-content`
 - **Access**: Public read
 - **Setup Required**: Ensure bucket exists and has public access policy
 
 ### Logger Service
+
 - **Import**: `@/lib/monitoring/logger`
 - **Usage**: Error logging for image uploads
 - **Methods**: `logger.info()`, `logger.error()`
 
 ### Type Definitions
+
 - **Import**: `@/types/course-builder`
 - **Types**: `CourseModule`, `Lesson`
 - **Status**: Already defined
@@ -409,12 +452,14 @@ All functionality implemented using existing packages.
 ## Security Considerations
 
 ### HTML Sanitization
+
 - DOMPurify used for all pasted content
 - Allowed tags whitelist configured
 - Removes malicious scripts
 - Preserves safe formatting
 
 ### Image Upload
+
 - File type validation (whitelist)
 - File size validation (10MB max)
 - Unique filename generation
@@ -422,6 +467,7 @@ All functionality implemented using existing packages.
 - Public URL generation only
 
 ### Content Security
+
 - No inline JavaScript execution
 - No eval() usage
 - No dangerouslySetInnerHTML without sanitization
@@ -430,11 +476,13 @@ All functionality implemented using existing packages.
 ## Next Steps
 
 ### Phase 3 Remaining Batches
+
 1. **Batch 3.2**: Video & Media Upload
 2. **Batch 3.3**: Module & Lesson Organization
 3. **Batch 3.4**: Course APIs Complete
 
 ### Recommended Testing
+
 1. Manual QA of all features (checklist above)
 2. Integration testing with real Word/Google Docs content
 3. Image upload testing with various formats
@@ -444,6 +492,7 @@ All functionality implemented using existing packages.
 ## Completion Summary
 
 ✅ **8/8 Requirements Complete**
+
 1. ✅ Finalized canonical course builder
 2. ✅ Word document paste functionality
 3. ✅ Google Docs paste functionality
