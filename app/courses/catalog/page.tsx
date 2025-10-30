@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useCallback, useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Search, Filter, SlidersHorizontal, X } from 'lucide-react'
 import { CourseCard } from '@/components/courses/CourseCard'
@@ -11,6 +11,15 @@ import { Card } from '@/components/ui/card'
 import type { CourseSearchResult, CourseFilters, CourseTag } from '@/types/catalog'
 
 export default function CourseCatalogPage() {
+  // Wrap search params usage in Suspense to satisfy Next.js requirements
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-8">Loading catalog…</div>}>
+      <CatalogContent />
+    </Suspense>
+  )
+}
+
+function CatalogContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   
@@ -47,11 +56,7 @@ export default function CourseCatalogPage() {
   }, [])
 
   // Fetch courses when filters change
-  useEffect(() => {
-    fetchCourses()
-  }, [filters])
-
-  const fetchCourses = async () => {
+  const fetchCourses = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams()
@@ -76,7 +81,11 @@ export default function CourseCatalogPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [filters])
+
+  useEffect(() => {
+    fetchCourses()
+  }, [fetchCourses])
 
   const updateFilters = (updates: Partial<CourseFilters>) => {
     const newFilters = { ...filters, ...updates, page: 1 }
@@ -93,7 +102,7 @@ export default function CourseCatalogPage() {
         }
       }
     })
-    router.push(`/courses?${params}`)
+    router.push(`/courses/catalog?${params}`)
   }
 
   const toggleTag = (tagSlug: string) => {
@@ -110,7 +119,7 @@ export default function CourseCatalogPage() {
       page: 1,
       limit: 12,
     })
-    router.push('/courses')
+    router.push('/courses/catalog')
   }
 
   const activeFilterCount = Object.values(filters).filter(v => 

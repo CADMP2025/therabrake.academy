@@ -6,68 +6,64 @@ import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Award, Clock, TrendingUp } from 'lucide-react';
 
-interface Course {
-  id: string;
-  ce_hours: number;
-  [key: string]: any;
-}
+type CourseProgress = {
+  courseId: string;
+  courseTitle: string;
+  totalLessons: number;
+  completedLessons: number;
+  inProgressLessons: number;
+  totalTimeSpent: number;
+  avgProgressPercentage: number;
+  lastAccessed: string;
+  estimatedCompletion: string | null;
+};
 
-interface Enrollment {
-  id: string;
-  status: 'active' | 'completed' | 'cancelled';
-  user_id: string;
-  course_id: string;
-  courses: Course;
-  [key: string]: any;
-}
-
-interface DashboardData {
-  activeEnrollments: number;
+type ProgressStats = {
+  totalCourses: number;
+  activeCourses: number;
   completedCourses: number;
+  totalTimeSpent: number;
   totalCEHours: number;
-  inProgressHours: number;
-}
+  currentStreak: number;
+  longestStreak: number;
+  coursesProgress: CourseProgress[];
+};
+
+type ActivityEntry = {
+  activity_date: string;
+  lessons_accessed: number;
+  time_spent: number;
+  videos_watched: number;
+  notes_created: number;
+};
 
 export default function StudentDashboard() {
-  const [data, setData] = useState<DashboardData | null>(null);
+  const [userName, setUserName] = useState<string>('');
+  const [stats, setStats] = useState<ProgressStats | null>(null);
+  const [activity, setActivity] = useState<ActivityEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const loadDashboardData = useCallback(async () => {
     const supabase = createClient();
     try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
+      setUserName((user.user_metadata?.full_name as string) || user.email || '');
 
-      // Fetch dashboard data
-      const { data: enrollments, error } = await supabase
-        .from('enrollments')
-        .select('*, courses(*)')
-        .eq('user_id', user.id);
+      // Fetch progress stats and recent activity in parallel
+      const [statsRes, activityRes] = await Promise.all([
+        fetch('/api/progress/dashboard'),
+        fetch('/api/activity/recent')
+      ]);
 
-      if (error) throw error;
-
-      // Calculate stats - cast enrollments to proper type
-      const typedEnrollments = enrollments as Enrollment[] | null;
-      const active = typedEnrollments?.filter((e: Enrollment) => e.status === 'active').length || 0;
-      const completed = typedEnrollments?.filter((e: Enrollment) => e.status === 'completed').length || 0;
-      const totalHours =
-        typedEnrollments
-          ?.filter((e: Enrollment) => e.status === 'completed')
-          .reduce((sum: number, e: Enrollment) => sum + (e.courses?.ce_hours || 0), 0) || 0;
-      const inProgress =
-        typedEnrollments
-          ?.filter((e: Enrollment) => e.status === 'active')
-          .reduce((sum: number, e: Enrollment) => sum + (e.courses?.ce_hours || 0), 0) || 0;
-
-      setData({
-        activeEnrollments: active,
-        completedCourses: completed,
-        totalCEHours: totalHours,
-        inProgressHours: inProgress,
-      });
+      if (statsRes.ok) {
+        const s = await statsRes.json();
+        setStats(s.stats as ProgressStats);
+      }
+      if (activityRes.ok) {
+        const a = await activityRes.json();
+        setActivity(a.activity as ActivityEntry[]);
+      }
     } catch (error) {
       console.error('Error loading dashboard:', error);
     } finally {
@@ -89,7 +85,14 @@ export default function StudentDashboard() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">My Learning Dashboard</h1>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">Welcome back{userName ? `, ${userName}` : ''} 👋</h1>
+        {stats && (
+          <p className="text-sm text-muted-foreground mt-1">
+            Current streak: <span className="font-medium">{stats.currentStreak}</span> days · Longest: <span className="font-medium">{stats.longestStreak}</span> days
+          </p>
+        )}
+      </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
         <Card>
@@ -98,7 +101,7 @@ export default function StudentDashboard() {
             <BookOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data?.activeEnrollments || 0}</div>
+            <div className="text-2xl font-bold">{stats?.activeCourses ?? 0}</div>
             <p className="text-xs text-muted-foreground">Currently enrolled</p>
           </CardContent>
         </Card>
@@ -109,7 +112,7 @@ export default function StudentDashboard() {
             <Award className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data?.completedCourses || 0}</div>
+            <div className="text-2xl font-bold">{stats?.completedCourses ?? 0}</div>
             <p className="text-xs text-muted-foreground">Courses finished</p>
           </CardContent>
         </Card>
@@ -120,7 +123,7 @@ export default function StudentDashboard() {
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data?.totalCEHours || 0}</div>
+            <div className="text-2xl font-bold">{stats?.totalCEHours ?? 0}</div>
             <p className="text-xs text-muted-foreground">Total credits</p>
           </CardContent>
         </Card>
@@ -131,8 +134,8 @@ export default function StudentDashboard() {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data?.inProgressHours || 0}</div>
-            <p className="text-xs text-muted-foreground">Hours available</p>
+            <div className="text-2xl font-bold">{(stats?.coursesProgress?.length ?? 0) - (stats?.completedCourses ?? 0)}</div>
+            <p className="text-xs text-muted-foreground">Courses with activity</p>
           </CardContent>
         </Card>
       </div>
@@ -144,37 +147,56 @@ export default function StudentDashboard() {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground mb-4">Pick up where you left off</p>
-            <p className="text-center py-4 text-muted-foreground mb-4">
-              No courses in progress
-            </p>
-            <Link 
-              href="/student/courses"
-              className="w-full bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary-dark transition inline-block text-center"
-            >
-              Browse Course Catalog
-            </Link>
+            {stats && stats.coursesProgress.length > 0 ? (
+              <div className="space-y-3">
+                {stats.coursesProgress.slice(0, 3).map((cp) => (
+                  <div key={cp.courseId} className="flex items-center justify-between rounded-lg border p-3">
+                    <div>
+                      <div className="font-medium">{cp.courseTitle}</div>
+                      <div className="text-xs text-muted-foreground">{cp.avgProgressPercentage}% complete</div>
+                    </div>
+                    <Link
+                      href={`/courses/${cp.courseId}`}
+                      className="text-sm bg-primary text-white py-1.5 px-3 rounded-md hover:opacity-90"
+                    >
+                      Continue
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <>
+                <p className="text-center py-4 text-muted-foreground mb-4">No courses in progress</p>
+                <Link
+                  href="/courses/catalog"
+                  className="w-full bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary-dark transition inline-block text-center"
+                >
+                  Browse Course Catalog
+                </Link>
+              </>
+            )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
+            <CardTitle>Recent Activity</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <Link 
-              href="/student/certificates"
-              className="block w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition"
-            >
-              <div className="font-medium">View Certificates</div>
-              <div className="text-sm text-muted-foreground">Download and verify your certificates</div>
-            </Link>
-            <Link 
-              href="/student/courses"
-              className="block w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition"
-            >
-              <div className="font-medium">Enroll in New Course</div>
-              <div className="text-sm text-muted-foreground">Browse available courses and programs</div>
-            </Link>
+          <CardContent>
+            {activity.length > 0 ? (
+              <div className="space-y-2">
+                {activity.slice(0, 7).map((a) => (
+                  <div key={a.activity_date} className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">{new Date(a.activity_date).toLocaleDateString()}</span>
+                    <span>
+                      {a.lessons_accessed} lessons · {(a.time_spent / 60).toFixed(0)} min · {a.videos_watched} videos
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">No recent activity yet. Start a course to begin your streak!</p>
+            )}
           </CardContent>
         </Card>
       </div>
