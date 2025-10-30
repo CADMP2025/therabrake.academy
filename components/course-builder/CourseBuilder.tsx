@@ -26,6 +26,8 @@ import {
 import { ModuleOrganizer } from './ModuleOrganizer'
 import { ContentParser } from './ContentParser'
 import { PreviewPanel } from './PreviewPanel'
+import { ImagePasteExtension } from './EditorExtensions'
+import { imageUploadService } from '@/lib/services/image-upload'
 import type { CourseModule, Lesson } from '@/types/course-builder'
 
 interface CourseBuilderProps {
@@ -86,7 +88,19 @@ export function CourseBuilder({
         height: 480
       }),
       Color,
-      TextStyle
+      TextStyle,
+      // Add image paste extension with automatic upload
+      ImagePasteExtension.configure({
+        onUpload: async (file: File) => {
+          const result = await imageUploadService.uploadImage(file, {
+            folder: 'course-content',
+            maxSizeMB: 10
+          })
+          return result.url || ''
+        },
+        maxSize: 10,
+        acceptedTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+      })
     ],
     content: selectedLesson?.content || '',
     onUpdate: ({ editor }) => {
@@ -103,7 +117,7 @@ export function CourseBuilder({
     }
   }, [selectedLessonId, editor, selectedLesson]) // FIXED: Added selectedLesson
 
-  // Auto-save functionality
+  // Auto-save functionality - 30 seconds
   const debouncedSave = useDebouncedCallback(
     async () => {
       if (onSave) {
@@ -116,7 +130,7 @@ export function CourseBuilder({
         setTimeout(() => setSaving(false), 1000)
       }
     },
-    2000
+    30000 // 30 seconds
   )
 
   // Trigger auto-save on changes
@@ -196,14 +210,53 @@ export function CourseBuilder({
     }
   }
 
-  // Handle Paste Content
-  const handlePasteContent = () => {
+  // Handle Paste Content with image upload support
+  const handlePasteContent = async () => {
     const cleanContent = DOMPurify.sanitize(pastedContent)
-    const parsedModules = ContentParser.parse(cleanContent)
+    
+    // Import image upload service
+    const { imageUploadService } = await import('@/lib/services/image-upload')
+    
+    // Parse with image handling
+    const parsedModules = await ContentParser.parse(cleanContent, {
+      cleanWordFormatting: true,
+      cleanGoogleDocsFormatting: true,
+      preserveTables: true,
+      preserveLists: true,
+      onImageFound: async (src: string, _element: HTMLImageElement) => {
+        // Handle data URL images
+        if (src.startsWith('data:')) {
+          const filename = `pasted-image-${Date.now()}.png`
+          const result = await imageUploadService.uploadFromDataURL(src, filename)
+          return result.url || src
+        }
+        return src
+      }
+    })
     
     setModules([...modules, ...parsedModules])
     setShowPasteModal(false)
     setPastedContent('')
+  }
+
+  // Duplicate Course Function
+  const duplicateCourse = () => {
+    const timestamp = Date.now()
+    
+    const duplicatedModules = modules.map((courseModule, modIndex) => ({
+      ...courseModule,
+      id: `module-${timestamp}-${modIndex}`,
+      title: `${courseModule.title} (Copy)`,
+      lessons: courseModule.lessons.map((lesson, lessonIndex) => ({
+        ...lesson,
+        id: `lesson-${timestamp}-${lessonIndex}`
+      }))
+    }))
+    
+    setCourseTitle(`${courseTitle} (Copy)`)
+    setModules(duplicatedModules)
+    setSelectedModuleId(null)
+    setSelectedLessonId(null)
   }
 
   return (
@@ -235,6 +288,15 @@ export function CourseBuilder({
                 Saving...
               </span>
             )}
+            
+            <button
+              onClick={duplicateCourse}
+              className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 flex items-center gap-2"
+              title="Duplicate entire course"
+            >
+              <Copy className="w-4 h-4" />
+              Duplicate
+            </button>
             
             <button
               onClick={() => setShowPasteModal(true)}
