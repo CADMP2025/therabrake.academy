@@ -8,32 +8,17 @@ export const revalidate = 0 // Disable caching for real-time data
 export async function GET(request: Request) {
   try {
     const supabase = await createClient()
+    const { searchParams } = new URL(request.url);
+    const limit = parseInt(searchParams.get('limit') || '10');
     
-    // Fetch featured courses (marked as featured in database)
+    // Use database function for featured courses
     const { data: courses, error } = await supabase
-      .from('courses')
-      .select(`
-        *,
-        instructor:profiles!courses_instructor_id_fkey(full_name, avatar_url),
-        modules(id),
-        _count:enrollments(count)
-      `)
-      .eq('status', 'published')
-      .eq('is_featured', true)
-      .order('created_at', { ascending: false })
-      .limit(6)
+      .rpc('get_featured_courses', { limit_count: limit })
 
     if (error) throw error
 
-    // Transform data to include enrollment count
-    const transformedCourses = courses?.map(course => ({
-      ...course,
-      enrollment_count: course._count?.[0]?.count || 0,
-      module_count: course.modules?.length || 0
-    }))
-
     return NextResponse.json({ 
-      data: transformedCourses || [],
+      data: courses || [],
       success: true 
     })
 
