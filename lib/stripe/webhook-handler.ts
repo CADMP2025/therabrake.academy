@@ -7,6 +7,8 @@ import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
 import { logger } from '@/lib/monitoring/logger'
 import { BaseService, ServiceResponse } from '@/lib/services/base-service'
+import { EnrollmentService } from '@/lib/services/enrollment-service'
+import { EnrollmentEmailService } from '@/lib/services/enrollment-email-service'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-08-27.basil'
@@ -677,23 +679,252 @@ export class StripeWebhookService extends BaseService {
   }
 
   private async grantAccess(paymentIntent: Stripe.PaymentIntent): Promise<void> {
-    // Implementation in enrollment service
-    logger.info('Granting access for payment', { paymentIntentId: paymentIntent.id })
+    try {
+      const metadata = paymentIntent.metadata
+      const userId = metadata.user_id
+      const purchaseType = metadata.type
+
+      if (!userId) {
+        logger.warn('No user_id in payment intent metadata', { paymentIntentId: paymentIntent.id })
+        return
+      }
+
+      const enrollmentService = EnrollmentService.getInstance()
+      const emailService = EnrollmentEmailService.getInstance()
+
+      // Get customer details for email
+      const customer = await stripe.customers.retrieve(paymentIntent.customer as string) as Stripe.Customer
+      const userEmail = customer.email || metadata.user_email
+      const userName = customer.name || metadata.user_name || 'Student'
+
+      // Grant access based on purchase type
+      if (purchaseType === 'course_purchase' && metadata.course_id) {
+        // Course purchase
+        const durationDays = metadata.duration_days ? parseInt(metadata.duration_days) : undefined
+        const expiresAt = durationDays ? new Date(Date.now() + durationDays * 86400000) : undefined
+
+        const result = await enrollmentService.grantAccess({
+          userId,
+          courseId: metadata.course_id,
+          paymentIntentId: paymentIntent.id,
+          expiresAt,
+          gracePeriodDays: 7
+        })
+
+        if (result.success && userEmail) {
+          await emailService.sendEnrollmentConfirmation({
+            userEmail,
+            userName,
+            courseName: metadata.course_name || 'Course',
+            enrolledAt: new Date().toISOString(),
+            expiresAt: result.data?.expiresAt,
+            accessUrl: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${metadata.course_id}`
+          })
+        }
+
+        logger.info('Course access granted', { 
+          userId, 
+          courseId: metadata.course_id,
+          enrollmentId: result.data?.enrollmentId 
+        })
+
+      } else if (purchaseType === 'enrollment_extension' && metadata.enrollment_id) {
+        // Enrollment extension purchase
+        const extensionDays = metadata.extension_days ? parseInt(metadata.extension_days) : 30
+
+        const result = await enrollmentService.extendEnrollment({
+          enrollmentId: metadata.enrollment_id,
+          extensionDays,
+          paymentIntentId: paymentIntent.id
+        })
+
+        if (result.success) {
+          logger.info('Enrollment extended via purchase', { 
+            userId, 
+            enrollmentId: metadata.enrollment_id,
+            extensionDays,
+            newExpiresAt: result.data?.expiresAt
+          })
+        }
+
+
+      } else if (purchaseType === 'program_purchase' && metadata.program_type) {
+        // Program purchase
+        const durationDays = metadata.duration_days ? parseInt(metadata.duration_days) : 365 // Default 1 year
+        const expiresAt = new Date(Date.now() + durationDays * 86400000)
+
+        const result = await enrollmentService.grantAccess({
+          userId,
+          programType: metadata.program_type as 'SO_WHAT_MINDSET' | 'LEAP_AND_LAUNCH',
+          paymentIntentId: paymentIntent.id,
+          expiresAt,
+          gracePeriodDays: 7
+        })
+
+        if (result.success && userEmail) {
+          await emailService.sendEnrollmentConfirmation({
+            userEmail,
+            userName,
+            programName: metadata.program_name || 'Program',
+            enrolledAt: new Date().toISOString(),
+            expiresAt: result.data?.expiresAt,
+            accessUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`
+          })
+        }
+
+        logger.info('Program access granted', { 
+          userId, 
+          programType: metadata.program_type,
+          enrollmentId: result.data?.enrollmentId 
+        })
+      }
+
+    } catch (error) {
+      logger.error('Failed to grant access', error as Error, { 
+        paymentIntentId: paymentIntent.id 
+      })
+    }
   }
 
   private async grantSubscriptionAccess(subscription: Stripe.Subscription): Promise<void> {
-    // Implementation in enrollment service
-    logger.info('Granting subscription access', { subscriptionId: subscription.id })
+    try {
+      const metadata = subscription.metadata
+      const userId = metadata.user_id
+      const membershipTier = metadata.membership_tier as 'BASIC' | 'PROFESSIONAL' | 'PREMIUM'
+
+      if (!userId || !membershipTier) {
+        logger.warn('Missing user_id or membership_tier in subscription metadata', { 
+          subscriptionId: subscription.id 
+        })
+        return
+      }
+
+      const enrollmentService = EnrollmentService.getInstance()
+      const emailService = EnrollmentEmailService.getInstance()
+
+      // Get customer details
+      const customer = await stripe.customers.retrieve(subscription.customer as string) as Stripe.Customer
+      const userEmail = customer.email || metadata.user_email
+      const userName = customer.name || metadata.user_name || 'Member'
+
+      // Membership subscriptions don't expire - they're active as long as subscription is active
+      const result = await enrollmentService.grantAccess({
+        userId,
+        membershipTier,
+        subscriptionId: subscription.id,
+        expiresAt: undefined, // No expiration for active subscriptions
+        gracePeriodDays: 0 // No grace period for subscriptions
+      })
+
+      if (result.success && userEmail) {
+        await emailService.sendEnrollmentConfirmation({
+          userEmail,
+          userName,
+          programName: `${membershipTier} Membership`,
+          enrolledAt: new Date(subscription.created * 1000).toISOString(),
+          expiresAt: undefined, // Lifetime while subscribed
+          accessUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`
+        })
+      }
+
+      logger.info('Subscription access granted', { 
+        userId, 
+        membershipTier,
+        subscriptionId: subscription.id,
+        enrollmentId: result.data?.enrollmentId 
+      })
+
+    } catch (error) {
+      logger.error('Failed to grant subscription access', error as Error, { 
+        subscriptionId: subscription.id 
+      })
+    }
   }
 
   private async revokeSubscriptionAccess(subscription: Stripe.Subscription): Promise<void> {
-    // Implementation in enrollment service
-    logger.info('Revoking subscription access', { subscriptionId: subscription.id })
+    try {
+      const metadata = subscription.metadata
+      const userId = metadata.user_id
+
+      if (!userId) {
+        logger.warn('No user_id in subscription metadata', { subscriptionId: subscription.id })
+        return
+      }
+
+      const enrollmentService = EnrollmentService.getInstance()
+
+      // Find the enrollment associated with this subscription
+      const { data: enrollment, error } = await supabase
+        .from('enrollments')
+        .select('id')
+        .eq('user_id', userId)
+        .eq('subscription_id', subscription.id)
+        .eq('status', 'active')
+        .single()
+
+      if (error || !enrollment) {
+        logger.warn('No active enrollment found for subscription', { 
+          subscriptionId: subscription.id,
+          userId 
+        })
+        return
+      }
+
+      // Revoke access with reason
+      let reason = 'Subscription canceled'
+      if (subscription.status === 'unpaid') reason = 'Subscription payment failed'
+      if (subscription.status === 'past_due') reason = 'Subscription past due'
+
+      const result = await enrollmentService.revokeAccess(enrollment.id, reason)
+
+      logger.info('Subscription access revoked', { 
+        userId,
+        subscriptionId: subscription.id,
+        enrollmentId: enrollment.id,
+        reason 
+      })
+
+    } catch (error) {
+      logger.error('Failed to revoke subscription access', error as Error, { 
+        subscriptionId: subscription.id 
+      })
+    }
   }
 
   private async revokeAccessForRefund(paymentId: string): Promise<void> {
-    // Implementation in enrollment service
-    logger.info('Revoking access for refund', { paymentId })
+    try {
+      const enrollmentService = EnrollmentService.getInstance()
+
+      // Find the enrollment associated with this payment
+      const { data: enrollment, error } = await supabase
+        .from('enrollments')
+        .select('id, user_id, course_id')
+        .eq('payment_intent_id', paymentId)
+        .eq('status', 'active')
+        .single()
+
+      if (error || !enrollment) {
+        logger.warn('No active enrollment found for refunded payment', { paymentId })
+        return
+      }
+
+      // Revoke access due to refund
+      const result = await enrollmentService.revokeAccess(
+        enrollment.id,
+        'Full refund issued'
+      )
+
+      logger.info('Access revoked for refund', { 
+        paymentId,
+        enrollmentId: enrollment.id,
+        userId: enrollment.user_id 
+      })
+
+    } catch (error) {
+      logger.error('Failed to revoke access for refund', error as Error, { 
+        paymentId 
+      })
+    }
   }
 
   private async schedulePaymentRetry(paymentIntent: Stripe.PaymentIntent): Promise<void> {
