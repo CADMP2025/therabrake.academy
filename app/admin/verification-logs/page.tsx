@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Shield, AlertTriangle, TrendingUp, Activity } from 'lucide-react';
 
@@ -33,11 +33,7 @@ export default function VerificationLogsPage() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  useEffect(() => {
-    loadData();
-  }, [timeRange]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     try {
       const now = new Date();
@@ -75,7 +71,11 @@ export default function VerificationLogsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [timeRange, supabase]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString('en-US', {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { DollarSign, Clock, TrendingUp, Users, Download } from 'lucide-react'
 
@@ -45,11 +45,7 @@ export default function InstructorEarningsPage() {
   const [activeTab, setActiveTab] = useState('overview')
   const supabase = createClientComponentClient()
 
-  useEffect(() => {
-    loadEarningsData()
-  }, [])
-
-  const loadEarningsData = async () => {
+  const loadEarningsData = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -66,7 +62,11 @@ export default function InstructorEarningsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    loadEarningsData()
+  }, [loadEarningsData])
 
   if (loading) {
     return (

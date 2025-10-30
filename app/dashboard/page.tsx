@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { BookOpen, Award, Clock, TrendingUp, ShoppingCart } from 'lucide-react'
 
 export default async function DashboardPage() {
@@ -135,7 +136,7 @@ export default async function DashboardPage() {
                 <div key={enrollment.id} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
                   <div className="relative h-48 bg-gray-200 rounded-t-lg overflow-hidden">
                     {enrollment.course.thumbnail_url ? (
-                      <img src={enrollment.course.thumbnail_url} alt={enrollment.course.title} className="w-full h-full object-cover" />
+                      <Image src={enrollment.course.thumbnail_url} alt={enrollment.course.title} fill className="object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <BookOpen className="w-16 h-16 text-gray-400" />

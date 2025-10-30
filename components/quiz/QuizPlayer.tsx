@@ -46,11 +46,6 @@ export default function QuizPlayer({ quiz, onComplete }: QuizPlayerProps) {
     // If passed, mark enrollment complete and trigger certificate generation
     try {
       if (finalScore >= (quiz.passing_score ?? 70)) {
-        if (!user) {
-          const res = await supabase.auth.getUser()
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const currentUser = res.data.user
-        }
         const { data: { user: u } } = await supabase.auth.getUser()
         if (u) {
           // Find enrollment for this course
