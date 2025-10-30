@@ -1,183 +1,335 @@
 # TheraBrake Academy — Workspace File Structure
 
-**Updated:** October 21, 2025  
+**Updated:** October 30, 2025  
 **Branch:** feature/course-builder
 
 ```
 Root/
-├── .env.*                          # environment configuration files
-├── .git/                           # git repository data
-├── .next/                          # Next.js build output
-├── .vercel/                        # Vercel deployment config
-├── FILE_STRUCTURE.md               # this file
-├── README.md
-├── package.json
-├── tsconfig.json
-├── next.config.js
-├── middleware.ts
-├── tailwind.config.ts
-├── playwright.config.ts
-├── vercel.json
-├── sentry.*.config.ts              # Sentry error monitoring configs
+├── .env.local                      # Local environment configuration
+├── .eslintrc.json                  # ESLint configuration
+├── .gitignore                      # Git ignore rules
+├── .npmrc                          # NPM configuration
+├── AUTH_IMPLEMENTATION.md          # Authentication documentation
+├── BATCH_2.1_COMPLETE.md           # Batch 2.1 completion notes
+├── BATCH_2.2_COMPLETE.md           # Batch 2.2 completion notes
+├── BATCH_3.1_COMPLETE.md           # Batch 3.1 completion notes
+├── components.json                 # shadcn/ui configuration
+├── deploy-production.sh            # Production deployment script
+├── EMAIL_WORKFLOW_VERIFIED.md      # Email system documentation
+├── FILE_STRUCTURE.md               # This file
+├── fix-register.sh                 # Registration fix script
+├── middleware.config.ts            # Middleware configuration
+├── middleware.ts                   # Next.js middleware
+├── next.config.js                  # Next.js configuration
+├── next-env.d.ts                   # Next.js TypeScript definitions
+├── package.json                    # NPM dependencies
+├── package-lock.json               # NPM lock file
+├── playwright.config.ts            # Playwright E2E test config
+├── postcss.config.js               # PostCSS configuration
+├── quick-fix.sh                    # Quick fix script
+├── README.md                       # Project documentation
+├── sentry.client.config.ts         # Sentry client config
+├── sentry.edge.config.ts           # Sentry edge config
+├── sentry.server.config.ts         # Sentry server config
+├── tailwind.config.ts              # Tailwind CSS configuration
+├── test.css                        # Test CSS file
+├── TEST_MIGRATION_CHECKLIST.md     # Migration checklist
+├── tsconfig.json                   # TypeScript configuration
+├── tsconfig.tsbuildinfo            # TypeScript build info
+├── update-packages.sh              # Package update script
+├── vercel.json                     # Vercel deployment config
+├── .next/                          # Next.js build output (git-ignored)
+├── .vercel/                        # Vercel deployment data (git-ignored)
+├── node_modules/                   # NPM dependencies (git-ignored)
 ├── app/                            # Next.js App Router pages & layouts
-│   ├── globals.css
-│   ├── layout.tsx
-│   ├── page.tsx
-│   ├── icon.svg
-│   ├── (dashboard)/
+├── app/                            # Next.js App Router pages & layouts
+│   ├── globals.css                 # Global styles
+│   ├── layout.tsx                  # Root layout
+│   ├── page.tsx                    # Home page
+│   ├── error.tsx                   # Error boundary
+│   ├── global-error.tsx            # Global error handler
+│   ├── icon.svg                    # App icon
+│   ├── (dashboard)/                # Dashboard route group
 │   │   └── instructor/
 │   │       ├── affiliate/
-│   │       │   └── page.tsx
+│   │       │   └── page.tsx        # Affiliate management
 │   │       └── course-builder/
-│   │           └── page.tsx
-│   ├── (public)/
+│   │           └── page.tsx        # Course builder interface
 │   ├── about/
 │   │   └── page.tsx
 │   ├── admin/
-│   │   └── page.tsx
+│   │   ├── page.tsx                # Admin dashboard
+│   │   └── security/
+│   │       └── page.tsx            # Security admin panel
 │   ├── api/                        # API routes
-│   │   ├── auth/
-│   │   │   └── log-event/
-│   │   │       └── route.ts
+│   │   ├── auth/                   # Authentication endpoints
+│   │   │   ├── log-event/
+│   │   │   │   └── route.ts        # Auth event logging
+│   │   │   ├── login/
+│   │   │   │   └── route.ts        # Login endpoint
+│   │   │   ├── magic-link/
+│   │   │   │   └── route.ts        # Magic link auth
+│   │   │   ├── mfa/                # Multi-factor authentication
+│   │   │   │   ├── challenge/
+│   │   │   │   │   └── route.ts    # MFA challenge
+│   │   │   │   ├── enroll/
+│   │   │   │   │   └── route.ts    # MFA enrollment
+│   │   │   │   ├── recovery/
+│   │   │   │   │   └── route.ts    # MFA recovery
+│   │   │   │   └── trusted-devices/
+│   │   │   │       └── route.ts    # Trusted device management
+│   │   │   ├── password-reset/
+│   │   │   │   └── route.ts        # Password reset
+│   │   │   ├── sessions/
+│   │   │   │   └── route.ts        # Session management
+│   │   │   └── verify-email/
+│   │   │       └── route.ts        # Email verification
+│   │   ├── certificates/           # Certificate management
+│   │   │   ├── download/
+│   │   │   │   └── route.ts        # Certificate download
+│   │   │   ├── generate/
+│   │   │   │   └── route.ts        # Certificate generation
+│   │   │   ├── list/
+│   │   │   │   └── route.ts        # List certificates
+│   │   │   ├── request-mail/
+│   │   │   │   └── route.ts        # Request certificate by mail
+│   │   │   ├── revoke/
+│   │   │   │   └── route.ts        # Revoke certificate
+│   │   │   └── verify/
+│   │   │       └── route.ts        # Verify certificate
 │   │   ├── courses/
-│   │   │   ├── route.ts
+│   │   │   ├── route.ts            # Course CRUD operations
 │   │   │   ├── featured/
-│   │   │   │   └── route.ts
+│   │   │   │   └── route.ts        # Featured courses
 │   │   │   └── popular/
-│   │   │       └── route.ts
-│   │   ├── email/
+│   │   │       └── route.ts        # Popular courses
+│   │   ├── dashboard/
+│   │   │   └── enrollments/
+│   │   │       └── route.ts        # Dashboard enrollments
+│   │   ├── email/                  # Email system
+│   │   │   ├── cron/
+│   │   │   │   └── route.ts        # Scheduled email jobs
+│   │   │   ├── quiz-result/
+│   │   │   │   └── route.ts        # Quiz result emails
 │   │   │   └── test/
-│   │   │       └── route.ts
+│   │   │       └── route.ts        # Email testing endpoint
+│   │   ├── enrollment/
+│   │   │   ├── check-access/
+│   │   │   │   └── route.ts        # Check enrollment access
+│   │   │   ├── extend/
+│   │   │   │   └── route.ts        # Extend enrollment
+│   │   │   ├── history/
+│   │   │   │   └── route.ts        # Enrollment history
+│   │   │   └── status/
+│   │   │       └── route.ts        # Enrollment status
 │   │   ├── health/
-│   │   │   └── route.ts
+│   │   │   └── route.ts            # Health check endpoint
+│   │   ├── notes/
+│   │   │   └── route.ts            # Student notes
 │   │   ├── progress/
-│   │   │   └── route.ts
+│   │   │   ├── route.ts            # Progress tracking
+│   │   │   ├── dashboard/
+│   │   │   │   └── route.ts        # Progress dashboard data
+│   │   │   └── video/
+│   │   │       └── route.ts        # Video progress tracking
+│   │   ├── public/
+│   │   │   └── verify/
+│   │   │       └── route.ts        # Public certificate verification
+│   │   ├── purchase/               # Purchase endpoints
+│   │   │   ├── course/
+│   │   │   │   └── route.ts        # Purchase course
+│   │   │   ├── extend/
+│   │   │   │   └── route.ts        # Extend access
+│   │   │   ├── gift/
+│   │   │   │   └── route.ts        # Gift purchase
+│   │   │   ├── membership/
+│   │   │   │   └── route.ts        # Membership purchase
+│   │   │   ├── pricing/
+│   │   │   │   └── route.ts        # Pricing information
+│   │   │   ├── program/
+│   │   │   │   └── route.ts        # Program purchase
+│   │   │   └── validate-promo/
+│   │   │       └── route.ts        # Promo code validation
+│   │   ├── quiz/                   # Quiz system
+│   │   │   ├── attempt/
+│   │   │   │   └── route.ts        # Start quiz attempt
+│   │   │   ├── attempts/
+│   │   │   │   └── route.ts        # List quiz attempts
+│   │   │   ├── questions/
+│   │   │   │   └── route.ts        # Get quiz questions
+│   │   │   └── submit/
+│   │   │       └── route.ts        # Submit quiz answers
+│   │   ├── resources/
+│   │   │   ├── route.ts            # Course resources
+│   │   │   └── track/
+│   │   │       └── route.ts        # Resource usage tracking
 │   │   ├── search/
 │   │   │   └── courses/
-│   │   │       └── route.ts
-│   │   ├── stripe/
+│   │   │       └── route.ts        # Course search
+│   │   ├── sentry-example-api/
+│   │   │   └── route.ts            # Sentry testing endpoint
+│   │   ├── stripe/                 # Stripe integration
 │   │   │   ├── create-checkout/
-│   │   │   │   └── route.ts
+│   │   │   │   └── route.ts        # Create checkout session
 │   │   │   ├── create-checkout-session/
-│   │   │   │   └── route.ts
+│   │   │   │   └── route.ts        # Alternative checkout
 │   │   │   ├── webhook/
-│   │   │   │   └── route.ts
+│   │   │   │   └── route.ts        # Stripe webhook handler
 │   │   │   └── webhooks/
-│   │   │       └── route.ts
-│   │   └── webhooks/
+│   │   │       └── route.ts        # Alternative webhook
+│   │   ├── transcripts/
+│   │   │   └── route.ts            # Video transcripts
+│   │   ├── verify-certificate/
+│   │   │   └── route.ts            # Certificate verification
+│   │   └── webhooks/               # External webhooks
 │   │       ├── certificate-generated/
-│   │       │   └── route.ts
-│   │       └── enrollment-created/
-│   │           └── route.ts
-│   ├── auth/
-│   │   ├── layout.tsx
+│   │       │   └── route.ts        # Certificate generation webhook
+│   │       ├── enrollment-created/
+│   │       │   └── route.ts        # Enrollment webhook
+│   │       └── stripe/
+│   │           └── route.ts        # Stripe webhook alternative
+│   ├── auth/                       # Authentication pages
+│   │   ├── layout.tsx              # Auth layout
 │   │   ├── forgot-password/
-│   │   │   └── page.tsx
+│   │   │   └── page.tsx            # Password reset page
 │   │   ├── login/
-│   │   │   └── page.tsx
+│   │   │   └── page.tsx            # Login page
 │   │   └── register/
-│   │       └── page.tsx
+│   │       └── page.tsx            # Registration page
 │   ├── become-instructor/
-│   │   └── page.tsx
+│   │   └── page.tsx                # Instructor application
 │   ├── checkout/
 │   │   └── leap-launch/
-│   │       └── page.tsx
+│   │       └── page.tsx            # Leap Launch checkout
 │   ├── contact/
-│   │   └── page.tsx
-│   ├── courses/
-│   │   ├── page.tsx
+│   │   └── page.tsx                # Contact form
+│   ├── courses/                    # Course pages
+│   │   ├── page.tsx                # Course catalog
 │   │   ├── [id]/
-│   │   │   └── page.tsx
+│   │   │   └── page.tsx            # Individual course page
 │   │   ├── leap-launch/
-│   │   │   └── page.tsx
+│   │   │   └── page.tsx            # Leap Launch course
 │   │   ├── personal/
-│   │   │   └── page.tsx
+│   │   │   └── page.tsx            # Personal development courses
 │   │   ├── premium/
-│   │   │   ├── page.tsx
+│   │   │   ├── page.tsx            # Premium courses
 │   │   │   ├── leap-launch/
 │   │   │   │   └── page.tsx
 │   │   │   └── so-what/
 │   │   │       └── page.tsx
 │   │   ├── professional/
-│   │   │   └── page.tsx
+│   │   │   ├── page.tsx            # Professional courses
+│   │   │   └── [slug]/
+│   │   │       └── page.tsx        # Dynamic professional course
 │   │   ├── search/
-│   │   │   └── page.tsx
+│   │   │   └── page.tsx            # Course search page
 │   │   └── so-what-mindset/
-│   │       └── page.tsx
+│   │       └── page.tsx            # So What Mindset course
 │   ├── dashboard/
-│   │   └── page.tsx
+│   │   └── page.tsx                # Student dashboard
 │   ├── enrollment/
-│   │   ├── EnrollmentContent.tsx
-│   │   ├── page.tsx
+│   │   ├── page.tsx                # Enrollment page
 │   │   └── success/
-│   │       └── EnrollmentSuccessContent.tsx
-│   ├── instructor/
+│   │       └── page.tsx            # Enrollment success
+│   ├── instructor/                 # Instructor pages
+│   │   ├── page.tsx                # Instructor dashboard
 │   │   ├── affiliate-links/
-│   │   │   ├── [id]/
-│   │   │   │   └── route.ts
-│   │   │   └── route.ts
-│   │   ├── earnings/
-│   │   │   └── page.tsx
-│   │   └── page.tsx
-│   ├── learn/                      # course learning interface
+│   │   │   ├── route.ts            # Affiliate links API
+│   │   │   └── [id]/
+│   │   │       └── route.ts        # Individual link API
+│   │   └── earnings/
+│   │       └── page.tsx            # Earnings page
+│   ├── learn/                      # Learning interface
 │   │   └── [courseId]/
 │   │       └── [lessonId]/
-│   │           └── page.tsx
+│   │           └── page.tsx        # Lesson player
 │   ├── pricing/
-│   │   └── page.tsx
+│   │   └── page.tsx                # Pricing page
 │   ├── privacy/
-│   │   └── page.tsx
-│   ├── quiz/
+│   │   └── page.tsx                # Privacy policy
+│   ├── quiz/                       # Quiz pages
 │   │   └── [id]/
-│   │       └── page.tsx
+│   │       ├── page.tsx            # Quiz player
+│   │       └── results/
+│   │           └── [attemptId]/
+│   │               └── page.tsx    # Quiz results
 │   ├── refund-policy/
-│   │   └── page.tsx
+│   │   └── page.tsx                # Refund policy
+│   ├── sentry-example-page/
+│   │   └── page.tsx                # Sentry testing page
+│   ├── student/                    # Student pages
+│   │   ├── page.tsx                # Student dashboard
+│   │   └── certificates/
+│   │       ├── page.tsx            # Certificate list
+│   │       └── [id]/
+│   │           └── page.tsx        # Individual certificate
 │   ├── support/
-│   │   └── page.tsx
+│   │   └── page.tsx                # Support page
 │   ├── terms/
-│   │   └── page.tsx
+│   │   └── page.tsx                # Terms of service
 │   ├── test-course-builder/
-│   │   └── page.tsx
-│   └── tx-lpc-approved/
-│       └── page.tsx
+│   │   └── page.tsx                # Course builder test page
+│   ├── test-professional/
+│   │   └── page.tsx                # Professional test page
+│   ├── tx-lpc-approved/
+│   │   └── page.tsx                # Texas LPC approval info
+│   └── verify/
+│       └── page.tsx                # Email verification page
 ├── components/                     # React components by feature
+│   ├── Providers.tsx               # React context providers
 │   ├── course/
-│   │   ├── CERequirements.tsx
-│   │   ├── CourseBuilder.tsx
-│   │   ├── CourseCard.tsx
-│   │   ├── EnhancedQuizBuilder.tsx
-│   │   ├── IntegratedCourseBuilder.tsx
-│   │   └── TipTapEditor.tsx
+│   │   ├── CERequirements.tsx      # CE requirements display
+│   │   ├── CourseBuilder.tsx       # Course builder component
+│   │   ├── CourseCard.tsx          # Course card display
+│   │   ├── EnhancedQuizBuilder.tsx # Enhanced quiz builder
+│   │   ├── IntegratedCourseBuilder.tsx # Integrated course builder
+│   │   └── TipTapEditor.tsx        # Rich text editor
 │   ├── course-builder/
-│   │   ├── ContentParser.tsx
-│   │   ├── CourseBuilder.tsx
-│   │   ├── LessonEditor.tsx
-│   │   ├── ModuleOrganizer.tsx
-│   │   ├── PreviewPanel.tsx
-│   │   └── index.ts
+│   │   ├── ContentParser.tsx       # Parse course content
+│   │   ├── CourseBuilder.tsx       # Main course builder
+│   │   ├── LessonEditor.tsx        # Lesson editor component
+│   │   ├── ModuleOrganizer.tsx     # Module organization
+│   │   ├── PreviewPanel.tsx        # Preview panel
+│   │   └── index.ts                # Course builder exports
 │   ├── courses/
-│   │   └── CourseEnrollButton.tsx
-│   ├── enrollment/
-│   │   └── AuthenticatedEnrollButton.tsx
-│   ├── instructor/
-│   │   └── AffiliateLinksManager.tsx
+│   │   └── CourseEnrollButton.tsx  # Enrollment button
 │   ├── dashboard/
-│   │   └── ProgressWidget.tsx
+│   │   └── ProgressWidget.tsx      # Progress display widget
+│   ├── enrollment/
+│   │   └── AuthenticatedEnrollButton.tsx # Auth enrollment button
+│   ├── instructor/
+│   │   └── AffiliateLinksManager.tsx # Affiliate link management
 │   ├── layout/
-│   │   ├── Header.tsx
-│   │   └── Footer.tsx
+│   │   ├── Header.tsx              # Site header
+│   │   └── Footer.tsx              # Site footer
 │   ├── learn/
-│   │   └── VideoPlayer.tsx
+│   │   └── VideoPlayer.tsx         # Video player component
 │   ├── quiz/
-│   │   ├── QuizPlayer.tsx
-│   │   └── QuizResults.tsx
+│   │   ├── QuizPlayer.tsx          # Quiz player interface
+│   │   └── QuizResults.tsx         # Quiz results display
+│   ├── student/
+│   │   └── CertificateCard.tsx     # Certificate display card
 │   └── ui/                         # shadcn/ui components
+│       ├── accordion.tsx
+│       ├── alert.tsx
+│       ├── badge.tsx
 │       ├── button.tsx
 │       ├── card.tsx
+│       ├── checkbox.tsx
+│       ├── dialog.tsx
+│       ├── dropdown-menu.tsx
+│       ├── input.tsx
 │       ├── label.tsx
 │       ├── progress.tsx
 │       ├── radio-group.tsx
-│       └── textarea.tsx
+│       ├── select.tsx
+│       ├── separator.tsx
+│       ├── skeleton.tsx
+│       ├── switch.tsx
+│       ├── table.tsx
+│       ├── tabs.tsx
+│       ├── textarea.tsx
+│       └── toast.tsx
 ├── courses/                        # Legacy course import system
 │   ├── import/                     # 44 Word documents for CE & PD courses
 │   │   ├── Addiction Counseling Fundamentals 8 hours CEU.docx
@@ -226,36 +378,66 @@ Root/
 │   │   └── Working with Military Veterans and PTSD.docx
 │   └── metadata.csv                # Course metadata for import script
 ├── hooks/                          # React custom hooks
-│   ├── useEnrollmentIntent.ts
-│   └── useSearch.ts
-├── lib/                            # backend utilities & services
+│   ├── useEnrollmentIntent.ts      # Enrollment intent tracking
+│   └── useSearch.ts                # Search functionality
+├── lib/                            # Backend utilities & services
+│   ├── database.types.ts           # Database type definitions
+│   ├── utils.ts                    # General utilities
+│   ├── auth/                       # Authentication services
+│   │   ├── magic-link.ts           # Magic link authentication
+│   │   ├── password-reset.ts       # Password reset service
+│   │   ├── session-manager.ts      # Session management
+│   │   └── mfa/                    # Multi-factor authentication
+│   │       ├── authenticator.ts    # Authenticator app MFA
+│   │       ├── recovery.ts         # Recovery codes
+│   │       └── trusted-devices.ts  # Trusted device management
+│   ├── certificates/               # Certificate system
+│   │   ├── certificate-service.ts  # Certificate generation service
+│   │   ├── generators/
+│   │   │   ├── texasLpcTemplate.tsx # Texas LPC certificate template
+│   │   │   └── index.ts
+│   │   ├── storage/
+│   │   │   └── supabase-storage.ts # Certificate storage
+│   │   └── validators/
+│   │       └── certificate-validator.ts # Certificate validation
 │   ├── compliance/
-│   │   └── gdpr-functions.ts
-│   ├── email/
-│   │   ├── email-service.ts
-│   │   ├── resend-client.ts
-│   │   └── templates.ts
+│   │   └── gdpr-functions.ts       # GDPR compliance utilities
+│   ├── email/                      # Email system
+│   │   ├── email-service.ts        # Email sending service
+│   │   ├── resend-client.ts        # Resend API client
+│   │   └── templates.ts            # Email templates
+│   ├── monitoring/
+│   │   ├── error-tracking.ts       # Error tracking service
+│   │   └── performance.ts          # Performance monitoring
 │   ├── parsers/
-│   │   └── content-parser.ts
+│   │   └── content-parser.ts       # Course content parser
 │   ├── quiz/
-│   │   └── grading.ts
+│   │   └── grading.ts              # Quiz grading logic
+│   ├── resources/
+│   │   └── resource-tracking.ts    # Resource usage tracking
 │   ├── search/
-│   │   ├── meilisearch-client.ts
-│   │   ├── search-service.ts
-│   │   ├── setup-index.ts
-│   │   └── types.ts
+│   │   ├── meilisearch-client.ts   # MeiliSearch client
+│   │   ├── search-service.ts       # Search service
+│   │   ├── setup-index.ts          # Search index setup
+│   │   └── types.ts                # Search type definitions
 │   ├── security/
-│   │   ├── incident-response.ts
-│   │   ├── input-sanitization.ts
-│   │   └── validation.ts
+│   │   ├── incident-response.ts    # Security incident handling
+│   │   ├── input-sanitization.ts   # Input sanitization
+│   │   └── validation.ts           # Input validation
+│   ├── services/
+│   │   ├── enrollment-service.ts   # Enrollment service
+│   │   └── progress-service.ts     # Progress tracking service
 │   ├── stripe/
-│   │   └── config.ts
+│   │   ├── config.ts               # Stripe configuration
+│   │   └── webhook-handler.ts      # Stripe webhook handler
 │   ├── supabase/
-│   │   ├── client.ts
-│   │   └── server.ts
+│   │   ├── client.ts               # Supabase client (browser)
+│   │   └── server.ts               # Supabase server client
 │   └── utils/
-│       └── cn.ts
-├── public/                         # static assets
+│       ├── affiliates.ts           # Affiliate tracking utilities
+│       ├── cn.ts                   # Class name utilities
+│       └── date-formatters.ts      # Date formatting
+├── public/                         # Static assets
 │   ├── images/
 │   │   └── logo/
 │   │       ├── favicon.ico
@@ -268,101 +450,142 @@ Root/
 │   ├── file.svg
 │   ├── globe.svg
 │   └── window.svg
-├── scripts/                        # deployment & utility scripts
+├── scripts/                        # Deployment & utility scripts
 │   ├── check-email-logs.sql        # Email system verification queries
+│   ├── create-ui-components.js     # UI component generator
 │   ├── import-legacy-courses.ts    # Legacy course import from Word docs
-│   ├── import-remaining-courses.ts # Additional course import script
-│   ├── phase2-security-setup.sh
-│   ├── security/                   # Security setup scripts
-│   ├── test-course-player.sh
-│   ├── upload-stripe-products.ts
-│   └── upload-stripe-products.ts.old
-├── supabase/                       # database configuration
+│   ├── import-remaining-courses.ts # Additional course import
+│   ├── phase2-security-setup.sh    # Security setup script
+│   ├── setup-certificates.sh       # Certificate system setup
+│   ├── test-course-player.sh       # Course player testing
+│   ├── test-monitoring.ts          # Monitoring system test
+│   ├── test-redis.ts               # Redis connection test
+│   ├── upload-stripe-products.ts   # Stripe product upload
+│   └── verify-certificate-schema.sql # Certificate schema verification
+├── supabase/                       # Database configuration
 │   └── migrations/
-│       ├── 001_course_builder.sql
-│       ├── 20250106_001_complete_audit_system.sql
-│       ├── 20250106_002_data_retention.sql
-│       ├── 20250106_003_security_incidents.sql
-│       └── 20251009175842_create_certificate_audit_log.sql
-├── tests/                          # test files
+│       ├── 001_course_builder.sql                      # Course builder schema
+│       ├── 20250106_001_complete_audit_system.sql      # Audit system
+│       ├── 20250106_002_data_retention.sql             # Data retention
+│       ├── 20250106_003_security_incidents.sql         # Security incidents
+│       ├── 20251009175842_create_certificate_audit_log.sql # Certificate audit
+│       ├── 20241028_add_email_logs.sql                 # Email logging
+│       ├── 20241028_add_progress_features.sql          # Progress features
+│       ├── 20241029_add_was_email_sent_recently.sql    # Email deduplication
+│       └── 20241030_fix_email_dedup_function.sql       # Email dedup fix
+├── tests/                          # Test files
 │   ├── e2e/
-│   │   └── smoke.spec.ts
+│   │   └── smoke.spec.ts           # Smoke tests
 │   ├── fixtures/
-│   │   └── test-users.ts
+│   │   └── test-users.ts           # Test user fixtures
 │   └── setup/
-│       └── seed-test-data.ts
+│       └── seed-test-data.ts       # Test data seeding
 ├── types/                          # TypeScript definitions
 │   └── course-builder/
-│       └── index.ts
-├── deploy-production.sh
-├── fix-register.sh
-├── quick-fix.sh
-└── update-packages.sh
+│       └── index.ts                # Course builder types
+└── utils/                          # Utility functions
+    └── affiliate-link-generator.ts # Affiliate link generation
 ```
 
 ## Key Features
 
-- **Next.js 14+** with App Router
-- **Legacy Course Import** system with Word document parsing via mammoth
-- **Instructor Affiliate System** with real-time tracking and commission management
-- **API Routes** for courses, progress tracking, webhooks, and Stripe integration
-- **Course Builder** with integrated quiz system
-- **Learning Platform** with video player and progress tracking
-- **Search** powered by MeiliSearch
-- **Email** service with Resend
-- **Database** with Supabase (PostgreSQL)
-- **Security** monitoring and incident response
+- **Next.js 14+** with App Router and TypeScript
+- **Authentication System** with magic links, MFA, session management, and trusted devices
+- **Certificate System** with PDF generation, storage, verification, and Texas LPC templates
+- **Course Builder** with integrated quiz system and rich text editor
+- **Learning Platform** with video player, progress tracking, and note-taking
+- **Quiz System** with attempt tracking, time limits, and automated grading
+- **Email System** with Resend integration, templates, and deduplication
+- **Progress Tracking** with streaks, daily activity logs, and dashboard widgets
+- **Instructor Tools** with affiliate link management, earnings tracking, and commission analytics
+- **Enrollment System** with access control, extensions, and payment integration
+- **Search** powered by MeiliSearch for fast course discovery
+- **Stripe Integration** for payments, subscriptions, and webhooks
+- **Security Monitoring** with incident response, input sanitization, and audit logging
+- **Database** with Supabase (PostgreSQL with RLS)
 - **Testing** with Playwright E2E tests
-- **Compliance** GDPR functions
+- **Compliance** with GDPR functions and data retention policies
 - **Error Monitoring** with Sentry integration
-- **Enrollment** success flow and payment processing
+- **API Routes** for all features with proper authentication and authorization
 
-## Recent Additions
+## Recent Additions (Batch 7 - Email System Complete)
 
-- **Expanded Legacy Course Import System:** Now includes 44 complete courses:
-  - `courses/import/` - 44 Word documents (CE courses + Personal Development)
-  - `courses/metadata.csv` - Complete course metadata configuration
-  - `scripts/import-legacy-courses.ts` - Primary automated import script
-  - `scripts/import-remaining-courses.ts` - Additional course import script
-  - EMDR courses now split into Part 1 & 2 (7.5 CE hours each)
-  - Added 8 personal development courses including relationship recovery, financial literacy, and self-discovery
-- **Enhanced Email System:**
-  - `app/api/email/test/route.ts` - Email service testing and verification
-  - `scripts/check-email-logs.sql` - Email workflow verification queries
-  - `EMAIL_WORKFLOW_VERIFIED.md` - Complete email system documentation
-- **Complete Instructor System:**
-  - `app/(dashboard)/instructor/affiliate/page.tsx` - Affiliate management dashboard
-  - `app/instructor/affiliate-links/route.ts` - Affiliate links API endpoints
-  - `app/instructor/affiliate-links/[id]/route.ts` - Individual affiliate link management
-  - `app/instructor/earnings/page.tsx` - Earnings tracking and analytics
-  - `components/instructor/AffiliateLinksManager.tsx` - Comprehensive affiliate links interface
-  - `middleware.ts` - Enhanced with affiliate link tracking and cookie management
-  - Real-time click tracking, conversion analytics, and commission management
-- Added Sentry configuration files for error monitoring
-- Enhanced enrollment flow with dedicated content components:
-  - `app/enrollment/EnrollmentContent.tsx`
-  - `app/enrollment/success/EnrollmentSuccessContent.tsx`
-  - `components/enrollment/AuthenticatedEnrollButton.tsx`
-- **Enhanced Stripe Integration:**
-  - `app/api/stripe/create-checkout/route.ts` - Alternative checkout endpoint
-  - `app/api/stripe/create-checkout-session/route.ts` - Primary checkout session creation
-  - `app/api/stripe/webhook/route.ts` - Stripe webhook handler
-  - `app/api/stripe/webhooks/route.ts` - Alternative webhook endpoint
-  - `lib/stripe/config.ts` - Stripe configuration and utilities
-- Course enrollment button component (`components/courses/CourseEnrollButton.tsx`)
-- Enhanced API routes with proper file structure
-- Additional React hooks (`useEnrollmentIntent.ts`)
+- **Comprehensive Email System:**
+  - `lib/email/templates.ts` - Complete template library for all communication types:
+    - Onboarding emails (Day 3, Day 7, profile completion, first purchase)
+    - Course activity emails (lesson completed, quiz results, new lessons)
+    - Engagement emails (inactivity, abandoned cart, monthly summary, streaks)
+    - Payment/access emails (payment failed, renewal reminders, refunds, card expiry)
+    - Security/admin emails (alerts, suspicious activity, maintenance, privacy updates)
+  - `lib/email/email-service.ts` - Enhanced service with logging, deduplication, and error handling
+  - `app/api/email/cron/route.ts` - Scheduled email jobs (onboarding and inactivity reminders)
+  - `app/api/email/test/route.ts` - Email testing endpoint for all templates
+  - `lib/stripe/webhook-handler.ts` - Integrated email sends for payment events
+  - Email logging to `email_logs` table with deduplication via `was_email_sent_recently` RPC
+  - Progress notifications tracking to prevent duplicate sends
+
+- **Fixed Build Issues:**
+  - Repaired corrupted `components/quiz/QuizPlayer.tsx` with clean implementation
+  - Added `@types/qrcode` for TypeScript definitions
+  - Verified Tabs component resolution at `components/ui/tabs.tsx`
+
+- **Enhanced MFA System:**
+  - Multi-factor authentication with authenticator apps
+  - Recovery code system for account access
+  - Trusted device management
+  - MFA challenge and enrollment endpoints
+
+- **Certificate System Enhancements:**
+  - Certificate download, listing, and verification endpoints
+  - Mail request for physical certificates
+  - Certificate revocation system
+  - Audit logging for certificate operations
+
+## System Architecture
+
+### Authentication Flow
+
+1. User registers/logs in via `app/auth/login` or `app/auth/register`
+2. Optional MFA challenge if enabled
+3. Session created and managed via `lib/auth/session-manager.ts`
+4. Auth events logged via `app/api/auth/log-event`
+
+### Course Learning Flow
+
+1. User enrolls in course via `app/api/purchase/course`
+2. Access verified via `app/api/enrollment/check-access`
+3. Lesson content loaded via `app/learn/[courseId]/[lessonId]`
+4. Video progress tracked via `app/api/progress/video`
+5. Quiz taken via `app/quiz/[id]`
+6. Certificate generated on completion via `app/api/certificates/generate`
+
+### Email Communication Flow
+
+1. Trigger events (payment success, quiz completion, inactivity, etc.)
+2. Email service checks deduplication via `was_email_sent_recently` RPC
+3. Template rendered with user data
+4. Email sent via Resend
+5. Send logged to `email_logs` table
+6. Cron jobs handle scheduled sends (onboarding, reminders)
+
+### Affiliate System Flow
+
+1. Instructor creates affiliate link via `app/instructor/affiliate-links`
+2. Link tracked via middleware when clicked
+3. Conversion recorded on purchase
+4. Earnings tracked via `app/instructor/earnings`
+5. Commission calculated and displayed
 
 ## Notes
 
-- Excludes build artifacts (`.next/`, `node_modules/`) from detailed view
-- Environment files contain sensitive keys - ensure proper `.gitignore` configuration
-- Migration files handle database schema and security setup
-- Test suite covers E2E scenarios and security validation
-- **Complete Course Library:** 44 total courses including:
-  - 36 professional CE courses (3-15 CE hours each)
-  - 8 personal development courses
-  - EMDR Level 1 split into two 7.5-hour parts
-  - All CE courses are Texas LPC approved
-- Import scripts use mammoth library to parse Word documents into HTML content
-- Email system includes comprehensive testing and verification workflows
+- Excludes build artifacts (`.next/`, `node_modules/`) from version control
+- Environment variables required: See `.env.local.example` for full list
+- Database migrations handle schema evolution and security setup
+- Test suite covers E2E scenarios and API endpoints
+- Email system includes comprehensive logging and prevents duplicate sends
+- Progress tracking uses Supabase RLS for security
+- All API routes protected with proper authentication
+- Certificate system uses Supabase Storage for PDF files
+- MFA system supports TOTP authenticator apps
+- Search index requires MeiliSearch instance
+- Stripe webhooks require proper signature verification
