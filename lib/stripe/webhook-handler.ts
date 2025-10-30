@@ -9,6 +9,7 @@ import { logger } from '@/lib/monitoring/logger'
 import { BaseService, ServiceResponse } from '@/lib/services/base-service'
 import { EnrollmentService } from '@/lib/services/enrollment-service'
 import { EnrollmentEmailService } from '@/lib/services/enrollment-email-service'
+import { emailService } from '@/lib/email/email-service'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-08-27.basil'
@@ -933,15 +934,84 @@ export class StripeWebhookService extends BaseService {
   }
 
   private async sendPaymentConfirmationEmail(paymentIntent: Stripe.PaymentIntent): Promise<void> {
-    logger.info('Sending payment confirmation email', { paymentIntentId: paymentIntent.id })
+    try {
+      const metadata = paymentIntent.metadata || {}
+      const customer = paymentIntent.customer
+        ? await stripe.customers.retrieve(paymentIntent.customer as string)
+        : undefined
+      const userEmail = (customer as Stripe.Customer)?.email || metadata.user_email
+      const userName = (customer as Stripe.Customer)?.name || metadata.user_name || 'Student'
+      if (!userEmail) return
+
+      const amount = (paymentIntent.amount || 0) / 100
+      const courseName = metadata.course_name || metadata.product_name || 'Purchase'
+      const paymentDate = new Date().toISOString()
+      const invoiceNumber = paymentIntent.id
+
+      await emailService.sendPaymentReceipt(
+        userEmail,
+        userName,
+        amount,
+        courseName,
+        paymentDate,
+        invoiceNumber,
+        metadata.user_id
+      )
+      logger.info('Payment confirmation email sent', { paymentIntentId: paymentIntent.id })
+    } catch (e) {
+      logger.error('Payment confirmation email failed', e as Error, { paymentIntentId: paymentIntent.id })
+    }
   }
 
   private async sendPaymentFailureEmail(paymentIntent: Stripe.PaymentIntent): Promise<void> {
-    logger.info('Sending payment failure email', { paymentIntentId: paymentIntent.id })
+    try {
+      const metadata = paymentIntent.metadata || {}
+      const customer = paymentIntent.customer
+        ? await stripe.customers.retrieve(paymentIntent.customer as string)
+        : undefined
+      const userEmail = (customer as Stripe.Customer)?.email || metadata.user_email
+      const userName = (customer as Stripe.Customer)?.name || metadata.user_name || 'Student'
+      if (!userEmail) return
+
+      const amount = (paymentIntent.amount || 0) / 100
+      const retryUrl = `${process.env.NEXT_PUBLIC_APP_URL}/billing`
+      await emailService.sendPaymentFailed(
+        userEmail,
+        userName,
+        amount,
+        retryUrl,
+        metadata.user_id
+      )
+      logger.info('Payment failure email sent', { paymentIntentId: paymentIntent.id })
+    } catch (e) {
+      logger.error('Payment failure email failed', e as Error, { paymentIntentId: paymentIntent.id })
+    }
   }
 
   private async sendSubscriptionConfirmationEmail(subscription: Stripe.Subscription): Promise<void> {
-    logger.info('Sending subscription confirmation email', { subscriptionId: subscription.id })
+    try {
+      const customer = await stripe.customers.retrieve(subscription.customer as string) as Stripe.Customer
+      const userEmail = customer.email || subscription.metadata.user_email
+      const userName = customer.name || subscription.metadata.user_name || 'Member'
+      if (!userEmail) return
+      // Send a generic receipt-like confirmation for subscription creation
+      const amount = (subscription.items.data[0].price.unit_amount || 0) / 100
+      const paymentDate = new Date(subscription.created * 1000).toISOString()
+      const invoiceNumber = subscription.id
+      const productName = subscription.metadata.product_name || `${subscription.items.data[0].price.nickname || 'Subscription'}`
+      await emailService.sendPaymentReceipt(
+        userEmail,
+        userName,
+        amount,
+        productName,
+        paymentDate,
+        invoiceNumber,
+        subscription.metadata.user_id
+      )
+      logger.info('Subscription confirmation email sent', { subscriptionId: subscription.id })
+    } catch (e) {
+      logger.error('Subscription confirmation email failed', e as Error, { subscriptionId: subscription.id })
+    }
   }
 
   private async sendSubscriptionCancellationEmail(subscription: Stripe.Subscription): Promise<void> {
@@ -949,7 +1019,37 @@ export class StripeWebhookService extends BaseService {
   }
 
   private async sendRefundConfirmationEmail(charge: Stripe.Charge): Promise<void> {
-    logger.info('Sending refund confirmation email', { chargeId: charge.id })
+    try {
+      const paymentIntent = charge.payment_intent as string | null
+      let userEmail: string | undefined
+      let userName = 'Student'
+      let userId: string | undefined
+      if (charge.customer) {
+        const customer = await stripe.customers.retrieve(charge.customer as string) as Stripe.Customer
+        userEmail = customer.email || undefined
+        userName = customer.name || userName
+      }
+      if (!userEmail && typeof paymentIntent === 'string') {
+  const pi = await stripe.paymentIntents.retrieve(paymentIntent)
+  userEmail = ((pi as any).charges?.data?.[0]?.billing_details?.email as string) || undefined
+  userName = ((pi as any).charges?.data?.[0]?.billing_details?.name as string) || userName
+  userId = ((pi as any).metadata as any)?.user_id
+      }
+      if (!userEmail) return
+
+      const amount = (charge.amount_refunded || 0) / 100
+      const refundDate = new Date().toISOString()
+      await emailService.sendRefundProcessed(
+        userEmail,
+        userName,
+        amount,
+        refundDate,
+        userId
+      )
+      logger.info('Refund confirmation email sent', { chargeId: charge.id })
+    } catch (e) {
+      logger.error('Refund confirmation email failed', e as Error, { chargeId: charge.id })
+    }
   }
 
   private async sendDisputeNotification(dispute: Stripe.Dispute): Promise<void> {

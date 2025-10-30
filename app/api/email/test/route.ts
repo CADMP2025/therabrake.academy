@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     // Test different email types
     let result;
-    switch (type) {
+  switch (type) {
       case 'welcome':
         result = await emailService.sendWelcomeEmail(
           email,
@@ -69,6 +69,60 @@ export async function POST(request: NextRequest) {
           'Test Course: Ethics in Counseling',
           new Date().toISOString(),
           'INV-' + Date.now()
+        );
+        break;
+
+      case 'onboardingDay3':
+        result = await emailService.sendOnboardingDay3(
+          email,
+          'Test User',
+          `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+          `${process.env.NEXT_PUBLIC_APP_URL}/welcome-tour`
+        );
+        break;
+
+      case 'onboardingDay7':
+        result = await emailService.sendOnboardingDay7(
+          email,
+          'Test User',
+          '<ul><li>Ethics & Law 6 CE</li><li>Supervision Best Practices</li></ul>',
+          `${process.env.NEXT_PUBLIC_APP_URL}/courses`
+        );
+        break;
+
+      case 'paymentFailed':
+        result = await emailService.sendPaymentFailed(
+          email,
+          'Test User',
+          59.99,
+          `${process.env.NEXT_PUBLIC_APP_URL}/billing`
+        );
+        break;
+
+      case 'refund':
+        result = await emailService.sendRefundProcessed(
+          email,
+          'Test User',
+          59.99,
+          new Date().toISOString()
+        );
+        break;
+
+      case 'streak':
+        result = await emailService.sendStreakNotification(
+          email,
+          'Test User',
+          5,
+          `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`
+        );
+        break;
+
+      case 'inactivity':
+        result = await emailService.sendInactivity(
+          email,
+          'Test User',
+          14,
+          `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`
         );
         break;
 
