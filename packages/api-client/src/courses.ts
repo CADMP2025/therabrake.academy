@@ -42,7 +42,7 @@ export class CoursesAPI {
     return {
       success: true,
       data: {
-        data: data as Course[],
+        data: (data as unknown) as Course[],
         pagination: {
           page,
           limit,
@@ -74,7 +74,7 @@ export class CoursesAPI {
 
     return {
       success: true,
-      data: data as Course,
+      data: (data as unknown) as Course,
     }
   }
 
