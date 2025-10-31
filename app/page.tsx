@@ -8,17 +8,29 @@ export default function HomePage() {
       <section className="bg-gradient-to-br from-primary to-primary-light text-white py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white">
-            🌟 Welcome to TheraBrake Academy™
+            Breakthrough Starts Here
           </h1>
           <p className="text-2xl mb-4 text-accent font-semibold">
-            Pause, Process, Progress.
+            At TheraBrake Academy™, growth isn’t just academic, it’s personal.
           </p>
-          <p className="text-lg mb-8 text-white/90 max-w-3xl mx-auto">
-            At <strong>TheraBrake Academy™</strong>, learning isn't just about earning credits or ticking boxes it's about transformation. 
-            Whether you're a licensed professional ready to grow your practice or an individual ready to reclaim your life, 
-            you'll find a course here designed for you.
+          <p className="text-lg mb-10 text-white/90 max-w-3xl mx-auto">
+            Whether you’re rebuilding after loss, redefining your purpose, or reigniting your career, our courses help you transform from the inside out.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left">
+            <div>
+              <h3 className="text-xl font-semibold mb-2">🌱 For Personal Growth & Healing</h3>
+              <p className="text-white/90">
+                Discover step-by-step programs for overcoming emotional pain, financial setbacks, and self-doubt and build a stronger, more grounded version of yourself.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold mb-2">🎓 For Mental Health & Professional Growth</h3>
+              <p className="text-white/90">
+                Earn accredited CE Hours while expanding your expertise with courses trusted by therapists and wellness professionals nationwide.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
             <Link 
               href="/courses"
               className="bg-action text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-action/90 transition inline-flex items-center justify-center"
@@ -36,51 +48,86 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Professional Development Section */}
+      {/* Two Paths Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center mb-6">
-              <Award className="h-10 w-10 text-primary mr-4" />
-              <h2 className="text-3xl md:text-4xl font-bold text-primary">For Mental Health Professionals</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary">
+            Two Paths. One Purpose: Transformation
+          </h2>
+          <div className="grid md:grid-cols-2 gap-10 max-w-6xl mx-auto">
+            {/* Personal Growth */}
+            <div className="p-6 rounded-xl bg-background-light/60">
+              <h3 className="text-2xl font-bold text-secondary mb-2">🌱 For Personal Growth</h3>
+              <p className="text-text-primary mb-4">Heal emotional wounds, rediscover confidence, and create new meaning.</p>
+              <p className="text-text-primary font-semibold mb-2">Courses like:</p>
+              <ul className="space-y-2 text-text-primary">
+                <li>💔➡️❤️ Healing Forward</li>
+                <li>🌉 Rebuilding After Betrayal</li>
+                <li>🧠⚡ The So What Mindset™</li>
+                <li>💰📈 Financial Literacy & Independence</li>
+              </ul>
+              <div className="mt-6">
+                <Link 
+                  href="/courses/personal"
+                  className="inline-flex items-center text-secondary hover:text-secondary-dark font-semibold text-lg transition"
+                >
+                  👉 Visit our Personal Development Catalog
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </div>
             </div>
-            <p className="text-lg text-text-primary mb-6">
-              Earn accredited <strong>Continuing Education (CE) hours</strong> while mastering real-world skills that elevate 
-              your career and protect your clients. From <strong>Ethics and HIPAA Compliance</strong> to <strong>Trauma-Informed 
-              Care</strong> and <strong>Telehealth Mastery</strong>, our courses are built to keep you compliant, confident, and competitive.
-            </p>
-            <Link 
-              href="/courses/professional"
-              className="inline-flex items-center text-primary hover:text-primary-dark font-semibold text-lg transition"
-            >
-              👉 Explore our Professional Development Catalog
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+            {/* Professional Growth */}
+            <div className="p-6 rounded-xl bg-background-light/60">
+              <h3 className="text-2xl font-bold text-primary mb-2">🎓 For Professional Growth</h3>
+              <p className="text-text-primary mb-4">Strengthen your skills, stay current, and elevate your impact.</p>
+              <p className="text-text-primary font-semibold mb-2">Courses like:</p>
+              <ul className="space-y-2 text-text-primary">
+                <li>⚖️ Ethics for Counselors</li>
+                <li>🌱 Building a Trauma-Informed Practice</li>
+                <li>💻 Telehealth in Counseling</li>
+                <li>🚀 Leap & Launch! Build Your Private Practice</li>
+              </ul>
+              <div className="mt-6">
+                <Link 
+                  href="/courses/professional"
+                  className="inline-flex items-center text-primary hover:text-primary-dark font-semibold text-lg transition"
+                >
+                  👉 Explore our Professional Development Catalog
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Personal Growth Section */}
+      {/* Featured Life Change Tracks */}
       <section className="py-16 bg-background-light">
         <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-primary">Featured Life Change Tracks</h2>
           <div className="max-w-4xl mx-auto">
-            <div className="flex items-center mb-6">
-              <Heart className="h-10 w-10 text-secondary mr-4" />
-              <h2 className="text-3xl md:text-4xl font-bold text-secondary">For Personal Growth & Healing</h2>
-            </div>
-            <p className="text-lg text-text-primary mb-6">
-              Life happens. Betrayal, financial setbacks, relationship struggles, even health crises. But your story isn't over. 
-              With courses like <strong>Healing Forward</strong>, <strong>Rebuilding After Betrayal</strong>, 
-              <strong>Finding the Perfect Match</strong>, and <strong>Cancer Diagnosis: It's Not the End…</strong>, 
-              you'll discover powerful frameworks to help you pause, process, and progress toward a stronger you.
-            </p>
-            <Link 
-              href="/courses/personal"
-              className="inline-flex items-center text-secondary hover:text-secondary-dark font-semibold text-lg transition"
-            >
-              👉 Visit our Personal Development Catalog
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+            <ul className="space-y-6 text-text-primary text-lg">
+              <li>
+                <span className="font-semibold">•	💔 Relationship Recovery & Rebuilding Trust</span><br />
+                Turn pain into power with courses like <em>Healing Forward</em> and <em>Rebuilding After Betrayal</em>.
+              </li>
+              <li>
+                <span className="font-semibold">•	💼 Career & Purpose Reinvention</span><br />
+                From burnout to breakthrough — learn to pivot with purpose, whether you’re changing jobs or building your own practice.
+              </li>
+              <li>
+                <span className="font-semibold">•	💸 Financial Empowerment & Stability</span><br />
+                Learn to manage credit, overcome debt, and create a sustainable foundation for peace of mind.
+              </li>
+              <li>
+                <span className="font-semibold">•	🧠 Mindset & Identity Growth</span><br />
+                The So What Mindset™ helps you release old limitations and step into authentic confidence.
+              </li>
+              <li>
+                <span className="font-semibold">•	🩺 Professional Evolution & Clinical Growth</span><br />
+                Strengthen your therapeutic skills with trauma-informed, ethical, and culturally competent training (earn CE Hours that count).
+              </li>
+            </ul>
           </div>
         </div>
       </section>
@@ -89,7 +136,7 @@ export default function HomePage() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary">
-            🚀 Why Choose TheraBrake Academy™?
+            🚀 Why People and Professionals Trust TheraBrake Academy™
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="text-center p-6 rounded-lg hover:shadow-lg transition">
