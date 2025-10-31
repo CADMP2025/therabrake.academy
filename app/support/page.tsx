@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Search, HelpCircle, Video, BookOpen, MessageSquare } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/Input'
+import { Input } from '@/components/ui/input'
 import { SupportChatbot } from '@/components/support/SupportChatbot'
 
 interface Category { id: string; slug: string; name: string; description?: string }
