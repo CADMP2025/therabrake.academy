@@ -38,7 +38,7 @@ export default function CoursesScreen() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setCourses(data || []);
+      setCourses((data as unknown as Course[]) || []);
     } catch (error) {
       console.error('Error fetching courses:', error);
     } finally {

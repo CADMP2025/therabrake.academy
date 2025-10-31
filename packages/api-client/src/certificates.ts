@@ -23,7 +23,7 @@ export class CertificatesAPI {
 
     return {
       success: true,
-      data: data as Certificate[],
+      data: (data as unknown) as Certificate[],
     }
   }
 
@@ -48,7 +48,7 @@ export class CertificatesAPI {
 
     return {
       success: true,
-      data: data as Certificate,
+      data: (data as unknown) as Certificate,
     }
   }
 

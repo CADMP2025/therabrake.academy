@@ -48,7 +48,7 @@ export default function CourseDetailScreen() {
         .single();
 
       if (error) throw error;
-      setCourse(data);
+      setCourse(data as unknown as CourseDetail);
     } catch (error) {
       console.error('Error fetching course:', error);
       Alert.alert('Error', 'Could not load course details');
