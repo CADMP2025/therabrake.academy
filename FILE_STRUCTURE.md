@@ -1,6 +1,6 @@
 # TheraBrake Academy — Workspace File Structure
 
-**Updated:** October 30, 2025  
+**Updated:** October 31, 2025  
 **Branch:** feature/course-builder
 
 ```
@@ -41,7 +41,6 @@ Root/
 ├── .next/                          # Next.js build output (git-ignored)
 ├── .vercel/                        # Vercel deployment data (git-ignored)
 ├── node_modules/                   # NPM dependencies (git-ignored)
-├── app/                            # Next.js App Router pages & layouts
 ├── app/                            # Next.js App Router pages & layouts
 │   ├── globals.css                 # Global styles
 │   ├── layout.tsx                  # Root layout
@@ -341,10 +340,30 @@ Root/
 │       ├── spinner.tsx             # Loading spinner
 │       ├── status-badge.tsx        # Colored status indicators
 │       ├── switch.tsx              # Toggle switch
-│       ├── Table.tsx               # Table component (capitalized)
+│       ├── table.tsx               # Table component
 │       ├── tabs.tsx                # Tabbed interface
 │       ├── textarea.tsx            # Multi-line text input
 │       └── toast.tsx               # Toast notification wrapper
+├── docs/                           # Documentation (users, developers, DevOps)
+│   ├── users/
+│   │   ├── student-guide.md        # Student onboarding and usage
+│   │   ├── instructor-guide.md     # Instructor workflows and tools
+│   │   ├── admin-guide.md          # Admin operations and policies
+│   │   ├── troubleshooting.md      # Common issues and fixes
+│   │   └── video-tutorials.md      # Linked walkthroughs and demos
+│   ├── developers/
+│   │   ├── api-reference.md        # API surface and contracts
+│   │   ├── database-schema.md      # DB schema and ERD notes
+│   │   ├── deployment.md           # Local/prod deploy flows
+│   │   ├── migrations.md           # Migration strategy and guides
+│   │   ├── disaster-recovery.md    # Backups and recovery runbooks
+│   │   └── ui-architecture.md      # UI system and conventions
+│   └── devops/
+│       ├── infrastructure-setup.md # Vercel, Supabase, Stripe, email, domains
+│       ├── monitoring-alerting.md  # SLOs, alerts, on-call
+│       ├── backups.md              # Backup strategy and restores
+│       ├── domains-email.md        # DNS, domains, and email setup
+│       └── cdn-video.md            # Video/CDN guidance
 ├── courses/                        # Legacy course import system
 │   ├── import/                     # 44 Word documents for CE & PD courses
 │   │   ├── Addiction Counseling Fundamentals 8 hours CEU.docx
@@ -392,68 +411,6 @@ Root/
 │   │   ├── Working with LGBTQ.docx
 │   │   └── Working with Military Veterans and PTSD.docx
 │   └── metadata.csv                # Course metadata for import script
-├── hooks/                          # React custom hooks
-│   ├── useEnrollmentIntent.ts      # Enrollment intent tracking
-│   └── useSearch.ts                # Search functionality
-│   ├── lib/                            # Backend utilities & services
-│   ├── database.types.ts           # Database type definitions
-│   ├── utils.ts                    # General utilities (includes cn helper)
-│   ├── auth/                       # Authentication services
-│   │   ├── magic-link.ts           # Magic link authentication
-│   │   ├── password-reset.ts       # Password reset service
-│   │   ├── session-manager.ts      # Session management
-│   │   └── mfa/                    # Multi-factor authentication
-│   │       ├── authenticator.ts    # Authenticator app MFA
-│   │       ├── recovery.ts         # Recovery codes
-│   │       └── trusted-devices.ts  # Trusted device management
-│   ├── certificates/               # Certificate system
-│   │   ├── certificate-service.ts  # Certificate generation service
-│   │   ├── generators/
-│   │   │   ├── texasLpcTemplate.tsx # Texas LPC certificate template
-│   │   │   └── index.ts
-│   │   ├── storage/
-│   │   │   └── supabase-storage.ts # Certificate storage
-│   │   └── validators/
-│   │       └── certificate-validator.ts # Certificate validation
-│   ├── compliance/
-│   │   └── gdpr-functions.ts       # GDPR compliance utilities
-│   ├── email/                      # Email system
-│   │   ├── email-service.ts        # Email sending service
-│   │   ├── resend-client.ts        # Resend API client
-│   │   └── templates.ts            # Email templates
-│   ├── monitoring/
-│   │   ├── error-tracking.ts       # Error tracking service
-│   │   └── performance.ts          # Performance monitoring
-│   ├── parsers/
-│   │   └── content-parser.ts       # Course content parser
-│   ├── quiz/
-│   │   └── grading.ts              # Quiz grading logic
-│   ├── resources/
-│   │   └── resource-tracking.ts    # Resource usage tracking
-│   ├── search/
-│   │   ├── meilisearch-client.ts   # MeiliSearch client
-│   │   ├── search-service.ts       # Search service
-│   │   ├── setup-index.ts          # Search index setup
-│   │   └── types.ts                # Search type definitions
-│   ├── security/
-│   │   ├── incident-response.ts    # Security incident handling
-│   │   ├── input-sanitization.ts   # Input sanitization
-│   │   ├── route-audit.ts          # Route protection auditing
-│   │   ├── session-manager.ts      # Session timeout & geo restrictions
-│   │   └── validation.ts           # Input validation
-│   ├── services/
-│   │   ├── enrollment-service.ts   # Enrollment service
-│   │   └── progress-service.ts     # Progress tracking service
-│   ├── stripe/
-│   │   ├── config.ts               # Stripe configuration
-│   │   └── webhook-handler.ts      # Stripe webhook handler
-│   ├── supabase/
-│   │   ├── client.ts               # Supabase client (browser)
-│   │   └── server.ts               # Supabase server client
-│   └── utils/
-│       ├── affiliates.ts           # Affiliate tracking utilities
-│       ├── cn.ts                   # Class name utilities (DEPRECATED - use utils.ts)
-│       └── date-formatters.ts      # Date formatting
 ├── public/                         # Static assets
 │   ├── images/
 │   │   └── logo/
@@ -469,16 +426,15 @@ Root/
 │   └── window.svg
 ├── scripts/                        # Deployment & utility scripts
 │   ├── check-email-logs.sql        # Email system verification queries
-│   ├── create-ui-components.js     # UI component generator
+│   ├── check-ui-case.js            # Enforce lowercase in components/ui
 │   ├── import-legacy-courses.ts    # Legacy course import from Word docs
 │   ├── import-remaining-courses.ts # Additional course import
 │   ├── phase2-security-setup.sh    # Security setup script
-│   ├── setup-certificates.sh       # Certificate system setup
+│   ├── security-audit.ts           # Programmatic security checks
+│   ├── test-certificate-generation.ts # Cert generation smoke
 │   ├── test-course-player.sh       # Course player testing
-│   ├── test-monitoring.ts          # Monitoring system test
-│   ├── test-redis.ts               # Redis connection test
 │   ├── upload-stripe-products.ts   # Stripe product upload
-│   └── verify-certificate-schema.sql # Certificate schema verification
+│   └── validate-security.ts        # Validate security posture
 ├── supabase/                       # Database configuration
 │   └── migrations/
 │       ├── 001_course_builder.sql                      # Course builder schema
@@ -501,68 +457,36 @@ Root/
 │   │   └── test-users.ts           # Test user fixtures
 │   └── setup/
 │       └── seed-test-data.ts       # Test data seeding
-├── types/                          # TypeScript definitions
-│   └── course-builder/
-│       └── index.ts                # Course builder types
-└── utils/                          # Utility functions
-    └── affiliate-link-generator.ts # Affiliate link generation
-```
-
-## Key Features
-
-- **Next.js 14+** with App Router and TypeScript
-- **Authentication System** with magic links, MFA, session management, trusted devices, and session timeout (30 min)
-- **Security Features** including route protection auditing, geo-restrictions (OFAC compliance), field-level PII encryption (AES-256-GCM), comprehensive audit logging, anomaly detection, and fraud monitoring
-- **Compliance Systems** for FERPA, GDPR, and PCI DSS with data retention (4-7 years), right to erasure, and automated compliance workflows
-- **Certificate System** with PDF generation, storage, verification, and Texas LPC templates
-- **Course Builder** with integrated quiz system and rich text editor
-- **UI Component Library** with 20+ shadcn/ui components (Select, Dialog, Alert, Toast, Modal, Skeleton, Spinner, ErrorBoundary, EmptyState, StatusBadge) and shared components (FormField, DataTable, FileUpload, Breadcrumbs, CardLayouts)
-- **Learning Platform** with video player, progress tracking, and note-taking
-- **Quiz System** with attempt tracking, time limits, and automated grading
-- **Email System** with Resend integration, templates, and deduplication
-- **Progress Tracking** with streaks, daily activity logs, and dashboard widgets
-- **Instructor Tools** with affiliate link management, earnings tracking, and commission analytics
-- **Enrollment System** with access control, extensions, and payment integration
-- **Search** powered by MeiliSearch for fast course discovery
-- **Stripe Integration** for payments, subscriptions, and webhooks
-- **Security Monitoring** with incident response, input sanitization, audit logging, and comprehensive security test suite (Playwright)
-- **Database** with Supabase (PostgreSQL with RLS)
-- **Testing** with Playwright E2E tests
-- **Compliance** with GDPR functions and data retention policies
-- **Error Monitoring** with Sentry integration
-- **API Routes** for all features with proper authentication and authorization
-
-## Recent Additions
-
-### Batch 12 - UI Component Library (January 2025)
-
-- **Core UI Components (`components/ui/`):**
-  - `select.tsx` - Dropdown select with Radix UI primitives
-  - `dialog.tsx` - Modal dialog with overlay and animations
-  - `alert-dialog.tsx` - Confirmation dialog for destructive actions
-  - `modal.tsx` - Convenience wrapper around Dialog
-  - `alert.tsx` - Inline alert messages with variants
-  - `toast.tsx` - Toast notification wrapper (react-hot-toast)
-  - `skeleton.tsx` - Animated loading placeholder
-  - `spinner.tsx` - SVG loading spinner
-  - `error-boundary.tsx` - React ErrorBoundary for graceful error handling
-  - `empty-state.tsx` - Generic empty state display
-  - `status-badge.tsx` - Colored status indicators (success, warning, danger, info)
-
-- **Shared Components (`components/shared/`):**
-  - `FormField.tsx` - Form field wrapper with validation, errors, and required indicators
-  - `DataTable.tsx` - Generic data table with sorting and empty states
-  - `FileUpload.tsx` - File picker with client-side validation (size, type)
-  - `Breadcrumbs.tsx` - Auto-generated breadcrumb navigation from routes
-  - `CardLayouts.tsx` - ContentCard and StatCard for consistent layouts
-  - `Toast.tsx` - Toast helper wrapper for shared usage
-
-- **Component Fixes:**
-  - Fixed cn import path in 9 UI components (input, button, card, badge, label, progress, radio-group, textarea, Table)
-  - All components now correctly import cn from `@/lib/utils`
-
-### Batch 11 - Security & Compliance (January 2025)
-
+├── hooks/                          # React custom hooks
+│   ├── useEnrollmentIntent.ts      # Enrollment intent tracking
+│   └── useSearch.ts                # Search functionality
+├── lib/                            # Backend utilities & services
+│   ├── utils.ts                    # General utilities (includes cn helper)
+│   ├── auth/                       # Authentication services
+│   │   ├── magic-link.ts           # Magic link authentication
+│   │   ├── password-reset.ts       # Password reset service
+│   │   ├── session-manager.ts      # Session management
+│   │   └── mfa/                    # Multi-factor authentication
+│   │       ├── authenticator.ts    # Authenticator app MFA
+│   │       ├── recovery.ts         # Recovery codes
+│   │       └── trusted-devices.ts  # Trusted device management
+│   ├── certificates/               # Certificate system
+│   │   ├── generators/             # PDF templates and more
+│   │   ├── storage/                # Storage providers
+│   │   ├── validators/             # Validation helpers
+│   │   └── types.ts                # Certificate types
+│   ├── compliance/                 # Compliance utilities
+│   ├── email/                      # Email system
+│   ├── monitoring/                 # Monitoring helpers
+│   ├── parsers/                    # Content parsers
+│   ├── quiz/                       # Quiz logic
+│   ├── resources/                  # Resource tracking
+│   ├── search/                     # MeiliSearch clients and types
+│   ├── security/                   # Security utilities
+│   ├── services/                   # Domain services
+│   ├── stripe/                     # Stripe integration
+│   ├── supabase/                   # Supabase clients
+│   └── utils/                      # Misc utilities
 - **Security Enhancements:**
   - Route protection auditing tool (`lib/security/route-audit.ts`)
   - Session timeout enforcement (30 minutes) with geographic restrictions
@@ -581,6 +505,19 @@ Root/
   - Comprehensive audit logging for all sensitive operations
   - Log aggregation and search functionality
   - 7-year retention for financial and compliance logs
+
+## Recent Additions
+
+### Batch 14 - Launch Docs & UI Case Guard (October 2025)
+
+- Added comprehensive documentation:
+  - `docs/users/` (student, instructor, admin guides; troubleshooting; video tutorials)
+  - `docs/developers/` (API reference, database schema, deployment, migrations, DR, UI architecture)
+  - `docs/devops/` (infrastructure setup, monitoring/alerting, backups, domains/email, CDN/video)
+- Enforced lowercase UI filenames in `components/ui/*` to avoid Linux case-sensitivity issues
+  - Normalized `input.tsx`, `tabs.tsx`, and `table.tsx` (previously `Table.tsx`)
+  - Added CI guard `scripts/check-ui-case.js` and npm script `npm run lint:ui-case`
+- Verified local production build passes; clear Vercel cache before redeploy to pick up case-only renames
 
 ### Batch 7 - Email System Complete (October 2024)
 
