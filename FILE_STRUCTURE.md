@@ -307,29 +307,44 @@ Root/
 │   ├── quiz/
 │   │   ├── QuizPlayer.tsx          # Quiz player interface
 │   │   └── QuizResults.tsx         # Quiz results display
+│   ├── shared/                     # Shared reusable components
+│   │   ├── Breadcrumbs.tsx         # Auto-generated breadcrumb navigation
+│   │   ├── CardLayouts.tsx         # ContentCard & StatCard layouts
+│   │   ├── DataTable.tsx           # Generic data table with sorting
+│   │   ├── FileUpload.tsx          # File picker with validation
+│   │   ├── FormField.tsx           # Form field wrapper with validation
+│   │   └── Toast.tsx               # Toast notification helper
 │   ├── student/
 │   │   └── CertificateCard.tsx     # Certificate display card
+│   ├── support/
+│   │   └── SupportChatbot.tsx      # Support chatbot component
 │   └── ui/                         # shadcn/ui components
-│       ├── accordion.tsx
-│       ├── alert.tsx
-│       ├── badge.tsx
-│       ├── button.tsx
-│       ├── card.tsx
-│       ├── checkbox.tsx
-│       ├── dialog.tsx
-│       ├── dropdown-menu.tsx
-│       ├── input.tsx
-│       ├── label.tsx
-│       ├── progress.tsx
-│       ├── radio-group.tsx
-│       ├── select.tsx
-│       ├── separator.tsx
-│       ├── skeleton.tsx
-│       ├── switch.tsx
-│       ├── table.tsx
-│       ├── tabs.tsx
-│       ├── textarea.tsx
-│       └── toast.tsx
+│       ├── accordion.tsx           # Collapsible accordion
+│       ├── alert.tsx               # Inline alert messages
+│       ├── alert-dialog.tsx        # Confirmation dialog
+│       ├── badge.tsx               # Small badge component
+│       ├── button.tsx              # Button with variants
+│       ├── card.tsx                # Card container components
+│       ├── checkbox.tsx            # Checkbox input
+│       ├── dialog.tsx              # Modal dialog
+│       ├── dropdown-menu.tsx       # Dropdown menu
+│       ├── empty-state.tsx         # Empty state display
+│       ├── error-boundary.tsx      # React error boundary
+│       ├── input.tsx               # Text input component
+│       ├── label.tsx               # Form label
+│       ├── modal.tsx               # Modal wrapper (convenience)
+│       ├── progress.tsx            # Progress bar
+│       ├── radio-group.tsx         # Radio button group
+│       ├── select.tsx              # Select dropdown
+│       ├── separator.tsx           # Horizontal separator
+│       ├── skeleton.tsx            # Loading skeleton
+│       ├── spinner.tsx             # Loading spinner
+│       ├── status-badge.tsx        # Colored status indicators
+│       ├── switch.tsx              # Toggle switch
+│       ├── Table.tsx               # Table component (capitalized)
+│       ├── tabs.tsx                # Tabbed interface
+│       ├── textarea.tsx            # Multi-line text input
+│       └── toast.tsx               # Toast notification wrapper
 ├── courses/                        # Legacy course import system
 │   ├── import/                     # 44 Word documents for CE & PD courses
 │   │   ├── Addiction Counseling Fundamentals 8 hours CEU.docx
@@ -380,9 +395,9 @@ Root/
 ├── hooks/                          # React custom hooks
 │   ├── useEnrollmentIntent.ts      # Enrollment intent tracking
 │   └── useSearch.ts                # Search functionality
-├── lib/                            # Backend utilities & services
+│   ├── lib/                            # Backend utilities & services
 │   ├── database.types.ts           # Database type definitions
-│   ├── utils.ts                    # General utilities
+│   ├── utils.ts                    # General utilities (includes cn helper)
 │   ├── auth/                       # Authentication services
 │   │   ├── magic-link.ts           # Magic link authentication
 │   │   ├── password-reset.ts       # Password reset service
@@ -423,6 +438,8 @@ Root/
 │   ├── security/
 │   │   ├── incident-response.ts    # Security incident handling
 │   │   ├── input-sanitization.ts   # Input sanitization
+│   │   ├── route-audit.ts          # Route protection auditing
+│   │   ├── session-manager.ts      # Session timeout & geo restrictions
 │   │   └── validation.ts           # Input validation
 │   ├── services/
 │   │   ├── enrollment-service.ts   # Enrollment service
@@ -435,7 +452,7 @@ Root/
 │   │   └── server.ts               # Supabase server client
 │   └── utils/
 │       ├── affiliates.ts           # Affiliate tracking utilities
-│       ├── cn.ts                   # Class name utilities
+│       ├── cn.ts                   # Class name utilities (DEPRECATED - use utils.ts)
 │       └── date-formatters.ts      # Date formatting
 ├── public/                         # Static assets
 │   ├── images/
@@ -468,6 +485,9 @@ Root/
 │       ├── 20250106_001_complete_audit_system.sql      # Audit system
 │       ├── 20250106_002_data_retention.sql             # Data retention
 │       ├── 20250106_003_security_incidents.sql         # Security incidents
+│       ├── 20250106_004_field_encryption.sql           # PII field encryption
+│       ├── 20250106_005_security_monitoring.sql        # Security monitoring & alerts
+│       ├── 20250106_006_compliance_workflows.sql       # FERPA/GDPR/PCI DSS compliance
 │       ├── 20251009175842_create_certificate_audit_log.sql # Certificate audit
 │       ├── 20241028_add_email_logs.sql                 # Email logging
 │       ├── 20241028_add_progress_features.sql          # Progress features
@@ -475,7 +495,8 @@ Root/
 │       └── 20241030_fix_email_dedup_function.sql       # Email dedup fix
 ├── tests/                          # Test files
 │   ├── e2e/
-│   │   └── smoke.spec.ts           # Smoke tests
+│   │   ├── smoke.spec.ts           # Smoke tests
+│   │   └── security.spec.ts        # Security test suite (RBAC, CSRF, XSS, SQLi, etc.)
 │   ├── fixtures/
 │   │   └── test-users.ts           # Test user fixtures
 │   └── setup/
@@ -490,9 +511,12 @@ Root/
 ## Key Features
 
 - **Next.js 14+** with App Router and TypeScript
-- **Authentication System** with magic links, MFA, session management, and trusted devices
+- **Authentication System** with magic links, MFA, session management, trusted devices, and session timeout (30 min)
+- **Security Features** including route protection auditing, geo-restrictions (OFAC compliance), field-level PII encryption (AES-256-GCM), comprehensive audit logging, anomaly detection, and fraud monitoring
+- **Compliance Systems** for FERPA, GDPR, and PCI DSS with data retention (4-7 years), right to erasure, and automated compliance workflows
 - **Certificate System** with PDF generation, storage, verification, and Texas LPC templates
 - **Course Builder** with integrated quiz system and rich text editor
+- **UI Component Library** with 20+ shadcn/ui components (Select, Dialog, Alert, Toast, Modal, Skeleton, Spinner, ErrorBoundary, EmptyState, StatusBadge) and shared components (FormField, DataTable, FileUpload, Breadcrumbs, CardLayouts)
 - **Learning Platform** with video player, progress tracking, and note-taking
 - **Quiz System** with attempt tracking, time limits, and automated grading
 - **Email System** with Resend integration, templates, and deduplication
@@ -501,14 +525,64 @@ Root/
 - **Enrollment System** with access control, extensions, and payment integration
 - **Search** powered by MeiliSearch for fast course discovery
 - **Stripe Integration** for payments, subscriptions, and webhooks
-- **Security Monitoring** with incident response, input sanitization, and audit logging
+- **Security Monitoring** with incident response, input sanitization, audit logging, and comprehensive security test suite (Playwright)
 - **Database** with Supabase (PostgreSQL with RLS)
 - **Testing** with Playwright E2E tests
 - **Compliance** with GDPR functions and data retention policies
 - **Error Monitoring** with Sentry integration
 - **API Routes** for all features with proper authentication and authorization
 
-## Recent Additions (Batch 7 - Email System Complete)
+## Recent Additions
+
+### Batch 12 - UI Component Library (January 2025)
+
+- **Core UI Components (`components/ui/`):**
+  - `select.tsx` - Dropdown select with Radix UI primitives
+  - `dialog.tsx` - Modal dialog with overlay and animations
+  - `alert-dialog.tsx` - Confirmation dialog for destructive actions
+  - `modal.tsx` - Convenience wrapper around Dialog
+  - `alert.tsx` - Inline alert messages with variants
+  - `toast.tsx` - Toast notification wrapper (react-hot-toast)
+  - `skeleton.tsx` - Animated loading placeholder
+  - `spinner.tsx` - SVG loading spinner
+  - `error-boundary.tsx` - React ErrorBoundary for graceful error handling
+  - `empty-state.tsx` - Generic empty state display
+  - `status-badge.tsx` - Colored status indicators (success, warning, danger, info)
+
+- **Shared Components (`components/shared/`):**
+  - `FormField.tsx` - Form field wrapper with validation, errors, and required indicators
+  - `DataTable.tsx` - Generic data table with sorting and empty states
+  - `FileUpload.tsx` - File picker with client-side validation (size, type)
+  - `Breadcrumbs.tsx` - Auto-generated breadcrumb navigation from routes
+  - `CardLayouts.tsx` - ContentCard and StatCard for consistent layouts
+  - `Toast.tsx` - Toast helper wrapper for shared usage
+
+- **Component Fixes:**
+  - Fixed cn import path in 9 UI components (input, button, card, badge, label, progress, radio-group, textarea, Table)
+  - All components now correctly import cn from `@/lib/utils`
+
+### Batch 11 - Security & Compliance (January 2025)
+
+- **Security Enhancements:**
+  - Route protection auditing tool (`lib/security/route-audit.ts`)
+  - Session timeout enforcement (30 minutes) with geographic restrictions
+  - Field-level PII encryption with AES-256-GCM (`20250106_004_field_encryption.sql`)
+  - Comprehensive security test suite (`tests/e2e/security.spec.ts`)
+  - Security monitoring with anomaly detection (`20250106_005_security_monitoring.sql`)
+  - Fraud detection and risk scoring system
+
+- **Compliance Workflows:**
+  - FERPA, GDPR, and PCI DSS compliance automation (`20250106_006_compliance_workflows.sql`)
+  - 4-year data retention for education records, 7-year for audit logs
+  - Right to erasure and data export capabilities
+  - Compliance dashboard schema
+
+- **Audit System:**
+  - Comprehensive audit logging for all sensitive operations
+  - Log aggregation and search functionality
+  - 7-year retention for financial and compliance logs
+
+### Batch 7 - Email System Complete (October 2024)
 
 - **Comprehensive Email System:**
   - `lib/email/templates.ts` - Complete template library for all communication types:
@@ -581,11 +655,42 @@ Root/
 - Excludes build artifacts (`.next/`, `node_modules/`) from version control
 - Environment variables required: See `.env.local.example` for full list
 - Database migrations handle schema evolution and security setup
-- Test suite covers E2E scenarios and API endpoints
+- Test suite covers E2E scenarios, API endpoints, and comprehensive security testing
 - Email system includes comprehensive logging and prevents duplicate sends
 - Progress tracking uses Supabase RLS for security
-- All API routes protected with proper authentication
+- All API routes protected with proper authentication and RBAC
 - Certificate system uses Supabase Storage for PDF files
 - MFA system supports TOTP authenticator apps
 - Search index requires MeiliSearch instance
 - Stripe webhooks require proper signature verification
+- Security features include session timeouts, geo-restrictions, PII encryption, and audit logging
+- Compliance workflows automate FERPA, GDPR, and PCI DSS requirements
+- UI components follow shadcn/ui pattern with Radix UI primitives and Tailwind styling
+- All UI components use `cn` utility from `@/lib/utils` for className merging
+
+## Component Library Usage
+
+### Core UI Components
+
+Import from `@/components/ui/[component-name]`:
+
+- Use `<Select>` for dropdowns with search and keyboard navigation
+- Use `<Dialog>` or `<Modal>` for modal overlays
+- Use `<AlertDialog>` for confirmation prompts
+- Use `<Alert>` for inline messages
+- Use `toast.success()` or `toast.error()` for notifications
+- Use `<Skeleton>` or `<Spinner>` for loading states
+- Use `<ErrorBoundary>` to wrap components that may error
+- Use `<EmptyState>` for empty data states
+- Use `<StatusBadge>` for status indicators
+
+### Shared Components
+
+Import from `@/components/shared/[component-name]`:
+
+- Use `<FormField>` or `<InputWithError>` for consistent form layouts
+- Use `<DataTable>` for tabular data with sorting
+- Use `<FileUpload>` for file selection with validation
+- Use `<Breadcrumbs>` for navigation context
+- Use `<ContentCard>` or `<StatCard>` for card layouts
+- Use `toast` helper for notifications throughout the app
