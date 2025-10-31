@@ -79,6 +79,17 @@ export default function Header() {
             </Link>
 
             <Link 
+              href="/pricing" 
+              className={`font-medium transition-all duration-200 ${
+                pathname === '/pricing' 
+                  ? 'text-accent' 
+                  : 'text-white hover:text-accent'
+              }`}
+            >
+              Memberships
+            </Link>
+
+            <Link 
               href="/about" 
               className={`font-medium transition-all duration-200 ${
                 pathname === '/about' 
@@ -172,6 +183,18 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Courses
+              </Link>
+
+              <Link 
+                href="/pricing" 
+                className={`px-4 py-2 rounded font-medium transition-all duration-200 ${
+                  pathname === '/pricing' 
+                    ? 'text-accent' 
+                    : 'text-white hover:text-accent'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Memberships
               </Link>
 
               <Link 
