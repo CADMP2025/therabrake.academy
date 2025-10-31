@@ -45,6 +45,9 @@
   ],
   "exclude": [
     "node_modules",
-    "scripts"
+    "scripts",
+    "jest.config.ts",
+    "playwright.config.ts",
+    "tests"
   ]
 }
