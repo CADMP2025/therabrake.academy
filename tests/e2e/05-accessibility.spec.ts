@@ -135,14 +135,12 @@ test.describe('Accessibility Tests - WCAG 2.1 AA', () => {
           await page.keyboard.press('Tab')
         }
 
-        const modalElement = page.locator('[role="dialog"], .modal')
-        const focusedElement = await page.evaluate(() => document.activeElement)
-        
         // Focused element should still be within modal
-        const isInModal = await modalElement.evaluate((modal, focused) => {
-          return modal.contains(focused as HTMLElement)
-        }, focusedElement)
-
+        const isInModal = await page.evaluate(() => {
+          const modal = document.querySelector('[role="dialog"], .modal')
+          const focused = document.activeElement as HTMLElement | null
+          return !!(modal && focused && modal.contains(focused))
+        })
         expect(isInModal).toBe(true)
       }
     })
