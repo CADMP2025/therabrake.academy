@@ -90,11 +90,13 @@
 ## 🔧 Next Steps
 
 ### 1. Install Missing Dependencies
+
 ```bash
 npm install --save-dev @axe-core/playwright
 ```
 
 ### 2. Run Test Suite
+
 ```bash
 # E2E tests
 npm run test:e2e
@@ -110,16 +112,19 @@ npm run test:all
 ```
 
 ### 3. Review and Fix Any Errors
+
 - Some unit tests import services that don't exist yet (expected)
 - Fix TypeScript errors in accessibility tests (@axe-core/playwright import)
 - Ensure all environment variables are set
 
 ### 4. Complete Batch 13.2 (Manual Testing)
+
 - Create manual test checklist document
 - Document step-by-step procedures
 - Include expected results and edge cases
 
 ### 5. Complete Batch 13.3 (Performance Testing)
+
 - Set up k6 for load testing
 - Create database query benchmarks
 - Test video streaming performance
@@ -128,7 +133,9 @@ npm run test:all
 ## 📝 Notes
 
 ### Test Helpers Available
+
 The `test-helpers.ts` file provides:
+
 - `generateTestUser()` - Create fake user data
 - `createTestUser()` - Insert user into database
 - `createTestCourse()` - Insert course into database
@@ -138,11 +145,13 @@ The `test-helpers.ts` file provides:
 - `createAuthenticatedRequest()` - Create auth headers
 
 ### Stripe Test Cards
+
 - **Success:** 4242 4242 4242 4242
 - **Decline:** 4000 0000 0000 0002
 - **Insufficient Funds:** 4000 0000 0000 9995
 
 ### Environment Variables Required
+
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
@@ -162,6 +171,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3002
 ## 🚀 Ready for Production
 
 With this test suite, you now have:
+
 - Automated regression testing
 - Security vulnerability detection
 - Accessibility compliance verification
