@@ -42,7 +42,7 @@ export interface SessionStatus {
  */
 export async function checkSessionStatus(): Promise<SessionStatus> {
   const cookieStore = cookies()
-  const supabase = await createServerClient()
+  const supabase = await createClient()
   
   // Get user
   const { data: { user } } = await supabase.auth.getUser()
