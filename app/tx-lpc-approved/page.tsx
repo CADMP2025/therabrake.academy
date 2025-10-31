@@ -56,7 +56,7 @@ export default function TXLPCApprovedPage() {
         <section className="mb-12">
           <div className="bg-gray-100 p-6 rounded-lg border border-gray-300">
             <p className="text-gray-700 mb-4">For the full rule, please see <strong>22 TAC section 681.140 Requirements for Continuing Education</strong> via the Texas Administrative Code.</p>
-            <a href="https://texreg.sos.state.tx.us/public/readtac$ext.ViewTAC?tac_view=5&ti=22&pt=30&ch=681&sch=D&rl=Y" target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">View Official Texas Administrative Code</a>
+            <a href="https://texhealthlaw.org/texas-register-march-2-2023-volume-48-number-9/" target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">View Official Texas Administrative Code</a>
           </div>
         </section>
         <div className="bg-blue-50 p-8 rounded-lg text-center border border-blue-200">
