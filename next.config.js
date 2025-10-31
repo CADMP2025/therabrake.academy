@@ -1,3 +1,5 @@
+const path = require('path')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -16,6 +18,11 @@ const nextConfig = {
         ...config.resolve.fallback,
         fs: false,
       }
+    }
+    // Ensure webpack resolves the "@" alias consistently in all environments
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      '@': path.resolve(__dirname),
     }
     return config
   },
