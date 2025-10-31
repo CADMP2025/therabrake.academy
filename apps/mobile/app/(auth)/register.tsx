@@ -47,7 +47,7 @@ export default function RegisterScreen() {
         [
           {
             text: 'OK',
-            onPress: () => router.replace('/login'),
+            onPress: () => router.replace('/(auth)/login' as any),
           },
         ]
       );
@@ -142,11 +142,12 @@ export default function RegisterScreen() {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Already have an account? </Text>
-            <Link href="/login" asChild>
-              <TouchableOpacity disabled={loading}>
-                <Text style={styles.link}>Sign In</Text>
-              </TouchableOpacity>
-            </Link>
+            <TouchableOpacity 
+              disabled={loading}
+              onPress={() => router.push('/(auth)/login' as any)}
+            >
+              <Text style={styles.link}>Sign In</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

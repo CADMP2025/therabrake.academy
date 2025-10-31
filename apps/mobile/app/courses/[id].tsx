@@ -82,12 +82,12 @@ export default function CourseDetailScreen() {
     }
 
     // Navigate to enrollment/checkout screen
-    router.push(`/enrollment/${id}`);
+    router.push(`/enrollment/${id}` as any);
   };
 
   const handleStartLearning = () => {
     // Navigate to lesson screen
-    router.push(`/learn/${id}`);
+    router.push(`/learn/${id}` as any);
   };
 
   if (loading) {

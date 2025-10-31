@@ -59,7 +59,7 @@ export default function CoursesScreen() {
   const renderCourse = ({ item }: { item: Course }) => (
     <TouchableOpacity
       style={styles.courseCard}
-      onPress={() => router.push(`/courses/${item.id}`)}
+      onPress={() => router.push(`/courses/${item.id}` as any)}
     >
       {item.thumbnail_url ? (
         <Image source={{ uri: item.thumbnail_url }} style={styles.thumbnail} />
@@ -103,7 +103,7 @@ export default function CoursesScreen() {
         <Text style={styles.messageText}>Please sign in to view courses</Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => router.push('/login')}
+          onPress={() => router.push('/(auth)/login' as any)}
         >
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>

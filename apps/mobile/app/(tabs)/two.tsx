@@ -22,7 +22,7 @@ export default function ProfileScreen() {
         onPress: async () => {
           try {
             await signOut();
-            router.replace('/(tabs)/courses');
+            router.replace('/(tabs)/courses' as any);
           } catch (error: any) {
             Alert.alert('Error', error.message || 'Could not sign out');
           }

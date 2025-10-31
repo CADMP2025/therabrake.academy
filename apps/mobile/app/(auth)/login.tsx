@@ -81,11 +81,12 @@ export default function LoginScreen() {
             />
           </View>
 
-          <Link href="/(auth)/forgot-password" asChild>
-            <TouchableOpacity disabled={loading}>
-              <Text style={styles.forgotPassword}>Forgot Password?</Text>
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity 
+            disabled={loading}
+            onPress={() => router.push('/(auth)/forgot-password' as any)}
+          >
+            <Text style={styles.forgotPassword}>Forgot Password?</Text>
+          </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.button, loading && styles.buttonDisabled]}
@@ -101,11 +102,12 @@ export default function LoginScreen() {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Don't have an account? </Text>
-            <Link href="/(auth)/register" asChild>
-              <TouchableOpacity disabled={loading}>
-                <Text style={styles.link}>Sign Up</Text>
-              </TouchableOpacity>
-            </Link>
+            <TouchableOpacity 
+              disabled={loading}
+              onPress={() => router.push('/(auth)/register' as any)}
+            >
+              <Text style={styles.link}>Sign Up</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
