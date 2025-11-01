@@ -128,7 +128,38 @@ npm install firebase firebase-admin
 - Forum replies
 - Instructor announcements
 
-#### Priority 4: Custom Discussion Forum
+#### Priority 4: Offline Download Manager
+**Goal:** Enable students to download course content for offline access
+
+**Status:** Planning & Architecture Complete ✅  
+**Documentation:** `docs/developers/OFFLINE_DOWNLOAD_MANAGER.md`
+
+**Implementation Time:** 52-65 hours over 4 weeks
+
+**Key Features:**
+- Priority-based download queue
+- Background downloads with pause/resume
+- Smart storage management (auto-cleanup, quota checks)
+- WiFi-only option
+- Offline sync with conflict resolution
+- Quality selection (low/medium/high)
+- Expiration handling
+
+**Tech Stack:**
+- **Web:** IndexedDB + Service Workers + Workbox
+- **Mobile:** Expo FileSystem + SQLite + Background Fetch
+- **Backend:** Supabase tables for sync + Cloudflare R2 for videos
+
+**Packages Required:**
+```bash
+# Web
+npm install idb workbox-webpack-plugin workbox-strategies comlink
+
+# Mobile  
+npm install expo-file-system expo-sqlite @react-native-async-storage/async-storage
+```
+
+#### Priority 5: Custom Discussion Forum
 **Goal:** Build community engagement features
 
 **Database Tables to Create:**
