@@ -2,7 +2,7 @@
 
 **Last Updated:** October 31, 2025  
 **Current Branch:** feature/course-builder  
-**Status:** Mobile app development in progress
+**Status:** Web development - Adding new features
 
 ---
 
@@ -68,59 +68,114 @@
 
 ## 📋 **Next Steps**
 
-### Immediate (Next Session)
+### Immediate (Current Focus) - Web Platform Development
 
-#### Option A: EAS Build Setup (Recommended for Mobile Testing)
+**Decision Made:** Continue with web development, return to mobile app later with EAS Build.
+
+#### Priority 1: Cloudflare R2 Integration (Video Storage Migration)
+**Goal:** Reduce storage costs and improve video delivery performance
+
 ```bash
-cd apps/mobile
-eas build:configure  # Already done
-eas build --profile development --platform ios
-# Download .app file and install on simulator
+# Install dependencies
+cd apps/web
+npm install @aws-sdk/client-s3 @aws-sdk/s3-request-presigner
+
+# Setup steps:
+1. Create Cloudflare R2 bucket
+2. Configure CORS policies
+3. Create upload API endpoint (app/api/video/upload/route.ts)
+4. Build admin migration tool
+5. Update video URLs in database
+6. Test playback with signed URLs
 ```
 
-#### Option B: Test Web Version First
+**Benefits:**
+- Cost: ~$2-5/month (vs current Supabase storage)
+- Better CDN performance
+- Unlimited egress (Cloudflare doesn't charge)
+
+#### Priority 2: Enhanced Course Builder
+**Goal:** Complete the course builder feature for instructors
+
+**Features to Add:**
+- [ ] Drag-and-drop lesson reordering
+- [ ] Bulk video upload
+- [ ] Course preview mode
+- [ ] Quiz creation interface
+- [ ] Resource attachment manager
+- [ ] Course analytics dashboard
+
+#### Priority 3: Firebase Integration (Push Notifications)
+**Goal:** Improve user engagement with notifications
+
 ```bash
-cd apps/mobile
-npx expo start
-# Press 'w' to open in browser
-# Verify all functionality works
+# Install Firebase
+cd apps/web
+npm install firebase firebase-admin
+
+# Setup:
+1. Create Firebase project
+2. Enable Cloud Messaging
+3. Add service worker for web push
+4. Create notification API endpoints
+5. Build notification preferences UI
 ```
 
-#### Option C: Continue with Web Platform
-- Skip mobile testing for now
-- Focus on implementing new features on web
-- Return to mobile later with custom build
+**Use Cases:**
+- New course releases
+- Lesson updates
+- CE renewal reminders
+- Forum replies
+- Instructor announcements
 
-### Medium Priority
+#### Priority 4: Custom Discussion Forum
+**Goal:** Build community engagement features
 
-1. **Cloudflare R2 Integration** (Video Storage)
-   - Install `@aws-sdk/client-s3`
-   - Set up R2 bucket
-   - Create upload API endpoint
-   - Migrate existing videos
-   - Cost: ~$2-5/month (vs current Supabase storage)
+**Database Tables to Create:**
+```sql
+-- In Supabase
+discussions (id, course_id, user_id, title, content, created_at)
+discussion_replies (id, discussion_id, user_id, content, created_at)
+discussion_likes (user_id, discussion_id)
+discussion_reports (id, discussion_id, user_id, reason)
+```
 
-2. **Firebase Integration** (Push Notifications)
-   - Install Firebase SDK
-   - Set up Cloud Messaging
-   - Create notification system for:
-     - New course releases
-     - Lesson updates
-     - CE renewal reminders
-   - Cost: Free tier sufficient
+**Features:**
+- Course-specific discussions
+- Nested replies
+- Like/upvote system
+- Instructor highlighting
+- Moderation tools
+- Email notifications
 
-3. **Custom Discussion Forum**
-   - Create Supabase tables (discussions, replies)
-   - Build forum UI components
-   - Add moderation tools
-   - Implement reporting system
+### Medium Priority (After Core Features)
 
-4. **Google Cloud TTS** (Audio Lessons)
+1. **Google Cloud TTS** (Audio Lessons)
    - Set up Google Cloud account
    - Install `@google-cloud/text-to-speech`
    - Create audio generation API
    - Add audio player to course screens
    - Cost: $4 per 1M characters
+
+2. **Advanced Search**
+   - Enhance MeiliSearch integration
+   - Add filters (price, duration, difficulty)
+   - Implement autocomplete
+   - Add search analytics
+
+3. **Instructor Dashboard Enhancements**
+   - Revenue analytics
+   - Student progress tracking
+   - Course performance metrics
+   - Automated insights
+
+### Mobile App (Deferred to Later Phase)
+
+**When to Return:**
+- After core web features are complete
+- Set up EAS Build for custom development builds
+- Test on iOS simulator and physical devices
+- Current code is ready - just needs proper build environment
 
 ### Long-term
 
@@ -349,24 +404,30 @@ git checkout feature/course-builder
 
 ## 💡 **Notes for Next Session**
 
-1. **Mobile app is blocked** on Expo Go compatibility
-   - Decide: EAS Build or test web version first
-   - EAS Build takes ~15-20 min to complete
-   - Web version should work immediately
+1. **Focus on web platform development**
+   - Mobile app deferred until later (EAS Build required)
+   - Web app is fully functional and deployed
+   - Priority: Add high-value features
 
-2. **Web app is fully deployed** and working
-   - Can start adding new features to web
-   - Mobile can catch up later
+2. **Start with Cloudflare R2 migration**
+   - Immediate cost savings
+   - Improves video performance
+   - Relatively quick implementation (~2-3 hours)
 
-3. **Cloudflare R2 migration** should be next priority
-   - Significant cost savings
-   - Easy implementation (S3-compatible)
-   - Better performance with CDN
+3. **Course builder enhancements** are critical
+   - Enables instructors to create content independently
+   - Reduces admin workload
+   - Key for platform scaling
 
-4. **Consider Firebase** for push notifications
+4. **Firebase setup** for push notifications
+   - Major engagement driver
    - Free tier sufficient
-   - Easy integration with existing Supabase auth
-   - Critical for user engagement
+   - Works alongside Supabase
+
+5. **Mobile app will resume** once:
+   - Core web features complete
+   - EAS Build environment set up
+   - More time allocated for native mobile development
 
 ---
 
